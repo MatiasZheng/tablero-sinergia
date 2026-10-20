@@ -21,7 +21,7 @@ a { color: var(--acc); }
 </style>
 </head><body><main>
 <h1>Actualizar datos del tablero</h1>
-<p class="muted">Todo se procesa en tu computadora: el Excel no se sube a ningún lado.</p>
+<p class="muted">Todo se procesa en tu computadora: el export no se sube a ningún lado. El datos.csv no lleva números de OS ni datos de clientes.</p>
 
 <div class="card">
   <b>Pasos</b>
@@ -44,17 +44,16 @@ a { color: var(--acc); }
 </main>
 
 <script id="motor">
-/* Convierte el export de ZOY (Relatorio) en datos.csv: totales por día, servicio, POP, dealer y motivo.
-   POP y Dealer se usan tal cual vienen en el export (vacío = "(en blanco)"). */
+/* Convierte el export de ZOY (Relatorio Suportes) en datos.csv: una fila por OS, sin Id ni datos de clientes.
+   POP y Dealer tal cual vienen en el export (vacío = "(en blanco)"). */
 function construirDatos(XLSX, buffer) {
-  const NEEDED = ['Id', 'Prazo Data', 'Pop', 'SubTipo', 'Status', 'Dealer', 'Criado Em', 'Execucao', 'Motivo Reagendamento'];
+  const NEEDED = ['Id', 'Prazo Data', 'Pop', 'SubTipo', 'Status', 'Dealer', 'Criado Em', 'Execucao', 'Motivo Reagendamento', '1ª Agenda', 'N Agend.', 'Garantia'];
   const OPERATIVOS = ['INFRA', 'TECNICO', 'DEMORA DE CONTRATISTA', 'REAG. RAPIDO'];
   const META_SOPORTE = 24, META_OTROS = 48;
   const SERV = { soporte: 'Soporte', instalacion: 'Instalación', comercial: 'Comercial', negociacion: 'Negociación' };
   const norm = (v) => String(v ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
   const txt = (v) => (v == null ? '' : String(v).trim());
 
-  // Busca la hoja del export: "Relatorio" si existe, o la primera que tenga las columnas de ZOY.
   let wb = XLSX.read(buffer, { type: 'array', raw: true, sheets: 'Relatorio' });
   if (!wb.Sheets.Relatorio) wb = XLSX.read(buffer, { type: 'array', raw: true });
   let rows = null, head = null;
@@ -63,68 +62,62 @@ function construirDatos(XLSX, buffer) {
     const r = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null, blankrows: false });
     if (r.length && NEEDED.every((n) => r[0].some((h) => norm(h) === norm(n)))) { rows = r; head = r[0]; break; }
   }
-  if (!rows) throw new Error('No encuentro las columnas del export de ZOY (Id, Prazo Data, Pop, SubTipo, Status, Dealer, Criado Em, Execucao, Motivo Reagendamento). ¿Es el Relatorio de Suportes?');
+  if (!rows) throw new Error('No encuentro las columnas del export de ZOY (' + NEEDED.join(', ') + '). ¿Es el Relatorio Suportes?');
   const c = Object.fromEntries(NEEDED.map((n) => [n, head.findIndex((h) => norm(h) === norm(n))]));
 
-  // Fechas como número de serie de Excel (días), igual que la hoja Calc.
+  // Fechas como número de serie de Excel (días, con hora como fracción).
   const serial = (v) => {
-    if (v == null || v === '') return null;
+    if (v == null || v === '' || v === '-') return null;
     if (typeof v === 'number') return v;
-    if (v instanceof Date) return (Date.UTC(v.getFullYear(), v.getMonth(), v.getDate(), v.getHours(), v.getMinutes()) - Date.UTC(1899, 11, 30)) / 864e5;
-    const m = String(v).trim().match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
+    const m = String(v).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
     if (!m) return null;
     return (Date.UTC(+m[3], +m[2] - 1, +m[1]) - Date.UTC(1899, 11, 30)) / 864e5 + (m[4] ? (+m[4] * 60 + +m[5]) / 1440 : 0);
   };
-  const iso = (s) => new Date(Date.UTC(1899, 11, 30) + Math.floor(s + 1e-9) * 864e5).toISOString().slice(0, 10);
-  const lunes = (s) => { const d = Math.floor(s + 1e-9); const wd = (new Date(Date.UTC(1899, 11, 30) + d * 864e5).getUTCDay() + 6) % 7; return d - wd; };
+  const dayOf = (s) => Math.floor(s + 1e-9);
+  const iso = (s) => new Date(Date.UTC(1899, 11, 30) + dayOf(s) * 864e5).toISOString().slice(0, 10);
 
   const datos = rows.slice(1).filter((r) => txt(r[c['Id']]) !== '');
-  // Fecha de corte = última fecha de creación del export (como Tablero!K5).
   let corte = -Infinity;
   for (const r of datos) { const e = serial(r[c['Criado Em']]); if (e != null && e > corte) corte = e; }
 
-  const grupos = new Map();
+  const cols = ['creada', 'servicio', 'pop', 'dealer', 'motivo', 'ejecutada', 'horas', 'sla_plan', 'sla_zoy', 'cancelada', 'abierta', 'vencida', 'agenda1', 'cumple_1a', 'n_reagendas', 'garantia', 'reag_operativa'];
+  const esc = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const out = [cols.join(',')];
   let total = 0, maxDia = '';
   const conteo = {};
   for (const r of datos) {
     const serv = SERV[norm(r[c['SubTipo']])];
     if (!serv) continue;
     const E = serial(r[c['Criado Em']]); if (E == null) continue;
-    const G = serial(r[c['Execucao']]), H = serial(r[c['Prazo Data']]);
-    const pop = txt(r[c['Pop']]) || '(en blanco)';  // Pop tal cual viene en el export de ZOY
+    const G = serial(r[c['Execucao']]), H = serial(r[c['Prazo Data']]), A1 = serial(r[c['1ª Agenda']]);
+    const pop = txt(r[c['Pop']]) || '(en blanco)';
     const dealer = txt(r[c['Dealer']]) || '(en blanco)';
     const mot = txt(r[c['Motivo Reagendamento']]);
-    const reag = mot === '' || mot === '-' ? 0 : 1;
-    const motivo = reag ? mot : 'Sin reagenda';
+    const motivo = mot === '' || mot === '-' ? 'Sin reagenda' : mot;
+    const nag = parseInt(r[c['N Agend.']], 10) || 0;
     const status = norm(r[c['Status']]);
     const ej = G != null ? 1 : 0;
     const horas = ej ? (G - E) * 24 : null;
     const canc = status === 'cancelado' ? 1 : 0;
     const abierta = !ej && !canc && status !== 'auditado no ejecutado' ? 1 : 0;
-    const f = {
-      ejecutada: ej, reagendada: reag, reag_operativa: OPERATIVOS.includes(mot.toUpperCase()) ? 1 : 0,
-      cumple_1a: ej && !reag ? 1 : 0,
+    const fila = {
+      creada: iso(E), servicio: serv, pop, dealer, motivo, ejecutada: ej,
+      horas: ej ? Math.round(horas * 100) / 100 : '',
       sla_plan: ej && horas <= (serv === 'Soporte' ? META_SOPORTE : META_OTROS) ? 1 : 0,
       sla_zoy: ej && (H == null || G <= H) ? 1 : 0,
-      abierta, vencida: abierta && H != null && H < corte ? 1 : 0,
+      cancelada: canc, abierta, vencida: abierta && H != null && H < corte ? 1 : 0,
+      agenda1: A1 == null ? '' : iso(A1),
+      cumple_1a: A1 != null && ej && dayOf(G) === dayOf(A1) && nag === 0 ? 1 : 0,
+      n_reagendas: nag,
+      garantia: txt(r[c['Garantia']]) !== '' ? 1 : 0,
+      reag_operativa: OPERATIVOS.includes(mot.toUpperCase()) ? 1 : 0,
     };
-    const creada = iso(E), semana = iso(lunes(E));
-    const k = [creada, semana, serv, pop, dealer, motivo].join('\u0001');
-    let g = grupos.get(k);
-    if (!g) grupos.set(k, (g = { creada, semana, servicio: serv, pop, dealer, motivo, os: 0, ejecutada: 0, cumple_1a: 0, reagendada: 0, reag_operativa: 0, sla_plan: 0, sla_zoy: 0, horas_sum: 0, abierta: 0, vencida: 0 }));
-    g.os++;
-    for (const [kk, v] of Object.entries(f)) g[kk] += v;
-    if (ej) g.horas_sum += Math.round(horas * 100) / 100;
+    out.push(cols.map((k) => esc(fila[k])).join(','));
     total++; conteo[serv] = (conteo[serv] || 0) + 1;
-    if (creada > maxDia) maxDia = creada;
+    if (fila.creada > maxDia) maxDia = fila.creada;
   }
   if (!total) throw new Error('No encontré OS de Soporte, Instalación, Comercial o Negociación en el archivo.');
-  const cols = ['creada', 'semana', 'servicio', 'pop', 'dealer', 'motivo', 'os', 'ejecutada', 'cumple_1a', 'reagendada', 'reag_operativa', 'sla_plan', 'sla_zoy', 'horas_sum', 'abierta', 'vencida'];
-  const esc = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const filas = [...grupos.values()];
-  for (const g of filas) g.horas_sum = Math.round(g.horas_sum * 100) / 100;
-  const csv = [cols.join(','), ...filas.map((g) => cols.map((k) => esc(g[k])).join(','))].join('\n') + '\n';
-  return { csv, total, maxDia, conteo, filas: filas.length };
+  return { csv: out.join('\n') + '\n', total, maxDia, conteo, filas: total };
 }
 </script>
 <script>
