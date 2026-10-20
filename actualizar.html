@@ -45,10 +45,9 @@ a { color: var(--acc); }
 
 <script id="motor">
 /* Convierte el export de ZOY (Relatorio) en datos.csv: totales por día, servicio, POP, dealer y motivo.
-   Aplica las mismas reglas que la hoja Calc de Tablero_Calidad_SINERGIA.xlsx. */
+   POP y Dealer se usan tal cual vienen en el export (vacío = "(en blanco)"). */
 function construirDatos(XLSX, buffer) {
-  const NEEDED = ['Id', 'Prazo Data', 'Pop', 'SubTipo', 'Status', 'Dealer', 'Criado Em', 'Execucao', 'Motivo Reagendamento', 'Infra Area'];
-  const POPS = ['ASU021', 'ASU011', 'ASU031', 'ASUX11', 'LUQ021', 'LUQ011', 'SLO021', 'SLO011', 'LBM011', 'MRA011', 'YPN011', 'EMB011', 'FDM011'];
+  const NEEDED = ['Id', 'Prazo Data', 'Pop', 'SubTipo', 'Status', 'Dealer', 'Criado Em', 'Execucao', 'Motivo Reagendamento'];
   const OPERATIVOS = ['INFRA', 'TECNICO', 'DEMORA DE CONTRATISTA', 'REAG. RAPIDO'];
   const META_SOPORTE = 24, META_OTROS = 48;
   const SERV = { soporte: 'Soporte', instalacion: 'Instalación', comercial: 'Comercial', negociacion: 'Negociación' };
@@ -64,7 +63,7 @@ function construirDatos(XLSX, buffer) {
     const r = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null, blankrows: false });
     if (r.length && NEEDED.every((n) => r[0].some((h) => norm(h) === norm(n)))) { rows = r; head = r[0]; break; }
   }
-  if (!rows) throw new Error('No encuentro las columnas del export de ZOY (Id, Prazo Data, Pop, SubTipo, Status, Dealer, Criado Em, Execucao, Motivo Reagendamento, Infra Area). ¿Es el Relatorio de Suportes?');
+  if (!rows) throw new Error('No encuentro las columnas del export de ZOY (Id, Prazo Data, Pop, SubTipo, Status, Dealer, Criado Em, Execucao, Motivo Reagendamento). ¿Es el Relatorio de Suportes?');
   const c = Object.fromEntries(NEEDED.map((n) => [n, head.findIndex((h) => norm(h) === norm(n))]));
 
   // Fechas como número de serie de Excel (días), igual que la hoja Calc.
@@ -92,10 +91,8 @@ function construirDatos(XLSX, buffer) {
     if (!serv) continue;
     const E = serial(r[c['Criado Em']]); if (E == null) continue;
     const G = serial(r[c['Execucao']]), H = serial(r[c['Prazo Data']]);
-    const popOS = txt(r[c['Pop']]), infra = txt(r[c['Infra Area']]);
-    const pop = popOS !== '' ? (POPS.includes(popOS) ? popOS : 'OTROS POP')
-      : (infra === '' || infra === '-' || infra.toUpperCase() === 'CENTRAL') ? 'SIN POP' : (POPS.includes(infra) ? infra : 'OTROS POP');
-    const dealer = txt(r[c['Dealer']]) || 'Sin dealer';
+    const pop = txt(r[c['Pop']]) || '(en blanco)';  // Pop tal cual viene en el export de ZOY
+    const dealer = txt(r[c['Dealer']]) || '(en blanco)';
     const mot = txt(r[c['Motivo Reagendamento']]);
     const reag = mot === '' || mot === '-' ? 0 : 1;
     const motivo = reag ? mot : 'Sin reagenda';

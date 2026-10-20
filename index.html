@@ -259,10 +259,10 @@ const M = {
   sla_zoy: { label: '% SLA ZOY', short: 'SLA ZOY', up: true, f: fPct, d: fPP, pct: true },
   horas: { label: 'Horas prom. a ejecución', short: 'Horas prom.', up: false, f: fH, d: fDH, pct: false },
 };
-const ORDER = ['ASU021','ASU011','ASU031','ASUX11','LUQ021','LUQ011','SLO021','SLO011','LBM011','MRA011','YPN011','EMB011','FDM011','SIN POP','OTROS POP','Resto Central','Total Central'];
+const ORDER = ['ASU021','ASU011','ASU031','ASUX11','LUQ021','LUQ011','SLO021','SLO011','LBM011','MRA011','YPN011','EMB011','FDM011','(en blanco)','Resto Central','Total Central'];
 const GROUPS = ['Resto Central', 'Total Central'];
 const popLabel = (p) => p === 'Resto Central' ? 'Resto Central (sin ASU021)' : p;
-const rank = (p) => { const i = ORDER.indexOf(p); return i < 0 ? 99 : i; };
+const rank = (p) => { const i = ORDER.indexOf(p); return i < 0 ? (p === '(en blanco)' ? 98 : 50) : (i >= ORDER.length - 3 ? 100 + i : i); };
 const PERIODOS = { base: 'Línea base · 1 jul – 18 oct 2026', piloto: 'Piloto · desde 19 oct 2026', todo: 'Todo · desde 1 abr 2026' };
 const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
 const keyOf = (...a) => a.join('|');
@@ -588,7 +588,7 @@ function drawRanking(rows, P) {
 
 function drawTable(rows, P) {
   const tb = $('.sn-table tbody');
-  const cur = rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.periodo === P.periodo);
+  const cur = rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.periodo === P.periodo && (r.os > 0 || r.abiertas > 0 || r.pop === P.pop || GROUPS.includes(r.pop)));
   const sorted = cur.slice().sort((a, b) => {
     if (!sortKey) return rank(a.pop) - rank(b.pop);
     if (sortKey === 'pop') return sortDir * (rank(a.pop) - rank(b.pop));
