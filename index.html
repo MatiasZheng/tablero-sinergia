@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calidad de atención · SINERGIA</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head><body>
+<style>
+.sn { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: flex; flex-direction: column; gap: var(--cds-gap-lg); font-variant-numeric: tabular-nums; }
+.sn-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+.sn-take { font-size: var(--cds-font-size-body); margin: 0; max-width: 62rem; line-height: 1.5; }
+.sn .sn-take b { font-weight: 600; }
+.sn-sub, .sn-period, .sn-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: var(--cds-gap-xs) 0 0; }
+.sn-filters { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); align-items: end; }
+.sn-f { display: flex; flex-direction: column; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sn-f select { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-xs) var(--cds-pad-sm); min-width: 9rem; }
+.sn-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; background: var(--color-panel); }
+.sn-seg button { font: inherit; font-size: var(--cds-font-size-body); background: transparent; color: var(--color-fg-muted); border: 0; padding: var(--cds-pad-xs) var(--cds-pad-md); cursor: pointer; }
+.sn-seg button + button { border-left: 1px solid var(--color-border-line); }
+.sn-seg button[aria-pressed="true"] { background: var(--color-bg); color: var(--color-fg); font-weight: 600; }
+.sn-reset { font: inherit; font-size: var(--cds-font-size-caption); background: none; border: 0; color: var(--color-fg-muted); text-decoration: underline; cursor: pointer; padding: var(--cds-pad-xs) 0; }
+.sn-alert { border: 1px solid var(--color-border-line); border-left: 3px solid var(--color-warn); background: var(--color-panel); border-radius: var(--cds-radius); padding: var(--cds-pad-sm) var(--cds-pad-md); font-size: var(--cds-font-size-body); margin: 0; }
+.sn-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+.sn-card, .sn-panel { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+.sn-k-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sn-k-val { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.2; margin: var(--cds-gap-xs) 0; }
+.sn-k-delta, .sn-k-goal { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sn-k-goal { margin-top: var(--cds-gap-xs); }
+.sn-good { color: var(--color-ok); font-weight: 600; }
+.sn-bad { color: var(--color-bad); font-weight: 600; }
+.sn-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: var(--cds-gap-md); }
+.sn-panel h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.sn-panel .sn-note { margin: var(--cds-gap-xs) 0 var(--cds-gap-md); }
+.sn-chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); margin-bottom: var(--cds-gap-sm); }
+.sn-chips button { font: inherit; font-size: var(--cds-font-size-caption); border: 1px solid var(--color-border-line); background: transparent; color: var(--color-fg-muted); border-radius: 999px; padding: 2px var(--cds-pad-sm); cursor: pointer; }
+.sn-chips button[aria-pressed="true"] { color: var(--color-fg); border-color: var(--color-fg-muted); background: var(--color-bg); }
+.sn-chart { position: relative; min-height: 260px; }
+.sn-chart svg { display: block; overflow: visible; }
+.sn-chart text { font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-caption); fill: var(--color-fg-muted); }
+.sn-chart .sn-strong { fill: var(--color-fg); font-weight: 600; }
+.sn-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-bottom: var(--cds-gap-sm); }
+.sn-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.sn-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; }
+.sn-tip .h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+.sn-tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.sn-fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.sn-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.sn-tablewrap { max-height: 32rem; overflow: auto; }
+.sn table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); }
+.sn th { position: sticky; top: 0; background: var(--color-panel); text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border-line); padding: 0; }
+.sn th button { font: inherit; color: inherit; background: none; border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; width: 100%; text-align: inherit; }
+.sn th:first-child, .sn td:first-child { text-align: left; }
+.sn td { white-space: nowrap; text-align: right; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.sn tbody tr { cursor: pointer; }
+.sn tbody tr:hover { background: var(--color-bg); }
+.sn tr.sn-sel td { font-weight: 600; background: var(--color-bg); }
+.sn tr.sn-group td { color: var(--color-fg-muted); font-style: italic; }
+[data-dash-source-state=empty] { color: transparent; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+
+:root { color-scheme: light dark;
+  --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --font-anthropic-serif: Georgia, "Times New Roman", serif;
+  --color-fg: #1f1e1c; --color-fg-muted: #6b6862; --color-bg: #f5f4ef; --color-panel: #ffffff; --color-border-line: #e3e0d8;
+  --color-ok: #2e7d32; --color-warn: #b26a00; --color-bad: #c62828;
+  --cds-font-size-caption: 12px; --cds-font-size-body: 14px; --cds-font-size-heading: 16px; --cds-font-size-title: 28px; --cds-font-weight-medium: 500;
+  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 12px; --cds-gap-lg: 24px; --cds-gap-xl: 32px;
+  --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 16px; --cds-radius: 10px;
+  --cds-chart-grid: #ebe8e1; --cds-chart-axis: #b9b5ab; --cds-chart-reference: #8a867d; --cds-chart-muted: #c9c5bb;
+  --cds-surface-popover: #ffffff; --cds-border: #e3e0d8; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.12); --cds-text-secondary: #6b6862; --cds-dur-slow: .3s;
+  --c1: #2f6fdb; --c2: #e07b39; --c3: #8e5bd1; --c4: #2a9d8f; --c5: #d1495b; }
+@media (prefers-color-scheme: dark) { :root {
+  --color-fg: #ecebe6; --color-fg-muted: #a8a59d; --color-bg: #1c1b19; --color-panel: #262522; --color-border-line: #3a3833;
+  --color-ok: #66bb6a; --color-warn: #ffb74d; --color-bad: #ef5350;
+  --cds-chart-grid: #33312d; --cds-chart-axis: #5a5750; --cds-chart-reference: #8f8b82; --cds-chart-muted: #55524b;
+  --cds-surface-popover: #2e2d29; --cds-border: #3a3833; --cds-text-secondary: #a8a59d;
+  --c1: #6b9cf0; --c2: #f0a06a; --c3: #b18ae6; --c4: #5cc2b5; --c5: #e8798a; } }
+body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); }
+.sn-page { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+.dash-skeleton { min-height: 260px; border-radius: var(--cds-radius); background: linear-gradient(90deg, var(--cds-chart-grid), transparent, var(--cds-chart-grid)); background-size: 200% 100%; animation: sn-sk 1.4s linear infinite; }
+@keyframes sn-sk { to { background-position: -200% 0; } }
+.sn-k-val.dash-skeleton, .sn-take .dash-skeleton { min-height: 0; }
+</style>
+
+<div class="sn-page"><div class="sn">
+  <header class="sn-head" id="inicio">
+    <h1>Calidad de atención · Proyecto SINERGIA</h1>
+    <p class="sn-take" id="resumen"><span class="sn-pop-name">—</span> cumplió la 1ª agenda en <b data-field="cumple">—</b> de las OS ejecutadas (<b data-field="d_cumple">—</b> frente al resto de Central; meta ≥95%). SLA plan: <b data-field="sla_plan">—</b> · horas promedio a ejecución: <b data-field="horas">—</b>.</p>
+    <p class="sn-take" id="resumen-vacio" hidden><span class="sn-pop-name">—</span> no tiene OS creadas en este período.</p>
+    <p class="sn-sub">Soporte, Instalación, Comercial y Negociación · Dpto. Central · OS creadas hasta el <span class="sn-corte" data-field="datos_hasta">—</span> · <span class="sn-corte" data-field="os_total">—</span> OS cargadas</p>
+  </header>
+
+  <div class="sn-filters" id="filtros">
+    <div class="sn-f">Período
+      <div class="sn-seg" role="group" aria-label="Período">
+        <button type="button" data-periodo="base">Línea base</button>
+        <button type="button" data-periodo="piloto">Piloto</button>
+        <button type="button" data-periodo="todo">Todo</button>
+      </div>
+    </div>
+    <label class="sn-f">POP<select class="sn-pop"></select></label>
+    <label class="sn-f">Servicio<select class="sn-serv"><option value="Todos">Todos</option><option>Soporte</option><option>Instalación</option><option>Comercial</option><option>Negociación</option></select></label>
+    <label class="sn-f">Dealer<select class="sn-dealer"></select></label>
+    <button type="button" class="sn-reset">Restablecer</button>
+  </div>
+
+  <p class="sn-alert" id="aviso-piloto" hidden>El piloto empieza el 19 oct 2026 y los datos cargados llegan hasta el <b class="sn-corte" data-field="datos_hasta">—</b>. Cuando se suba un datos.csv más reciente, este período se completa solo.</p>
+
+  <section id="indicadores">
+    <p class="sn-period" id="periodo-label"></p>
+    <div class="sn-cards">
+      <div class="sn-card" id="k-os">
+        <div class="sn-k-label">OS creadas</div>
+        <div class="sn-k-val" data-field="os">—</div>
+        <div class="sn-k-delta"><span data-field="ejecutadas">—</span> ejecutadas</div>
+        <div class="sn-k-goal">Hoy: <span data-field="abiertas">—</span> abiertas · <span data-field="vencidas">—</span> vencidas</div>
+      </div>
+      <div class="sn-card" id="k-cumple">
+        <div class="sn-k-label">% Cumple 1ª agenda</div>
+        <div class="sn-k-val" data-field="cumple">—</div>
+        <div class="sn-k-delta"><span class="sn-d" data-field="d_cumple">—</span> vs resto Central</div>
+        <div class="sn-k-goal">Meta ≥95%</div>
+      </div>
+      <div class="sn-card" id="k-reag">
+        <div class="sn-k-label">% Reagendadas</div>
+        <div class="sn-k-val" data-field="reag">—</div>
+        <div class="sn-k-delta"><span class="sn-d" data-field="d_reag">—</span> vs resto Central</div>
+        <div class="sn-k-goal">Bajar</div>
+      </div>
+      <div class="sn-card" id="k-reag-op">
+        <div class="sn-k-label">% Reagenda operativa</div>
+        <div class="sn-k-val" data-field="reag_op">—</div>
+        <div class="sn-k-delta"><span class="sn-d" data-field="d_reag_op">—</span> vs resto Central</div>
+        <div class="sn-k-goal">Reducir ≥20% vs línea base (TAP)</div>
+      </div>
+      <div class="sn-card" id="k-sla">
+        <div class="sn-k-label">% SLA plan</div>
+        <div class="sn-k-val" data-field="sla_plan">—</div>
+        <div class="sn-k-delta"><span class="sn-d" data-field="d_sla_plan">—</span> vs resto Central</div>
+        <div class="sn-k-goal">Soporte ≤24 h · resto ≤48 h</div>
+      </div>
+      <div class="sn-card" id="k-horas">
+        <div class="sn-k-label">Horas prom. a ejecución</div>
+        <div class="sn-k-val" data-field="horas">—</div>
+        <div class="sn-k-delta"><span class="sn-d" data-field="d_horas">—</span> vs resto Central</div>
+        <div class="sn-k-goal">Bajar</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sn-grid">
+    <div class="sn-panel" id="evolucion">
+      <h2>Evolución semanal</h2>
+      <p class="sn-note">Por semana de creación (lunes). Sombreado: línea base. Las semanas recientes aún tienen OS abiertas.</p>
+      <div class="sn-chips sn-metric" role="group" aria-label="Indicador"></div>
+      <div class="sn-chart" id="chart-evolucion"></div>
+    </div>
+    <div class="sn-panel" id="volumen">
+      <h2>OS creadas por semana</h2>
+      <p class="sn-note">Volumen del POP seleccionado, por semana de creación.</p>
+      <div class="sn-chart" id="chart-volumen"></div>
+    </div>
+  </section>
+
+  <section class="sn-grid">
+    <div class="sn-panel" id="motivos">
+      <h2>Motivos de reagendamiento</h2>
+      <p class="sn-note">% de OS creadas con cada motivo. Barra fina: resto de Central. “Operativo” es lo atribuible a NEO / prestador.</p>
+      <div class="sn-legend sn-mot-legend"></div>
+      <div class="sn-chart" id="chart-motivos"></div>
+    </div>
+    <div class="sn-panel" id="ranking">
+      <h2>Ranking de POP</h2>
+      <p class="sn-note">Indicador elegido en Evolución, en el período y filtros actuales. Línea: total Central. Clic en un POP para seleccionarlo.</p>
+      <div class="sn-chart" id="chart-ranking"></div>
+    </div>
+  </section>
+
+  <section class="sn-panel" id="comparacion">
+    <h2>Comparación por POP</h2>
+    <p class="sn-note">Mismo período y filtros. “Resto Central (sin ASU021)” es el grupo de control del piloto. Abiertas y vencidas son a la fecha de corte.</p>
+    <div class="sn-tablewrap">
+      <table class="sn-table">
+        <thead><tr>
+          <th data-field="pop"><button type="button" data-sort="pop">POP</button></th>
+          <th data-field="os"><button type="button" data-sort="os">OS</button></th>
+          <th data-field="cumple"><button type="button" data-sort="cumple">% Cumple 1ª ag.</button></th>
+          <th data-field="d_cumple"><button type="button" data-sort="d_cumple">Δ Cumple vs resto</button></th>
+          <th data-field="reag"><button type="button" data-sort="reag">% Reagend.</button></th>
+          <th data-field="reag_op"><button type="button" data-sort="reag_op">% Reag. oper.</button></th>
+          <th data-field="sla_plan"><button type="button" data-sort="sla_plan">% SLA plan</button></th>
+          <th data-field="sla_zoy"><button type="button" data-sort="sla_zoy">% SLA ZOY</button></th>
+          <th data-field="horas"><button type="button" data-sort="horas">Horas prom.</button></th>
+          <th data-field="abiertas"><button type="button" data-sort="abiertas">Abiertas</button></th>
+          <th data-field="vencidas"><button type="button" data-sort="vencidas">Vencidas</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sn-note" id="definiciones">
+    <p><b>Definiciones</b> (todas por fecha de creación de la OS; Soporte, Instalación, Comercial y Negociación). % Cumple 1ª agenda = OS ejecutadas sin reagendamiento ÷ OS ejecutadas. % Reagendadas = OS con motivo de reagenda ÷ OS creadas. % Reagenda operativa = reagendas por Demora de contratista, Técnico, Infra o Reag. rápido ÷ OS creadas. % SLA plan = ejecutadas dentro de 24 h (soporte) o 48 h (instalación, comercial y negociación) ÷ ejecutadas. % SLA ZOY = ejecutadas antes del Prazo Data ÷ ejecutadas. Línea base: 1 jul – 18 oct 2026 · Piloto: desde 19 oct 2026.</p>
+  </section>
+</div>
+
+</div>
+<script>
+/* Pequeño motor de datos: lee datos.csv y calcula los indicadores en el navegador. */
+(function () {
+  const DEFAULTS = { periodo: 'base', servicio: 'Todos', dealer: 'Todos', pop: 'ASU021', metrica: 'cumple' };
+  const calcs = {}, cache = {}, subs = [];
+  let rows = null, status = 'loading', params = { ...DEFAULTS };
+  try { const h = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(DEFAULTS)) if (h.get(k)) params[k] = h.get(k); } catch (e) {}
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const run = () => { const p = new URLSearchParams(); for (const [k, v] of Object.entries(params)) if (v !== DEFAULTS[k]) p.set(k, v);
+    history.replaceState(null, '', p.toString() ? '#' + p : location.pathname + location.search); subs.forEach((f) => f()); };
+  window.dash = {
+    colors: ['--c1', '--c2', '--c3', '--c4', '--c5', '--c1', '--c2', '--c3'].map((v) => `var(${v})`),
+    calc(id, o) { calcs[id] = o; },
+    data(id) {
+      if (status !== 'ok') return { status, data: [] };
+      if (id === 'os') return { status, data: rows };
+      if (calcs[id]) { if (!cache[id]) cache[id] = calcs[id].fn(...calcs[id].inputs.map((i) => window.dash.data(i).data)); return { status, data: cache[id] }; }
+      return { status: 'missing', data: [] };
+    },
+    onData(fn) { subs.push(fn); fn(); },
+    params() { return { ...params }; },
+    setParams(p) { Object.assign(params, p); run(); },
+    resetParams() { params = { ...DEFAULTS }; run(); },
+  };
+  fetch('datos.csv?v=' + Date.now()).then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then((t) => { rows = d3.csvParse(t); status = 'ok'; run(); })
+    .catch(() => { status = 'error'; run(); });
+  let w = 0; addEventListener('resize', () => { if (Math.abs(innerWidth - w) > 20) { w = innerWidth; subs.forEach((f) => f()); } });
+})();
+</script>
+<script>
+const L = d3.formatLocale({ decimal: ',', thousands: '.', grouping: [3], currency: ['$', ''] });
+const T = d3.timeFormatLocale({ dateTime: '%x %X', date: '%d/%m/%Y', time: '%H:%M', periods: ['', ''],
+  days: ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'], shortDays: ['dom','lun','mar','mié','jue','vie','sáb'],
+  months: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+  shortMonths: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'] });
+const fInt = (v) => v == null ? '—' : L.format(',d')(v);
+const fPct = (v) => v == null ? '—' : L.format('.1%')(v);
+const fH = (v) => v == null ? '—' : L.format('.1f')(v) + ' h';
+const sign = (v) => v > 0 ? '+' : v < 0 ? '−' : '±';
+const r1 = (v) => Math.round(v * 10) / 10;
+const fPP = (v) => v == null ? '—' : sign(r1(v * 100)) + L.format('.1f')(Math.abs(r1(v * 100))) + ' pp';
+const fDH = (v) => v == null ? '—' : sign(r1(v)) + L.format('.1f')(Math.abs(r1(v))) + ' h';
+const fDay = T.utcFormat('%-d %b');
+const fMon = T.utcFormat('%b');
+const day = (s) => new Date(String(s).slice(0, 10) + 'T00:00:00Z');
+
+const BASE_INI = day('2026-07-01'), BASE_FIN = day('2026-10-19'), PILOTO = day('2026-10-19');
+const METAS = { cumple: 0.95 };
+const M = {
+  cumple: { label: '% Cumple 1ª agenda', short: 'Cumple 1ª ag.', up: true, f: fPct, d: fPP, pct: true },
+  reag: { label: '% Reagendadas', short: 'Reagendadas', up: false, f: fPct, d: fPP, pct: true },
+  reag_op: { label: '% Reagenda operativa', short: 'Reag. operativa', up: false, f: fPct, d: fPP, pct: true },
+  sla_plan: { label: '% SLA plan', short: 'SLA plan', up: true, f: fPct, d: fPP, pct: true },
+  sla_zoy: { label: '% SLA ZOY', short: 'SLA ZOY', up: true, f: fPct, d: fPP, pct: true },
+  horas: { label: 'Horas prom. a ejecución', short: 'Horas prom.', up: false, f: fH, d: fDH, pct: false },
+};
+const ORDER = ['ASU021','ASU011','ASU031','ASUX11','LUQ021','LUQ011','SLO021','SLO011','LBM011','MRA011','YPN011','EMB011','FDM011','SIN POP','OTROS POP','Resto Central','Total Central'];
+const GROUPS = ['Resto Central', 'Total Central'];
+const popLabel = (p) => p === 'Resto Central' ? 'Resto Central (sin ASU021)' : p;
+const rank = (p) => { const i = ORDER.indexOf(p); return i < 0 ? 99 : i; };
+const PERIODOS = { base: 'Línea base · 1 jul – 18 oct 2026', piloto: 'Piloto · desde 19 oct 2026', todo: 'Todo · desde 1 abr 2026' };
+const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
+const keyOf = (...a) => a.join('|');
+
+/* ---------- Calculations from the OS rows ---------- */
+dash.calc('kpis', {
+  inputs: ['os'],
+  title: 'Indicadores por POP',
+  description: 'Indicadores de cada POP (más Resto Central sin ASU021 y Total Central) por servicio, dealer y período, con la diferencia frente al Resto Central.',
+  fn: (os) => {
+    const periodos = (d) => ['todo', ...(d >= '2026-07-01' && d <= '2026-10-18' ? ['base'] : []), ...(d >= '2026-10-19' ? ['piloto'] : [])];
+    const uniq = (k) => [...new Set(os.map((r) => r[k]))].sort();
+    const servs = ['Todos', 'Soporte', 'Instalación', 'Comercial', 'Negociación'], dealers = ['Todos', ...uniq('dealer')], pers = ['base', 'piloto', 'todo'];
+    const pops = [...uniq('pop'), 'Resto Central', 'Total Central'];
+    const acc = new Map();
+    for (const s of servs) for (const d of dealers) for (const p of pers) for (const g of pops)
+      acc.set([s, d, p, g].join('|'), { servicio: s, dealer: d, periodo: p, pop: g, os: 0, ej: 0, cumple: 0, reag: 0, reag_op: 0, sla_plan: 0, sla_zoy: 0, hsum: 0, abiertas: 0, vencidas: 0 });
+    for (const r of os) {
+      const ps = periodos(r.creada);
+      const gs = [r.pop, 'Total Central', ...(r.pop !== 'ASU021' ? ['Resto Central'] : [])];
+      for (const s of ['Todos', r.servicio]) for (const d of ['Todos', r.dealer]) for (const g of gs) for (const p of pers) {
+        const a = acc.get([s, d, p, g].join('|'));
+        if (!a) continue;
+        a.abiertas += +r.abierta; a.vencidas += +r.vencida;
+        if (!ps.includes(p)) continue;
+        const e = +r.ejecutada;
+        a.os += +r.os; a.ej += e; a.cumple += +r.cumple_1a; a.reag += +r.reagendada; a.reag_op += +r.reag_operativa;
+        a.sla_plan += +r.sla_plan; a.sla_zoy += +r.sla_zoy; a.hsum += +r.horas_sum;
+      }
+    }
+    const out = [...acc.values()].map((a) => ({
+      key: [a.servicio, a.dealer, a.periodo, a.pop].join('|'), servicio: a.servicio, dealer: a.dealer, periodo: a.periodo, pop: a.pop,
+      os: a.os, ejecutadas: a.ej,
+      cumple: a.ej ? a.cumple / a.ej : null, reag: a.os ? a.reag / a.os : null, reag_op: a.os ? a.reag_op / a.os : null,
+      sla_plan: a.ej ? a.sla_plan / a.ej : null, sla_zoy: a.ej ? a.sla_zoy / a.ej : null, horas: a.ej ? a.hsum / a.ej : null,
+      abiertas: a.abiertas, vencidas: a.vencidas,
+    }));
+    const byKey = new Map(out.map((r) => [r.key, r]));
+    for (const r of out) {
+      const c = byKey.get([r.servicio, r.dealer, r.periodo, 'Resto Central'].join('|'));
+      for (const m of ['cumple', 'reag', 'reag_op', 'sla_plan', 'sla_zoy', 'horas'])
+        r['d_' + m] = r[m] != null && c[m] != null ? r[m] - c[m] : null;
+    }
+    return out;
+  },
+});
+
+dash.calc('semanal', {
+  inputs: ['os'],
+  title: 'Indicadores por semana',
+  description: 'Los mismos indicadores por semana de creación (lunes), por servicio, dealer y POP (más Resto Central y Total Central).',
+  fn: (os) => {
+    const acc = new Map();
+    for (const r of os) {
+      const gs = [r.pop, 'Total Central', ...(r.pop !== 'ASU021' ? ['Resto Central'] : [])];
+      for (const s of ['Todos', r.servicio]) for (const d of ['Todos', r.dealer]) for (const g of gs) {
+        const k = [s, d, g, r.semana].join('|');
+        const a = acc.get(k) || acc.set(k, { key: k, servicio: s, dealer: d, pop: g, semana: r.semana, os: 0, ej: 0, c: 0, rg: 0, ro: 0, sp: 0, sz: 0, h: 0 }).get(k);
+        const e = +r.ejecutada;
+        a.os += +r.os; a.ej += e; a.c += +r.cumple_1a; a.rg += +r.reagendada; a.ro += +r.reag_operativa; a.sp += +r.sla_plan; a.sz += +r.sla_zoy; a.h += +r.horas_sum;
+      }
+    }
+    return [...acc.values()].map((a) => ({
+      key: a.key, servicio: a.servicio, dealer: a.dealer, pop: a.pop, semana: a.semana, os: a.os, ejecutadas: a.ej,
+      cumple: a.ej ? a.c / a.ej : null, reag: a.os ? a.rg / a.os : null, reag_op: a.os ? a.ro / a.os : null,
+      sla_plan: a.ej ? a.sp / a.ej : null, sla_zoy: a.ej ? a.sz / a.ej : null, horas: a.ej ? a.h / a.ej : null,
+    }));
+  },
+});
+
+dash.calc('motivos', {
+  inputs: ['os'],
+  title: 'Motivos de reagenda',
+  description: 'OS reagendadas por motivo y su % sobre las OS creadas, por servicio, dealer, período y POP.',
+  fn: (os) => {
+    const clase = { 'CLIENTE': 'Cliente', 'LLUVIA': 'Fuerza mayor', 'INFRA': 'Operativo', 'TECNICO': 'Operativo', 'DEMORA DE CONTRATISTA': 'Operativo', 'REAG. RAPIDO': 'Operativo' };
+    const periodos = (d) => ['todo', ...(d >= '2026-07-01' && d <= '2026-10-18' ? ['base'] : []), ...(d >= '2026-10-19' ? ['piloto'] : [])];
+    const tot = new Map(), cnt = new Map();
+    for (const r of os) {
+      const gs = [r.pop, 'Total Central', ...(r.pop !== 'ASU021' ? ['Resto Central'] : [])];
+      for (const s of ['Todos', r.servicio]) for (const d of ['Todos', r.dealer]) for (const p of periodos(r.creada)) for (const g of gs) {
+        const k = [s, d, p, g].join('|');
+        tot.set(k, (tot.get(k) || 0) + +r.os);
+        if (clase[r.motivo]) cnt.set(k + '|' + r.motivo, (cnt.get(k + '|' + r.motivo) || 0) + +r.os);
+      }
+    }
+    const out = [];
+    for (const [k, n] of tot) for (const m of Object.keys(clase)) {
+      const [servicio, dealer, periodo, pop] = k.split('|');
+      const c = cnt.get(k + '|' + m) || 0;
+      out.push({ key: k + '|' + m, servicio, dealer, periodo, pop, motivo: m, clasificacion: clase[m], os_reagendadas: c, pct: c / n });
+    }
+    return out;
+  },
+});
+
+dash.calc('corte', {
+  inputs: ['os'],
+  title: 'Fecha de corte',
+  description: 'Última fecha de creación de OS en el archivo cargado y total de OS.',
+  fn: (os) => [{ datos_hasta: os.reduce((m, r) => (r.creada > m ? r.creada : m), ''), os_total: os.reduce((n, r) => n + +r.os, 0) }],
+});
+
+/* ---------- Helpers ---------- */
+const $ = (s) => document.querySelector(s);
+const prm = () => ({ periodo: 'base', servicio: 'Todos', dealer: 'Todos', pop: 'ASU021', metrica: 'cumple', ...dash.params() });
+const ctrlOf = (pop) => (pop === 'Resto Central' ? 'Total Central' : 'Resto Central');
+
+function boxState(box, id) {
+  const d = dash.data(id);
+  if (d.status === 'ok') { box.classList.remove('dash-skeleton'); return d.data; }
+  box.replaceChildren();
+  if (d.status === 'error' || d.status === 'connect' || d.status === 'declined' || d.status === 'missing') {
+    box.classList.remove('dash-skeleton');
+    const f = document.createElement('div'); f.className = 'sn-fail'; f.textContent = 'No se pudieron cargar los datos'; box.append(f);
+  } else box.classList.add('dash-skeleton');
+  return null;
+}
+function textW(svg, strs, cls) {
+  const t = svg.append('text').attr('class', cls || null);
+  let w = 0; for (const s of strs) { t.text(s); w = Math.max(w, t.node().getComputedTextLength()); }
+  t.remove(); return w;
+}
+function tipFor(box) {
+  const tip = document.createElement('div'); tip.className = 'sn-tip'; tip.hidden = true; box.append(tip);
+  return {
+    show(x, y, head, lines) {
+      tip.replaceChildren();
+      const h = document.createElement('div'); h.className = 'h'; h.textContent = head; tip.append(h);
+      for (const l of lines) {
+        const r = document.createElement('div');
+        if (l.color) { const i = document.createElement('i'); i.style.background = l.color; r.append(i); }
+        r.append(document.createTextNode(l.text)); tip.append(r);
+      }
+      tip.hidden = false;
+      const W = box.clientWidth, tw = tip.offsetWidth;
+      tip.style.left = Math.max(0, Math.min(x + 12, W - tw)) + 'px';
+      tip.style.top = Math.max(0, y - tip.offsetHeight - 8) + 'px';
+    },
+    hide() { tip.hidden = true; },
+  };
+}
+function cleanAxis(g) { g.attr('font-size', null).attr('font-family', null); g.select('.domain').remove(); g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'); }
+
+/* ---------- Controls ---------- */
+const selPop = $('.sn-pop'), selServ = $('.sn-serv'), selDealer = $('.sn-dealer');
+document.querySelectorAll('[data-periodo]').forEach((b) => b.addEventListener('click', () => dash.setParams({ periodo: b.dataset.periodo })));
+selPop.addEventListener('change', () => dash.setParams({ pop: selPop.value }));
+selServ.addEventListener('change', () => dash.setParams({ servicio: selServ.value }));
+selDealer.addEventListener('change', () => dash.setParams({ dealer: selDealer.value }));
+$('.sn-reset').addEventListener('click', () => dash.resetParams());
+const chipBox = $('.sn-metric');
+for (const [k, m] of Object.entries(M)) {
+  const b = document.createElement('button'); b.type = 'button'; b.dataset.m = k; b.textContent = m.short;
+  b.addEventListener('click', () => dash.setParams({ metrica: k })); chipBox.append(b);
+}
+let sortKey = null, sortDir = 1;
+document.querySelectorAll('.sn-table th button').forEach((b) => b.addEventListener('click', () => {
+  const k = b.dataset.sort; if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = k === 'pop' ? 1 : -1; } draw();
+}));
+$('.sn-table tbody').addEventListener('click', (e) => { const tr = e.target.closest('tr[data-pop]'); if (tr) dash.setParams({ pop: tr.dataset.pop }); });
+
+function fillSelect(sel, values, current, label) {
+  const want = values.join('\u0001');
+  if (sel.dataset.opts !== want) { sel.replaceChildren(...values.map((v) => new Option(label ? label(v) : v, v))); sel.dataset.opts = want; }
+  sel.value = current;
+}
+
+/* ---------- Charts ---------- */
+function drawTrend(rowsAll, P) {
+  const box = $('#chart-evolucion');
+  const rows = boxState(box, 'semanal'); if (!rows) return;
+  box.replaceChildren();
+  const m = M[P.metrica] || M.cumple, mk = P.metrica in M ? P.metrica : 'cumple';
+  const ctrl = ctrlOf(P.pop);
+  const pick = (g) => rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.pop === g)
+    .map((r) => ({ x: day(r.semana), v: r[mk], n: r.os })).sort((a, b) => a.x - b.x);
+  const series = [
+    { name: popLabel(ctrl), pts: pick(ctrl), color: 'var(--cds-chart-muted)', w: 1.5 },
+    { name: popLabel(P.pop), pts: pick(P.pop), color: dash.colors[0], w: 2.5 },
+  ];
+  const all = series.flatMap((s) => s.pts);
+  if (!all.length) { const p = document.createElement('div'); p.className = 'sn-fail'; p.textContent = 'Sin OS para esta selección'; box.append(p); return; }
+  const W = Math.max(280, box.clientWidth), H = 260;
+  const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+  const xMax = d3.max([d3.max(all, (d) => d.x), PILOTO]);
+  const vals = all.map((d) => d.v).filter((v) => v != null);
+  const yMax = m.pct ? 1 : (d3.max(vals) || 1) * 1.1;
+  const y0 = d3.scaleLinear([0, yMax], [H - 24, 12]).nice();
+  const yt = y0.ticks(5);
+  const ml = textW(svg, yt.map((t) => (m.pct ? L.format('.0%')(t) : L.format(',d')(t)))) + 10;
+  const ends = series.map((s) => { const last = [...s.pts].reverse().find((p) => p.v != null); return { s, last, text: `${s.name === 'Resto Central (sin ASU021)' ? 'Resto' : s.name} ${last ? m.f(last.v) : ''}` }; });
+  const mr = Math.min(W * 0.35, textW(svg, ends.map((e) => e.text), 'sn-strong') + 12);
+  const x = d3.scaleUtc([d3.min(all, (d) => d.x), xMax], [ml, W - mr]);
+  const y = y0;
+  // base shading & pilot marker
+  svg.append('rect').attr('x', x(Math.max(BASE_INI, x.domain()[0]))).attr('y', 12).attr('height', H - 36)
+    .attr('width', Math.max(0, x(Math.min(BASE_FIN, xMax)) - x(Math.max(BASE_INI, x.domain()[0])))).attr('fill', 'var(--cds-chart-grid)').attr('opacity', 0.45);
+  svg.append('g').attr('transform', `translate(${ml},0)`).call(d3.axisLeft(y).tickValues(yt).tickSize(-(W - ml - mr)).tickFormat((t) => (m.pct ? L.format('.0%')(t) : L.format(',d')(t)))).call(cleanAxis);
+  const nT = Math.max(2, Math.floor((W - ml - mr) / 55));
+  svg.append('g').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).ticks(Math.min(nT, 8)).tickFormat(fMon).tickSize(0).tickPadding(8)).call(cleanAxis);
+  svg.append('line').attr('x1', x(PILOTO)).attr('x2', x(PILOTO)).attr('y1', 12).attr('y2', H - 24).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+  svg.append('text').attr('x', x(PILOTO) - 4).attr('y', 22).attr('text-anchor', 'end').text('Piloto →');
+  if (METAS[mk] != null) {
+    svg.append('line').attr('x1', ml).attr('x2', W - mr).attr('y1', y(METAS[mk])).attr('y2', y(METAS[mk])).attr('stroke', 'var(--color-ok)').attr('stroke-dasharray', '5 4');
+    svg.append('text').attr('x', ml + 4).attr('y', y(METAS[mk]) - 5).text('Meta ' + L.format('.0%')(METAS[mk]));
+  }
+  const line = d3.line().defined((d) => d.v != null).x((d) => x(d.x)).y((d) => y(d.v));
+  for (const s of series)
+    svg.append('path').attr('d', line(s.pts)).attr('fill', 'none').attr('stroke', s.color).attr('stroke-width', s.w).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+  // end labels kept apart
+  const lab = ends.filter((e) => e.last).map((e) => ({ ...e, ly: y(e.last.v) }));
+  if (lab.length === 2 && Math.abs(lab[0].ly - lab[1].ly) < 14) { const mid = (lab[0].ly + lab[1].ly) / 2, up = lab[0].ly < lab[1].ly ? 0 : 1; lab[up].ly = mid - 7; lab[1 - up].ly = mid + 7; }
+  for (const e of lab) svg.append('text').attr('x', x(e.last.x) + 6).attr('y', e.ly + 4).attr('class', e.s.w > 2 ? 'sn-strong' : null).text(e.text);
+  // tooltip
+  const tip = tipFor(box);
+  const weeks = [...new Set(all.map((d) => +d.x))].sort((a, b) => a - b);
+  const dots = series.map((s) => svg.append('circle').attr('r', 4).attr('fill', s.color).attr('opacity', 0));
+  const rule = svg.append('line').attr('y1', 12).attr('y2', H - 24).attr('stroke', 'var(--cds-chart-axis)').attr('opacity', 0);
+  svg.append('rect').attr('x', ml).attr('y', 0).attr('width', W - ml - mr).attr('height', H).attr('fill', 'transparent')
+    .on('mousemove', (ev) => {
+      const [px] = d3.pointer(ev); const t = +x.invert(px);
+      const wk = weeks.reduce((a, b) => (Math.abs(b - t) < Math.abs(a - t) ? b : a));
+      rule.attr('x1', x(wk)).attr('x2', x(wk)).attr('opacity', 1);
+      const lines = series.slice().reverse().map((s, i) => {
+        const p = s.pts.find((q) => +q.x === wk);
+        const di = dots[series.length - 1 - i];
+        if (p && p.v != null) di.attr('cx', x(p.x)).attr('cy', y(p.v)).attr('opacity', 1); else di.attr('opacity', 0);
+        return { color: s.color, text: `${s.name}: ${p ? m.f(p.v) : '—'} (${p ? fInt(p.n) : 0} OS)` };
+      });
+      const r = box.getBoundingClientRect(), sc = r.width / W;
+      tip.show(x(wk) * sc, d3.pointer(ev, box)[1], 'Semana del ' + fDay(new Date(wk)), lines);
+    })
+    .on('mouseleave', () => { tip.hide(); rule.attr('opacity', 0); dots.forEach((d) => d.attr('opacity', 0)); });
+}
+
+function drawVolume(P) {
+  const box = $('#chart-volumen');
+  const rows = boxState(box, 'semanal'); if (!rows) return;
+  box.replaceChildren();
+  const pts = rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.pop === P.pop).map((r) => ({ x: day(r.semana), n: r.os, s: r.semana })).sort((a, b) => a.x - b.x);
+  if (!pts.length) { const p = document.createElement('div'); p.className = 'sn-fail'; p.textContent = 'Sin OS para esta selección'; box.append(p); return; }
+  const W = Math.max(280, box.clientWidth), H = 260;
+  const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+  const y = d3.scaleLinear([0, d3.max(pts, (d) => d.n)], [H - 24, 12]).nice();
+  const ml = textW(svg, y.ticks(4).map((t) => L.format(',d')(t))) + 10;
+  const x = d3.scaleBand(pts.map((d) => d.s), [ml, W - 4]).padding(0.25);
+  svg.append('g').attr('transform', `translate(${ml},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - ml - 4)).tickFormat(L.format(',d'))).call(cleanAxis);
+  const every = Math.max(1, Math.ceil(pts.length / Math.max(2, Math.floor((W - ml) / 60))));
+  svg.append('g').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).tickValues(pts.filter((d, i) => i % every === 0).map((d) => d.s)).tickFormat((s) => fDay(day(s))).tickSize(0).tickPadding(8)).call(cleanAxis);
+  const bw = Math.min(32, x.bandwidth());
+  const inBase = (d) => d.x >= BASE_INI && d.x < BASE_FIN;
+  const tip = tipFor(box);
+  svg.append('g').selectAll('rect').data(pts).join('rect')
+    .attr('x', (d) => x(d.s) + (x.bandwidth() - bw) / 2).attr('width', bw).attr('y', (d) => y(d.n)).attr('height', (d) => y(0) - y(d.n)).attr('rx', 4)
+    .attr('fill', (d) => (inBase(d) || d.x >= PILOTO ? dash.colors[0] : 'var(--cds-chart-muted)'))
+    .on('mousemove', function (ev, d) { d3.select(this).attr('opacity', 0.75); const [px, py] = d3.pointer(ev, box); tip.show(px, py, 'Semana del ' + fDay(d.x), [{ text: `${popLabel(P.pop)}: ${fInt(d.n)} OS` }]); })
+    .on('mouseleave', function () { d3.select(this).attr('opacity', 1); tip.hide(); });
+}
+
+function drawMotivos(P) {
+  const box = $('#chart-motivos');
+  const leg = $('.sn-mot-legend');
+  const colors = { 'Operativo': dash.colors[0], 'Cliente': dash.colors[2], 'Fuerza mayor': dash.colors[4] };
+  leg.replaceChildren(...Object.entries(colors).map(([k, c]) => { const s = document.createElement('span'); const i = document.createElement('i'); i.style.background = c; s.append(i, document.createTextNode(k)); return s; }));
+  const rows = boxState(box, 'motivos'); if (!rows) return;
+  box.replaceChildren();
+  const ctrl = ctrlOf(P.pop);
+  const at = (g) => rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.periodo === P.periodo && r.pop === g);
+  const sel = at(P.pop).sort((a, b) => b.pct - a.pct), cm = new Map(at(ctrl).map((r) => [r.motivo, r]));
+  if (!sel.length) { const p = document.createElement('div'); p.className = 'sn-fail'; p.textContent = 'Sin OS en este período'; box.append(p); return; }
+  const W = Math.max(280, box.clientWidth), rowH = 36, H = sel.length * rowH + 8;
+  box.style.minHeight = H + 'px';
+  const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+  const ml = textW(svg, sel.map((r) => r.motivo)) + 12, mr = textW(svg, ['100,0% (9.999)']) + 10;
+  const max = d3.max([...sel, ...cm.values()], (r) => r.pct) || 0.01;
+  const x = d3.scaleLinear([0, max], [ml, W - mr]);
+  const tip = tipFor(box);
+  sel.forEach((r, i) => {
+    const y0 = i * rowH + 4, c = cm.get(r.motivo);
+    svg.append('text').attr('x', ml - 8).attr('y', y0 + 14).attr('text-anchor', 'end').text(r.motivo);
+    svg.append('rect').attr('x', ml).attr('y', y0 + 4).attr('height', 14).attr('rx', 4).attr('width', Math.max(0, x(r.pct) - ml)).attr('fill', colors[r.clasificacion] || 'var(--cds-chart-muted)');
+    if (c) svg.append('rect').attr('x', ml).attr('y', y0 + 21).attr('height', 4).attr('rx', 2).attr('width', Math.max(0, x(c.pct) - ml)).attr('fill', 'var(--cds-chart-muted)');
+    svg.append('text').attr('x', x(r.pct) + 6).attr('y', y0 + 15).attr('class', 'sn-strong').text(`${fPct(r.pct)} (${fInt(r.os_reagendadas)})`);
+    svg.append('rect').attr('x', 0).attr('y', y0).attr('width', W).attr('height', rowH).attr('fill', 'transparent')
+      .on('mousemove', (ev) => { const [px, py] = d3.pointer(ev, box); tip.show(px, py, `${r.motivo} · ${r.clasificacion}`, [{ color: colors[r.clasificacion], text: `${popLabel(P.pop)}: ${fPct(r.pct)} (${fInt(r.os_reagendadas)} OS)` }, { color: 'var(--cds-chart-muted)', text: `${popLabel(ctrl)}: ${c ? fPct(c.pct) : '—'}` }]); })
+      .on('mouseleave', () => tip.hide());
+  });
+}
+
+function drawRanking(rows, P) {
+  const box = $('#chart-ranking');
+  if (!boxState(box, 'kpis')) return;
+  box.replaceChildren();
+  const mk = P.metrica in M ? P.metrica : 'cumple', m = M[mk];
+  const cur = rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.periodo === P.periodo);
+  const bars = cur.filter((r) => !GROUPS.includes(r.pop) && r[mk] != null).sort((a, b) => (m.up ? b[mk] - a[mk] : a[mk] - b[mk]));
+  const total = cur.find((r) => r.pop === 'Total Central');
+  if (!bars.length) { const p = document.createElement('div'); p.className = 'sn-fail'; p.textContent = 'Sin OS en este período'; box.append(p); return; }
+  const W = Math.max(280, box.clientWidth), rowH = 24, H = bars.length * rowH + 28;
+  box.style.minHeight = H + 'px';
+  const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+  const ml = textW(svg, bars.map((r) => r.pop)) + 12, mr = textW(svg, [m.f(d3.max(bars, (r) => r[mk]))], 'sn-strong') + 10;
+  const x = d3.scaleLinear([0, d3.max([...bars, total || {}], (r) => r[mk] || 0) * 1.02], [ml, W - mr]);
+  const tip = tipFor(box);
+  bars.forEach((r, i) => {
+    const y0 = i * rowH + 20, on = r.pop === P.pop;
+    const g = svg.append('g').style('cursor', 'pointer').on('click', () => dash.setParams({ pop: r.pop }))
+      .on('mousemove', (ev) => { const [px, py] = d3.pointer(ev, box); tip.show(px, py, r.pop, [{ text: `${m.label}: ${m.f(r[mk])}` }, { text: `${fInt(r.os)} OS creadas` }]); })
+      .on('mouseleave', () => tip.hide());
+    g.append('rect').attr('x', 0).attr('y', y0).attr('width', W).attr('height', rowH).attr('fill', 'transparent');
+    g.append('text').attr('x', ml - 8).attr('y', y0 + 15).attr('text-anchor', 'end').attr('class', on ? 'sn-strong' : null).text(r.pop);
+    g.append('rect').attr('x', ml).attr('y', y0 + 5).attr('height', 14).attr('rx', 4).attr('width', Math.max(0, x(r[mk]) - ml)).attr('fill', on ? dash.colors[0] : 'var(--cds-chart-muted)');
+    g.append('text').attr('x', x(r[mk]) + 6).attr('y', y0 + 16).attr('class', on ? 'sn-strong' : null).text(m.f(r[mk]));
+  });
+  if (total && total[mk] != null) {
+    svg.append('line').attr('x1', x(total[mk])).attr('x2', x(total[mk])).attr('y1', 16).attr('y2', H).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+    const lbl = 'Total Central ' + m.f(total[mk]);
+    const lw = textW(svg, [lbl]);
+    svg.append('text').attr('x', Math.min(Math.max(x(total[mk]), ml + lw / 2), W - lw / 2)).attr('y', 11).attr('text-anchor', 'middle').text(lbl);
+  }
+}
+
+function drawTable(rows, P) {
+  const tb = $('.sn-table tbody');
+  const cur = rows.filter((r) => r.servicio === P.servicio && r.dealer === P.dealer && r.periodo === P.periodo);
+  const sorted = cur.slice().sort((a, b) => {
+    if (!sortKey) return rank(a.pop) - rank(b.pop);
+    if (sortKey === 'pop') return sortDir * (rank(a.pop) - rank(b.pop));
+    const av = a[sortKey], bv = b[sortKey];
+    if (av == null) return 1; if (bv == null) return -1; return sortDir * (av - bv);
+  });
+  document.querySelectorAll('.sn-table th').forEach((th) => th.setAttribute('aria-sort', th.dataset.field === sortKey ? (sortDir > 0 ? 'ascending' : 'descending') : 'none'));
+  const cols = [['pop', (r) => popLabel(r.pop)], ['os', (r) => fInt(r.os)], ['cumple', (r) => fPct(r.cumple)], ['d_cumple', (r) => fPP(r.d_cumple)], ['reag', (r) => fPct(r.reag)], ['reag_op', (r) => fPct(r.reag_op)], ['sla_plan', (r) => fPct(r.sla_plan)], ['sla_zoy', (r) => fPct(r.sla_zoy)], ['horas', (r) => fH(r.horas)], ['abiertas', (r) => fInt(r.abiertas)], ['vencidas', (r) => fInt(r.vencidas)]];
+  tb.replaceChildren(...sorted.map((r) => {
+    const tr = document.createElement('tr');
+    tr.dataset.key = r.key; tr.dataset.pop = r.pop;
+    if (r.pop === P.pop) tr.classList.add('sn-sel');
+    if (GROUPS.includes(r.pop)) tr.classList.add('sn-group');
+    for (const [k, f] of cols) {
+      const td = document.createElement('td'); td.textContent = f(r);
+      if (k === 'd_cumple' && r.d_cumple != null && r.pop !== 'Resto Central') td.className = r.d_cumple > 0 ? 'sn-good' : r.d_cumple < 0 ? 'sn-bad' : '';
+      tr.append(td);
+    }
+    return tr;
+  }));
+}
+
+/* ---------- Main draw ---------- */
+function draw() {
+  const P = prm();
+  document.querySelectorAll('[data-periodo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === P.periodo)));
+  chipBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === P.metrica)));
+  selServ.value = P.servicio;
+  $('#periodo-label').textContent = PERIODOS[P.periodo] + ' · ' + P.servicio + ' · Dealer: ' + P.dealer;
+  document.querySelectorAll('.sn-pop-name').forEach((e) => (e.textContent = popLabel(P.pop)));
+
+  const k = dash.data('kpis');
+  const rows = k.status === 'ok' ? k.data : [];
+  if (rows.length) {
+    fillSelect(selPop, [...new Set(rows.map((r) => r.pop))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), P.pop, popLabel);
+    fillSelect(selDealer, ['Todos', ...[...new Set(rows.map((r) => r.dealer))].filter((d) => d !== 'Todos').sort()], P.dealer);
+  }
+  const key = keyOf(P.servicio, P.dealer, P.periodo, P.pop);
+  const row = rows.find((r) => r.key === key);
+  document.querySelectorAll('#indicadores [data-field], #resumen [data-field]').forEach((el) => {
+    el.dataset.where = 'key=' + enc(key);
+    const f = el.dataset.field, v = row ? row[f] : null;
+    const base = f.replace(/^d_/, '');
+    el.textContent = !row ? '—' : f === 'os' || f === 'ejecutadas' || f === 'abiertas' || f === 'vencidas' ? fInt(v) : f.startsWith('d_') ? M[base].d(v) : M[f].f(v);
+    el.classList.remove('sn-good', 'sn-bad');
+    if (f.startsWith('d_') && v != null && v !== 0 && P.pop !== 'Resto Central') el.classList.add((v > 0) === M[base].up ? 'sn-good' : 'sn-bad');
+  });
+  const empty = row && row.os === 0;
+  $('#resumen').hidden = !!empty; $('#resumen-vacio').hidden = !empty;
+  $('#aviso-piloto').hidden = !(P.periodo === 'piloto' && empty);
+
+  const c = dash.data('corte');
+  const cr = c.status === 'ok' && c.data[0];
+  document.querySelectorAll('.sn-corte').forEach((el) => {
+    const f = el.dataset.field;
+    el.textContent = !cr ? '—' : f === 'datos_hasta' ? T.utcFormat('%-d %b %Y')(day(cr.datos_hasta)) : fInt(cr.os_total);
+  });
+
+  drawTrend(rows, P);
+  drawVolume(P);
+  drawMotivos(P);
+  drawRanking(rows, P);
+  drawTable(rows, P);
+}
+dash.onData(draw);
+</script>
+
+</body></html>
