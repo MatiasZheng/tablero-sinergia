@@ -4,109 +4,119 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 :root { color-scheme: dark;
-  --sans: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; --serif: var(--sans);
+  --sans: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   --fg: #ffffff; --muted: #b4b9c4; --bg: #1f2227; --panel: #2a2e35; --line: #3b4049;
   --ok: #4cd07d; --warn: #f2c14e; --bad: #ff6b6b;
-  --grid: #363b44; --axis: #5c6370; --ref: #9aa1ad; --mutedbar: #6b7280; --shade: rgba(255,255,255,.05);
+  --grid: #363b44; --axis: #5c6370; --ref: #9aa1ad; --mutedbar: #6b7280; --shade: rgba(255,255,255,.06); --sel: rgba(61,142,232,.16);
   --pop: #2f343c; --shadow: 0 6px 18px rgba(0,0,0,.45);
-  --c1: #3d8ee8; --c2: #e0a82e; --c3: #7b4fd6; --c4: #2fa84f; --c5: #d9534f;
+  --c1: #3d8ee8;
   --z-indigo: #3a2db8; --z-red: #d0504c; --z-blue: #2f86e0; --z-gold: #d39c22; --z-green: #2c9a4a; --z-purple: #6a3fc8;
-  --fs-cap: 12px; --fs-body: 14px; --fs-h: 15px; --fs-title: 30px; --r: 6px; }
+  --fs-cap: 12px; --fs-body: 14px; --fs-h: 15px; --r: 6px; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: var(--fs-body); }
-.pg { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; display: flex; flex-direction: column; gap: 24px; font-variant-numeric: tabular-nums; }
-.hero { background: linear-gradient(135deg, #4b3fd8 0%, #5a2fc0 60%, #4a2aa8 100%); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
-.hero .sub, .hero .f { color: #e4e0ff; }
+.pg { max-width: 1320px; margin: 0 auto; padding: 16px 16px 48px; display: flex; flex-direction: column; gap: 18px; font-variant-numeric: tabular-nums; }
+.hero { background: linear-gradient(135deg, #4b3fd8 0%, #5a2fc0 60%, #4a2aa8 100%); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); }
 h1 { font-weight: 700; font-size: 20px; margin: 0 0 6px; }
-.f select { background: #ffffff !important; color: #222 !important; border-color: #cfd3da !important; }
-.hero .seg { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.35); }
-.hero .seg button { color: #e4e0ff; } .hero .seg button + button { border-left-color: rgba(255,255,255,.35); }
-.hero .seg button[aria-pressed="true"] { background: #ffffff; color: #3a2db8; }
-.hero .reset { color: #ffffff; }
-.take { margin: 0; max-width: 64rem; line-height: 1.5; }
-.take b { font-weight: 600; }
-.sub, .note, .period { color: var(--muted); font-size: var(--fs-cap); margin: 4px 0 0; }
+.take { margin: 0; max-width: 72rem; line-height: 1.5; }
+.take b { font-weight: 700; }
+.sub { color: #e4e0ff; font-size: var(--fs-cap); margin: 4px 0 0; }
 .filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
-.f { display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-cap); color: var(--muted); }
-.f select { font: inherit; font-size: var(--fs-body); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 6px 8px; min-width: 9rem; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--panel); }
-.seg button { font: inherit; background: transparent; color: var(--muted); border: 0; padding: 6px 12px; cursor: pointer; }
-.seg button + button { border-left: 1px solid var(--line); }
-.seg button[aria-pressed="true"] { background: var(--bg); color: var(--fg); font-weight: 600; }
-.reset { font: inherit; font-size: var(--fs-cap); background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; padding: 6px 0; }
+.f { display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-cap); color: #e4e0ff; }
+.f select, .f input { font: inherit; font-size: var(--fs-body); background: #fff; color: #222; border: 1px solid #cfd3da; border-radius: var(--r); padding: 5px 8px; }
+.f select { min-width: 9rem; }
+.f input[type=date] { width: 9.5rem; color-scheme: light; }
+.seg { display: inline-flex; border: 1px solid rgba(255,255,255,.35); border-radius: var(--r); overflow: hidden; background: rgba(255,255,255,.12); }
+.seg button { font: inherit; background: transparent; color: #e4e0ff; border: 0; padding: 6px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid rgba(255,255,255,.35); }
+.seg button[aria-pressed="true"] { background: #fff; color: #3a2db8; font-weight: 700; }
+.quick { display: flex; gap: 4px; flex-wrap: wrap; }
+.quick button { font: inherit; font-size: var(--fs-cap); background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+.quick button:hover { background: rgba(255,255,255,.28); }
+.reset { font: inherit; font-size: var(--fs-cap); background: none; border: 0; color: #fff; text-decoration: underline; cursor: pointer; padding: 6px 0; }
 .alert { border: 1px solid var(--line); border-left: 4px solid var(--warn); background: var(--panel); border-radius: var(--r); padding: 8px 12px; margin: 0; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr)); gap: 10px; margin-top: 6px; }
-.card, .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; min-width: 0; }
-.card.tile { border: 0; text-align: center; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
-.tile .k-l { color: #fff; font-weight: 600; } .tile .k-n, .tile .k-c, .tile .k-g { color: rgba(255,255,255,.88); }
-.tile .k-g { border-top-color: rgba(255,255,255,.35); } .tile .k-w { color: #fff3c4; }
+.period { color: var(--muted); font-size: var(--fs-cap); margin: 0 0 6px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: 8px; }
+.tile { border-radius: var(--r); padding: 8px 10px; text-align: center; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.35); min-width: 0; }
+.tile .k-l { font-size: var(--fs-cap); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .k-v { font-weight: 700; font-size: 26px; line-height: 1.15; margin: 2px 0 0; }
+.tile .k-n { font-size: 11px; color: rgba(255,255,255,.88); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .k-c { font-size: 11px; color: rgba(255,255,255,.92); margin-top: 4px; white-space: nowrap; }
+.tile .good, .tile .bad { display: inline-block; padding: 0 5px; border-radius: 4px; color: #fff; border: 1px solid rgba(255,255,255,.4); font-weight: 700; }
+.tile .good { background: #157a38; } .tile .bad { background: #8f1d24; }
+.tile .k-w { font-size: 11px; color: #fff3c4; margin-top: 2px; }
 .t-indigo { background: var(--z-indigo); } .t-red { background: var(--z-red); } .t-blue { background: var(--z-blue); }
 .t-gold { background: var(--z-gold); } .t-green { background: var(--z-green); } .t-purple { background: var(--z-purple); }
-.tile .good, .tile .bad { display: inline-block; padding: 0 6px; border-radius: 4px; color: #fff; border: 1px solid rgba(255,255,255,.4); }
-.tile .good { background: #157a38; } .tile .bad { background: #8f1d24; }
-.k-l { font-size: var(--fs-cap); color: var(--muted); }
-.k-v { font-family: var(--sans); font-weight: 700; font-size: var(--fs-title); line-height: 1.2; margin: 4px 0 2px; }
-.k-n { font-size: var(--fs-cap); color: var(--muted); margin-bottom: 6px; }
-.k-c { font-size: var(--fs-cap); color: var(--muted); line-height: 1.6; }
-.k-g { font-size: var(--fs-cap); color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
-.k-w { font-size: var(--fs-cap); color: var(--warn); margin-top: 4px; }
-.good { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: 12px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; min-width: 0; }
 .panel h2 { font-size: var(--fs-h); font-weight: 700; margin: 0; }
 .panel h2::before { content: ''; display: inline-block; width: 4px; height: 14px; border-radius: 2px; background: #5b48e0; margin-right: 8px; vertical-align: -1px; }
-.panel .note { margin: 4px 0 12px; }
-.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
-.chips button { font: inherit; font-size: var(--fs-cap); border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 2px 8px; cursor: pointer; }
-.chips button[aria-pressed="true"] { color: var(--fg); border-color: var(--muted); background: var(--bg); }
+.panel .note { color: var(--muted); font-size: var(--fs-cap); margin: 4px 0 10px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: 12px; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chips button { font: inherit; font-size: var(--fs-cap); border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 2px 9px; cursor: pointer; }
+.chips button[aria-pressed="true"] { color: #fff; border-color: #5b48e0; background: #5b48e0; }
 .chart { position: relative; min-height: 260px; }
 .chart svg { display: block; overflow: visible; }
 .chart text { font-family: var(--sans); font-size: var(--fs-cap); fill: var(--muted); }
-.chart .strong { fill: var(--fg); font-weight: 600; }
+.chart .strong { fill: var(--fg); font-weight: 700; }
 .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: var(--fs-cap); color: var(--muted); margin: 0 0 8px; }
 .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
 .hitos { font-size: var(--fs-cap); color: var(--muted); margin-top: 8px; line-height: 1.6; }
-.tip { position: absolute; pointer-events: none; background: var(--pop); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 4px 8px; font-size: var(--fs-cap); white-space: nowrap; z-index: 2; }
+.tip { position: absolute; pointer-events: none; background: var(--pop); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 4px 8px; font-size: var(--fs-cap); white-space: nowrap; z-index: 3; }
 .tip .h { color: var(--muted); margin-bottom: 2px; }
 .tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
 .empty { display: flex; align-items: center; justify-content: center; min-height: inherit; color: var(--muted); font-size: var(--fs-cap); }
 .tw { max-height: 34rem; overflow: auto; }
 table { width: 100%; border-collapse: collapse; font-size: var(--fs-cap); }
-th { position: sticky; top: 0; background: var(--panel); text-align: right; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line); padding: 0; z-index: 1; }
-th button { font: inherit; color: inherit; background: none; border: 0; padding: 4px 8px; cursor: pointer; width: 100%; text-align: inherit; }
+th { position: sticky; top: 0; background: var(--panel); text-align: right; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); padding: 0; z-index: 1; }
+th button, th span { font: inherit; color: inherit; background: none; border: 0; padding: 5px 8px; cursor: pointer; width: 100%; text-align: inherit; display: block; }
 th:first-child, td:first-child { text-align: left; }
-td { white-space: nowrap; text-align: right; padding: 4px 8px; border-bottom: 1px solid var(--line); }
+td { white-space: nowrap; text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--line); }
 td small { color: var(--muted); }
-tbody tr { cursor: pointer; } tbody tr:hover { background: var(--bg); }
-tr.sel td { font-weight: 600; background: var(--bg); }
+#tabla tbody tr { cursor: pointer; } #tabla tbody tr:hover { background: rgba(255,255,255,.04); }
+tr.sel td { font-weight: 700; background: rgba(91,72,224,.18); }
 tr.grp td { color: var(--muted); font-style: italic; }
+td.good { color: var(--ok); font-weight: 700; } td.bad { color: var(--bad); font-weight: 700; }
+.st { display: inline-block; min-width: 1.6em; padding: 0 6px; border-radius: 4px; font-weight: 700; text-align: center; }
+.st.ok { background: #157a38; color: #fff; } .st.no { background: #8f1d24; color: #fff; } .st.na { color: var(--muted); }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
 </head><body>
 <div class="pg">
   <div class="hero">
-  <header>
-    <h1>Calidad de atención · Proyecto SINERGIA</h1>
-    <p class="take" id="resumen">Cargando datos…</p>
-    <p class="sub" id="fuente"></p>
-  </header>
-
-  <div class="filters">
-    <div class="f">Período
-      <div class="seg" role="group" aria-label="Período">
-        <button type="button" data-periodo="base">Línea base</button>
-        <button type="button" data-periodo="piloto">Piloto</button>
-        <button type="button" data-periodo="todo">Todo</button>
+    <header>
+      <h1>Calidad de atención · Proyecto SINERGIA</h1>
+      <p class="take" id="resumen">Cargando datos…</p>
+      <p class="sub" id="fuente"></p>
+    </header>
+    <div class="filters">
+      <div class="f">Período
+        <div class="seg" role="group" aria-label="Período">
+          <button type="button" data-periodo="base">Línea base</button>
+          <button type="button" data-periodo="piloto">Piloto</button>
+        </div>
+      </div>
+      <label class="f">Desde<input type="date" id="f-desde"></label>
+      <label class="f">Hasta<input type="date" id="f-hasta"></label>
+      <div class="f">Atajos
+        <div class="quick">
+          <button type="button" data-q="dia">Último día</button>
+          <button type="button" data-q="7">Últimos 7 días</button>
+          <button type="button" data-q="sem">Esta semana</button>
+          <button type="button" data-q="mes">Este mes</button>
+        </div>
       </div>
     </div>
-    <label class="f">Línea base desde<select id="f-base"><option value="2026-04-01">1 abr 2026</option><option value="2026-07-01">1 jul 2026</option></select></label>
-    <label class="f">POP<select id="f-pop"></select></label>
-    <label class="f">Servicio<select id="f-serv">
-      <option value="MVP">Soporte + Instalación (MVP)</option><option value="Todos">Todos</option>
-      <option>Soporte</option><option>Instalación</option><option>Comercial</option><option>Negociación</option></select></label>
-    <label class="f">Dealer / cartera<select id="f-dealer"></select></label>
-    <button type="button" class="reset" id="reset">Restablecer (alcance del piloto)</button>
-  </div>
+    <div class="filters">
+      <label class="f">Línea base desde<select id="f-base"><option value="2026-04-01">1 abr 2026</option><option value="2026-07-01">1 jul 2026</option></select></label>
+      <label class="f">POP<select id="f-pop"></select></label>
+      <label class="f">Servicio<select id="f-serv">
+        <option value="MVP">Soporte + Instalación (MVP)</option><option value="Todos">Todos</option>
+        <option>Soporte</option><option>Instalación</option><option>Comercial</option><option>Negociación</option></select></label>
+      <label class="f">Dealer / cartera<select id="f-dealer"></select></label>
+      <button type="button" class="reset" id="reset">Restablecer (alcance del piloto)</button>
+    </div>
   </div>
 
   <p class="alert" id="aviso" hidden></p>
@@ -116,17 +126,27 @@ tr.grp td { color: var(--muted); font-style: italic; }
     <div class="cards" id="cards"></div>
   </section>
 
+  <section class="panel" id="comparativa">
+    <h2>Comparativa línea base vs piloto</h2>
+    <p class="note" id="comp-note"></p>
+    <div class="tw"><table id="comp"><thead><tr>
+      <th><span>Indicador</span></th><th><span>Línea base</span></th><th><span>Piloto</span></th><th><span>Variación</span></th>
+      <th><span>Resto Central (piloto)</span></th><th><span>Meta</span></th><th><span>Estado</span></th>
+    </tr></thead><tbody></tbody></table></div>
+  </section>
+
   <section class="grid2">
     <div class="panel" id="evolucion">
-      <h2>Evolución semanal</h2>
-      <p class="note">Por semana (lunes). Sombreado: línea base. Líneas verticales: hitos del proyecto. Las semanas recientes aún tienen OS abiertas.</p>
-      <div class="chips" id="chips" role="group" aria-label="Indicador"></div>
+      <h2>Evolución</h2>
+      <p class="note">Sombreado gris: línea base · azul: período elegido. Líneas punteadas: hitos del proyecto. Los períodos recientes aún tienen OS abiertas.</p>
+      <div class="bar"><div class="chips" id="chips" role="group" aria-label="Indicador"></div><div class="chips gran" role="group" aria-label="Agrupar por"></div></div>
       <div class="chart" id="ch-evo"></div>
       <div class="hitos" id="hitos"></div>
     </div>
     <div class="panel" id="volumen">
-      <h2>OS creadas por semana</h2>
-      <p class="note">Volumen del POP seleccionado. Azul: línea base y piloto.</p>
+      <h2>OS creadas</h2>
+      <p class="note">Volumen del POP seleccionado. Azul: dentro del período elegido.</p>
+      <div class="bar"><span></span><div class="chips gran" role="group" aria-label="Agrupar por"></div></div>
       <div class="chart" id="ch-vol"></div>
     </div>
   </section>
@@ -134,7 +154,7 @@ tr.grp td { color: var(--muted); font-style: italic; }
   <section class="grid2">
     <div class="panel" id="motivos">
       <h2>Motivos de reagendamiento</h2>
-      <p class="note">% de OS creadas con cada motivo. Barra fina: resto de Central. “Operativo” es lo atribuible a NEO / prestador (meta TAP: −20%).</p>
+      <p class="note">% de OS creadas con cada motivo en el período elegido. Barra fina: resto de Central. “Operativo” es lo atribuible a NEO / prestador (meta TAP: −20%).</p>
       <div class="legend" id="mot-legend"></div>
       <div class="chart" id="ch-mot"></div>
     </div>
@@ -147,7 +167,7 @@ tr.grp td { color: var(--muted); font-style: italic; }
 
   <section class="panel" id="comparacion">
     <h2>Comparación por POP</h2>
-    <p class="note">Mismo período y filtros. Cada % con su denominador. “Resto Central (sin ASU021)” es el grupo de control. Abiertas y vencidas son a la fecha de corte.</p>
+    <p class="note">Período elegido. Cada % con su denominador. “Resto Central (sin ASU021)” es el grupo de control. Abiertas y vencidas son a la fecha de corte.</p>
     <div class="tw"><table id="tabla"><thead><tr></tr></thead><tbody></tbody></table></div>
   </section>
 
@@ -158,7 +178,7 @@ tr.grp td { color: var(--muted); font-style: italic; }
     <b>% Reagenda operativa</b> = OS con motivo Demora de contratista, Técnico, Infra o Reag. rápido ÷ OS creadas; meta TAP: reducción relativa ≥20% vs línea base.
     <b>SLA soporte</b> = soportes ejecutados en ≤24 h corridas desde la creación ÷ soportes ejecutados; <b>SLA instalación</b> = instalaciones en ≤48 h ÷ instalaciones ejecutadas; meta: igual o mejor que la línea base. Mediana y P90 en horas creación → ejecución.
     <b>% SLA ZOY</b> = ejecutadas antes del Prazo Data ÷ ejecutadas. <b>% Garantía</b> = OS con el campo Garantia cargado ÷ OS creadas.
-    Salvo la 1ª agenda, todo va por fecha de creación de la OS. Con menos de 30 casos se marca “pocos casos”: el Plan pide ampliar la observación antes de concluir.</p>
+    Salvo la 1ª agenda, todo va por fecha de creación de la OS. Con menos de 30 casos se marca ⚠ “pocos casos”: el Plan pide ampliar la observación antes de concluir.</p>
   </section>
 </div>
 
@@ -174,7 +194,7 @@ const HITOS = [
   { d: '2026-11-15', t: 'Gate 1 (TAP H8)' },
 ];
 const META_C1 = 0.95, META_REAG_OP = -0.20, POCOS = 30;
-const DEFAULTS = { periodo: 'base', base: '2026-04-01', pop: 'ASU021', serv: 'MVP', dealer: 'Neo Telecom', met: 'c1' };
+const DEFAULTS = { periodo: 'piloto', desde: '', hasta: '', base: '2026-04-01', pop: 'ASU021', serv: 'MVP', dealer: 'Neo Telecom', met: 'c1', gran: 'semana' };
 const CLASE = { 'CLIENTE': 'Cliente', 'LLUVIA': 'Fuerza mayor', 'INFRA': 'Operativo', 'TECNICO': 'Operativo', 'DEMORA DE CONTRATISTA': 'Operativo', 'REAG. RAPIDO': 'Operativo' };
 const GROUPS = ['Resto Central', 'Total Central'];
 
@@ -191,21 +211,24 @@ const r1 = (v) => Math.round(v * 10) / 10;
 const sign = (v) => v > 0 ? '+' : v < 0 ? '−' : '±';
 const fPP = (v) => v == null ? '—' : sign(r1(v * 100)) + L.format('.1f')(Math.abs(r1(v * 100))) + ' pp';
 const fDH = (v) => v == null ? '—' : sign(r1(v)) + L.format('.1f')(Math.abs(r1(v))) + ' h';
-const fRel = (v) => v == null ? '—' : sign(r1(v * 100)) + L.format('.0f')(Math.abs(Math.round(v * 100))) + '%';
-const fDay = T.utcFormat('%-d %b'), fDayY = T.utcFormat('%-d %b %Y'), fMon = T.utcFormat('%b'), fDM = T.utcFormat('%d/%m');
+const fRel = (v) => v == null ? '—' : sign(Math.round(v * 100)) + L.format('.0f')(Math.abs(Math.round(v * 100))) + '%';
+const fDay = T.utcFormat('%-d %b'), fDayY = T.utcFormat('%-d %b %Y'), fMon = T.utcFormat('%b'), fMonY = T.utcFormat('%B %Y'), fDM = T.utcFormat('%d/%m');
+const iso = d3.utcFormat('%Y-%m-%d');
 const day = (s) => new Date(s + 'T00:00:00Z');
-const mondayOf = (s) => { const d = day(s); const wd = (d.getUTCDay() + 6) % 7; return d3.utcFormat('%Y-%m-%d')(d3.utcDay.offset(d, -wd)); };
+const addDays = (s, n) => iso(d3.utcDay.offset(day(s), n));
+const mondayOf = (s) => { const d = day(s); return iso(d3.utcDay.offset(d, -((d.getUTCDay() + 6) % 7))); };
+const monthOf = (s) => s.slice(0, 7) + '-01';
+const bucketOf = (s, g) => g === 'dia' ? s : g === 'mes' ? monthOf(s) : mondayOf(s);
 const popLabel = (p) => p === 'Resto Central' ? 'Resto Central (sin ASU021)' : p;
 const ctrlOf = (p) => p === 'Resto Central' ? 'Total Central' : 'Resto Central';
 
 /* ---------- Indicadores ---------- */
-// Cada indicador: valor, numerador, denominador, si "más es mejor", formato y meta.
 const M = {
-  c1: { label: '% Cumple 1ª agenda', short: 'Cumple 1ª ag.', up: true, pct: true, num: 'c1ok', den: 'c1den', denL: 'OS con 1ª agenda' },
+  c1: { label: '% Cumple 1ª agenda', short: 'Cumple 1ª ag.', up: true, pct: true, num: 'c1ok', den: 'c1den', denL: 'con 1ª agenda' },
   reag: { label: '% Reagendadas', short: 'Reagendadas', up: false, pct: true, num: 'reag', den: 'os', denL: 'OS creadas' },
   reag_op: { label: '% Reagenda operativa', short: 'Reag. operativa', up: false, pct: true, num: 'reagop', den: 'os', denL: 'OS creadas' },
-  sla_sop: { label: 'SLA soporte ≤24 h', short: 'SLA soporte', up: true, pct: true, num: 'sopOk', den: 'sopN', denL: 'soportes ejecutados' },
-  sla_inst: { label: 'SLA instalación ≤48 h', short: 'SLA instalación', up: true, pct: true, num: 'instOk', den: 'instN', denL: 'instalaciones ejecutadas' },
+  sla_sop: { label: 'SLA soporte ≤24 h', short: 'SLA soporte', up: true, pct: true, num: 'sopOk', den: 'sopN', denL: 'soportes ejec.' },
+  sla_inst: { label: 'SLA instalación ≤48 h', short: 'SLA instalación', up: true, pct: true, num: 'instOk', den: 'instN', denL: 'instalaciones ejec.' },
   sla_zoy: { label: '% SLA ZOY', short: 'SLA ZOY', up: true, pct: true, num: 'zoy', den: 'ej', denL: 'OS ejecutadas' },
   gar: { label: '% Garantía', short: 'Garantía', up: false, pct: true, num: 'gar', den: 'os', denL: 'OS creadas' },
   horas: { label: 'Horas prom. a ejecución', short: 'Horas prom.', up: false, pct: false, num: 'hsum', den: 'ej', denL: 'OS ejecutadas' },
@@ -213,56 +236,54 @@ const M = {
 const val = (a, k) => { if (!a) return null; const m = M[k]; return a[m.den] ? a[m.num] / a[m.den] : null; };
 const fVal = (k, v) => M[k].pct ? fPct(v) : fH(v);
 const fDelta = (k, v) => M[k].pct ? fPP(v) : fDH(v);
-const quant = (arr, q) => { if (!arr.length) return null; const s = Float64Array.from(arr).sort(); return d3.quantileSorted(s, q); };
+const quant = (arr, q) => { if (!arr || !arr.length) return null; const s = Float64Array.from(arr).sort(); return d3.quantileSorted(s, q); };
 
-function emptyAgg() { return { os: 0, ej: 0, reag: 0, reagop: 0, zoy: 0, gar: 0, hsum: 0, sopN: 0, sopOk: 0, instN: 0, instOk: 0, c1ok: 0, c1den: 0, abiertas: 0, vencidas: 0, hSop: [], hInst: [], mot: {} }; }
+function emptyAgg() { return { os: 0, ej: 0, reag: 0, reagop: 0, zoy: 0, gar: 0, hsum: 0, sopN: 0, sopOk: 0, instN: 0, instOk: 0, c1ok: 0, c1den: 0, abiertas: 0, vencidas: 0, hAll: [], hSop: [], hInst: [], mot: {} }; }
 function addCreated(a, r) {
   a.os++; a.reag += r.nag >= 1 ? 1 : 0; a.reagop += r.reag_op; a.gar += r.gar;
   if (CLASE[r.motivo]) a.mot[r.motivo] = (a.mot[r.motivo] || 0) + 1;
   if (r.ej) {
-    a.ej++; a.zoy += r.sla_zoy; a.hsum += r.horas;
+    a.ej++; a.zoy += r.sla_zoy; a.hsum += r.horas; a.hAll.push(r.horas);
     if (r.servicio === 'Soporte') { a.sopN++; a.sopOk += r.sla_plan; a.hSop.push(r.horas); }
     if (r.servicio === 'Instalación') { a.instN++; a.instOk += r.sla_plan; a.hInst.push(r.horas); }
   }
 }
 
 /* ---------- Estado ---------- */
-let ROWS = null, DATA_HASTA = '', status = 'loading';
+let ROWS = null, DATA_HASTA = '', DATA_DESDE = '', status = 'loading';
 let P = { ...DEFAULTS };
 try { const h = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(DEFAULTS)) if (h.get(k)) P[k] = h.get(k); } catch (e) {}
+if (P.periodo === 'todo') P.periodo = 'piloto';
 const setP = (o) => { Object.assign(P, o); const p = new URLSearchParams(); for (const [k, v] of Object.entries(P)) if (v !== DEFAULTS[k]) p.set(k, v);
   history.replaceState(null, '', p.toString() ? '#' + p : location.pathname + location.search); draw(); };
 
 const servOk = (s) => P.serv === 'Todos' ? true : P.serv === 'MVP' ? (s === 'Soporte' || s === 'Instalación') : s === P.serv;
 const dealerOk = (d) => P.dealer === 'Todos' || d === P.dealer;
-const range = (per) => per === 'base' ? [P.base, BASE_FIN] : per === 'piloto' ? [PILOTO_INI, '9999-12-31'] : [P.base, '9999-12-31'];
+const baseRange = () => [P.base, BASE_FIN];
+const pilotRange = () => [PILOTO_INI, DATA_HASTA < PILOTO_INI ? PILOTO_INI : DATA_HASTA];
+// Rango del período elegido: los botones fijan el rango; las fechas lo ajustan (por ejemplo, un día o una semana).
+const curRange = () => P.periodo === 'base' ? baseRange() : P.periodo === 'piloto' ? pilotRange() : [P.desde, P.hasta];
 const groupsOf = (pop) => pop === 'ASU021' ? [pop, 'Total Central'] : [pop, 'Total Central', 'Resto Central'];
 
-// Agregados por POP (más grupos) para un período.
-function aggPeriod(per) {
-  const [d0, d1] = range(per), out = new Map();
-  const get = (g) => out.get(g) || out.set(g, emptyAgg()).get(g);
+function aggRange([d0, d1]) {
+  const out = new Map(), get = (g) => out.get(g) || out.set(g, emptyAgg()).get(g);
   for (const r of ROWS) {
     if (!servOk(r.servicio) || !dealerOk(r.dealer)) continue;
-    const inCr = r.creada >= d0 && r.creada <= d1;
-    const inA1 = r.a1 && r.a1 >= d0 && r.a1 <= d1;
+    const inCr = r.creada >= d0 && r.creada <= d1, inA1 = r.a1 && r.a1 >= d0 && r.a1 <= d1;
     for (const g of groupsOf(r.pop)) {
-      const a = get(g);
-      a.abiertas += r.abierta; a.vencidas += r.vencida;
+      const a = get(g); a.abiertas += r.abierta; a.vencidas += r.vencida;
       if (inCr) addCreated(a, r);
       if (inA1) { a.c1den++; a.c1ok += r.c1; }
     }
   }
   return out;
 }
-// Agregados semanales para un POP o grupo.
-function aggWeekly(pop) {
-  const out = new Map();
-  const get = (w) => out.get(w) || out.set(w, emptyAgg()).get(w);
+function aggSeries(pop, gran, from) {
+  const out = new Map(), get = (k) => out.get(k) || out.set(k, emptyAgg()).get(k);
   for (const r of ROWS) {
     if (!servOk(r.servicio) || !dealerOk(r.dealer) || !groupsOf(r.pop).includes(pop)) continue;
-    if (r.creada >= P.base) addCreated(get(mondayOf(r.creada)), r);
-    if (r.a1 && r.a1 >= P.base && r.a1 <= DATA_HASTA) { const a = get(mondayOf(r.a1)); a.c1den++; a.c1ok += r.c1; }
+    if (r.creada >= from && r.creada <= DATA_HASTA) addCreated(get(bucketOf(r.creada, gran)), r);
+    if (r.a1 && r.a1 >= from && r.a1 <= DATA_HASTA) { const a = get(bucketOf(r.a1, gran)); a.c1den++; a.c1ok += r.c1; }
   }
   return out;
 }
@@ -274,13 +295,24 @@ fetch('datos.csv?v=' + Date.now()).then((r) => { if (!r.ok) throw new Error('htt
   ROWS = raw.map((d) => ({ creada: d.creada, servicio: d.servicio, pop: d.pop, dealer: d.dealer, motivo: d.motivo,
     ej: +d.ejecutada, horas: d.horas === '' ? null : +d.horas, sla_plan: +d.sla_plan, sla_zoy: +d.sla_zoy,
     abierta: +d.abierta, vencida: +d.vencida, a1: d.agenda1 || null, c1: +d.cumple_1a, nag: +d.n_reagendas, gar: +d.garantia, reag_op: +d.reag_operativa }));
-  DATA_HASTA = d3.max(ROWS, (r) => r.creada);
+  DATA_HASTA = d3.max(ROWS, (r) => r.creada); DATA_DESDE = d3.min(ROWS, (r) => r.creada);
   status = 'ok'; draw();
 }).catch(() => { status = 'error'; draw(); });
 
 /* ---------- Controles ---------- */
 const $ = (s) => document.querySelector(s);
-document.querySelectorAll('[data-periodo]').forEach((b) => b.addEventListener('click', () => setP({ periodo: b.dataset.periodo })));
+document.querySelectorAll('[data-periodo]').forEach((b) => b.addEventListener('click', () => setP({ periodo: b.dataset.periodo, desde: '', hasta: '' })));
+const onDate = () => {
+  const d = $('#f-desde').value, h = $('#f-hasta').value;
+  if (!d || !h || !$('#f-desde').validity.valid || !$('#f-hasta').validity.valid) return;
+  setP({ periodo: 'rango', desde: d <= h ? d : h, hasta: d <= h ? h : d });
+};
+$('#f-desde').addEventListener('change', onDate); $('#f-hasta').addEventListener('change', onDate);
+document.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click', () => {
+  if (!DATA_HASTA) return; const q = b.dataset.q, h = DATA_HASTA;
+  const d = q === 'dia' ? h : q === '7' ? addDays(h, -6) : q === 'sem' ? mondayOf(h) : monthOf(h);
+  setP({ periodo: 'rango', desde: d, hasta: h });
+}));
 $('#f-base').addEventListener('change', (e) => setP({ base: e.target.value }));
 $('#f-pop').addEventListener('change', (e) => setP({ pop: e.target.value }));
 $('#f-serv').addEventListener('change', (e) => setP({ serv: e.target.value }));
@@ -290,6 +322,12 @@ for (const k of ['c1', 'reag', 'reag_op', 'sla_sop', 'sla_inst', 'gar', 'horas']
   const b = document.createElement('button'); b.type = 'button'; b.dataset.m = k; b.textContent = M[k].short;
   b.addEventListener('click', () => setP({ met: k })); $('#chips').append(b);
 }
+document.querySelectorAll('.gran').forEach((box) => {
+  for (const [k, t] of [['dia', 'Día'], ['semana', 'Semana'], ['mes', 'Mes']]) {
+    const b = document.createElement('button'); b.type = 'button'; b.dataset.g = k; b.textContent = t;
+    b.addEventListener('click', () => setP({ gran: k })); box.append(b);
+  }
+});
 let W = innerWidth; addEventListener('resize', () => { if (Math.abs(innerWidth - W) > 20) { W = innerWidth; draw(); } });
 function fillSelect(sel, values, cur, label) {
   const want = values.join('\u0001');
@@ -297,7 +335,7 @@ function fillSelect(sel, values, cur, label) {
   sel.value = cur;
 }
 
-/* ---------- Helpers de gráfico ---------- */
+/* ---------- Helpers ---------- */
 function textW(svg, strs, cls) { const t = svg.append('text').attr('class', cls || null); let w = 0; for (const s of strs) { t.text(s); w = Math.max(w, t.node().getComputedTextLength()); } t.remove(); return w; }
 function tipFor(box) {
   const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; box.append(tip);
@@ -311,129 +349,154 @@ function tipFor(box) {
 function cleanAxis(g) { g.attr('font-size', null).attr('font-family', null); g.select('.domain').remove(); g.selectAll('line').attr('stroke', 'var(--grid)'); }
 function emptyBox(box, msg) { box.replaceChildren(); const d = document.createElement('div'); d.className = 'empty'; d.textContent = msg; box.append(d); }
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const bucketLabel = (s, g) => g === 'dia' ? fDayY(day(s)) : g === 'mes' ? fMonY(day(s)) : 'Semana del ' + fDay(day(s));
+const bucketEnd = (s, g) => g === 'dia' ? s : g === 'mes' ? iso(d3.utcDay.offset(d3.utcMonth.offset(day(s), 1), -1)) : addDays(s, 6);
 
-/* ---------- Tarjetas ---------- */
-function cmpSpan(k, d) {
+/* ---------- Tarjetas (compactas) ---------- */
+const TILE = { c1: 't-red', reag: 't-blue', reag_op: 't-gold', sla_sop: 't-green', sla_inst: 't-purple', gar: 't-red' };
+function deltaSpan(k, d) {
   const s = el('span', null, fDelta(k, d));
   if (d != null && r1(d * (M[k].pct ? 100 : 1)) !== 0) s.className = (d > 0) === M[k].up ? 'good' : 'bad';
   return s;
 }
-const TILE = { c1: 't-red', reag: 't-blue', reag_op: 't-gold', sla_sop: 't-green', sla_inst: 't-purple', gar: 't-red' };
-function drawCards(cur, base) {
-  const a = cur.get(P.pop), c = cur.get(ctrlOf(P.pop)), b = base.get(P.pop);
-  const cards = $('#cards'); cards.replaceChildren();
-  // OS creadas
+function drawCards(cur, ref, refLabel) {
+  const a = cur.get(P.pop), b = ref.get(P.pop), cards = $('#cards'); cards.replaceChildren();
   {
-    const card = el('div', 'card tile t-indigo'); card.id = 'k-os';
-    card.append(el('div', 'k-l', 'OS creadas'), el('div', 'k-v', fInt(a ? a.os : null)),
-      el('div', 'k-n', `${fInt(a ? a.ej : null)} ejecutadas`),
-      el('div', 'k-c', `Hoy: ${fInt(a ? a.abiertas : null)} abiertas · ${fInt(a ? a.vencidas : null)} vencidas`));
-    cards.append(card);
+    const c = el('div', 'tile t-indigo'); c.id = 'k-os';
+    c.append(el('div', 'k-l', 'OS creadas'), el('div', 'k-v', fInt(a ? a.os : null)),
+      el('div', 'k-n', `${fInt(a ? a.ej : null)} ejecutadas`), el('div', 'k-c', `Hoy: ${fInt(a ? a.abiertas : null)} abiertas · ${fInt(a ? a.vencidas : null)} vencidas`));
+    cards.append(c);
   }
   for (const k of ['c1', 'reag', 'reag_op', 'sla_sop', 'sla_inst', 'gar']) {
-    const m = M[k], v = val(a, k), card = el('div', 'card tile ' + TILE[k]); card.id = 'k-' + k;
-    card.append(el('div', 'k-l', m.label), el('div', 'k-v', fVal(k, v)));
-    const n = a ? a[m.num] : 0, N = a ? a[m.den] : 0;
-    card.append(el('div', 'k-n', `${fInt(n)} de ${fInt(N)} ${m.denL}`));
-    const comp = el('div', 'k-c');
-    if (P.pop !== 'Resto Central') { const l = el('div'); l.append(cmpSpan(k, v != null && val(c, k) != null ? v - val(c, k) : null), ' vs resto Central'); comp.append(l); }
-    if (P.periodo !== 'base') { const vb = val(b, k); const l = el('div'); l.append(cmpSpan(k, v != null && vb != null ? v - vb : null), ` vs línea base (${fVal(k, vb)})`); comp.append(l); }
-    card.append(comp);
-    if (k === 'sla_sop' || k === 'sla_inst') {
-      const hs = a ? (k === 'sla_sop' ? a.hSop : a.hInst) : [];
-      card.append(el('div', 'k-c', `Mediana ${fH(quant(hs, 0.5))} · P90 ${fH(quant(hs, 0.9))}`));
-    }
-    const goal = el('div', 'k-g');
-    if (k === 'c1') goal.textContent = 'Meta ≥95% (Plan Go Live; meta operativa 100%)';
-    else if (k === 'reag_op') {
-      const vb = val(b, k);
-      if (P.periodo === 'base') goal.textContent = 'Meta TAP: reducir ≥20% vs línea base';
-      else {
-        const rel = v != null && vb ? (v - vb) / vb : null;
-        const s = el('span', rel == null ? null : rel <= META_REAG_OP ? 'good' : 'bad', rel == null ? '—' : fRel(rel) + (rel <= META_REAG_OP ? ' ✓' : ' ✗'));
-        goal.append('Meta TAP ≤ −20% vs línea base: ', s);
-      }
-    } else if (k === 'sla_sop' || k === 'sla_inst') goal.textContent = 'Meta: igual o mejor que la línea base';
-    else goal.textContent = 'Bajar';
-    card.append(goal);
-    if (N > 0 && N < POCOS) card.append(el('div', 'k-w', `⚠ Pocos casos (${N}): leer con cautela`));
-    cards.append(card);
+    const m = M[k], v = val(a, k), vb = val(b, k), c = el('div', 'tile ' + TILE[k]); c.id = 'k-' + k;
+    const N = a ? a[m.den] : 0;
+    c.title = `${m.label}: ${fInt(a ? a[m.num] : 0)} de ${fInt(N)} ${m.denL}. ${refLabel}: ${fVal(k, vb)}`;
+    c.append(el('div', 'k-l', m.label), el('div', 'k-v', fVal(k, v)), el('div', 'k-n', `${fInt(a ? a[m.num] : 0)} de ${fInt(N)} ${m.denL}`));
+    const line = el('div', 'k-c');
+    if (k === 'reag_op' && P.periodo !== 'base') {
+      const rel = v != null && vb ? (v - vb) / vb : null;
+      line.append(el('span', rel == null ? null : rel <= META_REAG_OP ? 'good' : 'bad', rel == null ? '—' : fRel(rel)), ' vs base (meta −20%)');
+    } else line.append(deltaSpan(k, v != null && vb != null ? v - vb : null), ' vs ' + refLabel.toLowerCase());
+    c.append(line);
+    if (N > 0 && N < POCOS) c.append(el('div', 'k-w', `⚠ pocos casos (${N})`));
+    cards.append(c);
   }
 }
 
-/* ---------- Evolución semanal ---------- */
-function drawTrend() {
-  const box = $('#ch-evo'), k = M[P.met] ? P.met : 'c1', m = M[k], ctrl = ctrlOf(P.pop);
-  const mk = (pop) => { const w = aggWeekly(pop); return [...w.entries()].map(([s, a]) => ({ s, x: day(s), v: val(a, k), n: a[m.den] })).sort((p, q) => p.x - q.x); };
-  const series = [
-    { name: popLabel(ctrl), pts: mk(ctrl), color: 'var(--mutedbar)', w: 1.5 },
-    { name: popLabel(P.pop), pts: mk(P.pop), color: 'var(--c1)', w: 2.5 },
-  ];
+/* ---------- Comparativa ---------- */
+function drawComparativa(base, pil) {
+  const a = base.get(P.pop), b = pil.get(P.pop), c = pil.get(ctrlOf(P.pop));
+  $('#comp-note').textContent = `${popLabel(P.pop)} · línea base ${fDayY(day(P.base))} – 18 oct 2026 vs piloto desde 19 oct 2026 (datos hasta ${fDayY(day(DATA_HASTA))}). La variación es piloto − línea base.`;
+  const rows = [];
+  const pctRow = (k, meta, estado) => rows.push({ label: M[k].label, base: fVal(k, val(a, k)), bn: a ? a[M[k].den] : 0, pil: fVal(k, val(b, k)), pn: b ? b[M[k].den] : 0,
+    k, d: val(a, k) != null && val(b, k) != null ? val(b, k) - val(a, k) : null, ctrl: fVal(k, val(c, k)), meta, estado });
+  rows.push({ label: 'OS creadas', base: fInt(a ? a.os : 0), pil: fInt(b ? b.os : 0), ctrl: fInt(c ? c.os : 0), meta: '—', estado: null });
+  const vb = (k) => val(a, k), vp = (k) => val(b, k);
+  pctRow('c1', '≥ 95%', vp('c1') == null ? null : vp('c1') >= META_C1);
+  pctRow('reag', 'Bajar', vp('reag') == null || vb('reag') == null ? null : vp('reag') < vb('reag'));
+  { const rel = vp('reag_op') != null && vb('reag_op') ? (vp('reag_op') - vb('reag_op')) / vb('reag_op') : null;
+    pctRow('reag_op', '−20% vs base', rel == null ? null : rel <= META_REAG_OP); rows[rows.length - 1].rel = rel; }
+  pctRow('sla_sop', '≥ línea base', vp('sla_sop') == null || vb('sla_sop') == null ? null : vp('sla_sop') >= vb('sla_sop'));
+  pctRow('sla_inst', '≥ línea base', vp('sla_inst') == null || vb('sla_inst') == null ? null : vp('sla_inst') >= vb('sla_inst'));
+  pctRow('sla_zoy', '≥ línea base', vp('sla_zoy') == null || vb('sla_zoy') == null ? null : vp('sla_zoy') >= vb('sla_zoy'));
+  pctRow('gar', 'Bajar', vp('gar') == null || vb('gar') == null ? null : vp('gar') <= vb('gar'));
+  for (const [lab, arr, q] of [['Mediana horas soporte', 'hSop', 0.5], ['P90 horas soporte', 'hSop', 0.9], ['Mediana horas instalación', 'hInst', 0.5], ['P90 horas instalación', 'hInst', 0.9]]) {
+    const x = quant(a && a[arr], q), y = quant(b && b[arr], q);
+    rows.push({ label: lab, base: fH(x), pil: fH(y), dRaw: x != null && y != null ? y - x : null, ctrl: fH(quant(c && c[arr], q)), meta: 'Bajar', estado: x == null || y == null ? null : y <= x, hours: true });
+  }
+  $('#comp tbody').replaceChildren(...rows.map((r) => {
+    const tr = el('tr');
+    tr.append(el('td', null, r.label));
+    const tdB = el('td', null, r.base); if (r.bn != null) tdB.append(' ', el('small', null, `(${fInt(r.bn)})`));
+    const tdP = el('td', null, r.pil); if (r.pn != null) tdP.append(' ', el('small', null, `(${fInt(r.pn)})`));
+    if (r.pn != null && r.pn > 0 && r.pn < POCOS) tdP.append(' ', el('small', null, '⚠'));
+    const tdD = el('td');
+    if (r.rel !== undefined) tdD.textContent = `${fPP(r.d)} · ${fRel(r.rel)}`;
+    else if (r.hours) tdD.textContent = fDH(r.dRaw);
+    else if (r.k) tdD.textContent = fDelta(r.k, r.d); else tdD.textContent = '—';
+    const goodDir = r.hours ? (r.dRaw != null && r1(r.dRaw) !== 0 ? r.dRaw < 0 : null) : (r.k && r.d != null && r1(r.d * 100) !== 0 ? (r.d > 0) === M[r.k].up : null);
+    if (goodDir != null) tdD.className = goodDir ? 'good' : 'bad';
+    const tdE = el('td'); tdE.append(el('span', 'st ' + (r.estado == null ? 'na' : r.estado ? 'ok' : 'no'), r.estado == null ? '—' : r.estado ? '✓' : '✗'));
+    tr.append(tdB, tdP, tdD, el('td', null, r.ctrl), el('td', null, r.meta), tdE);
+    return tr;
+  }));
+}
+
+/* ---------- Evolución ---------- */
+function drawTrend([c0, c1r]) {
+  const box = $('#ch-evo'), k = M[P.met] ? P.met : 'c1', m = M[k], ctrl = ctrlOf(P.pop), g = P.gran;
+  const from = P.periodo === 'rango' && P.desde < P.base ? P.desde : P.base;
+  const mk = (pop) => [...aggSeries(pop, g, from).entries()].map(([s, a]) => ({ s, x: day(s), v: val(a, k), n: a[m.den] })).filter((p) => p.n > 0).sort((p, q) => p.x - q.x);
+  const series = [{ name: popLabel(ctrl), pts: mk(ctrl), color: 'var(--mutedbar)', w: 1.5 }, { name: popLabel(P.pop), pts: mk(P.pop), color: 'var(--c1)', w: 2.5 }];
   const all = series.flatMap((s) => s.pts).filter((p) => p.v != null);
   if (!all.length) return emptyBox(box, 'Sin datos para esta selección');
   box.replaceChildren();
   const Wd = Math.max(280, box.clientWidth), H = 280;
   const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
-  const xMax = d3.max([d3.max(all, (d) => d.x), day(HITOS[HITOS.length - 1].d)]);
+  const xMin = d3.min(all, (d) => d.x), xMax = d3.max([d3.max(all, (d) => d.x), day(HITOS[HITOS.length - 1].d)]);
   const yMax = m.pct ? 1 : (d3.max(all, (d) => d.v) || 1) * 1.1;
-  const y = d3.scaleLinear([0, yMax], [H - 24, 30]).nice();
-  const ytf = (t) => m.pct ? L.format('.0%')(t) : L.format(',d')(t);
+  const y = d3.scaleLinear([0, yMax], [H - 24, 30]).nice(), ytf = (t) => m.pct ? L.format('.0%')(t) : L.format(',d')(t);
   const ml = textW(svg, y.ticks(5).map(ytf)) + 10;
   const ends = series.map((s) => { const last = [...s.pts].reverse().find((p) => p.v != null); return { s, last, text: `${s.name.startsWith('Resto') ? 'Resto' : s.name} ${last ? fVal(k, last.v) : ''}` }; });
   const mr = Math.min(Wd * 0.3, textW(svg, ends.map((e) => e.text), 'strong') + 12);
-  const x = d3.scaleUtc([day(P.base) < d3.min(all, (d) => d.x) ? d3.min(all, (d) => d.x) : day(mondayOf(P.base)), xMax], [ml, Wd - mr]);
-  const sx0 = Math.max(ml, x(day(mondayOf(P.base)))), sx1 = x(day(PILOTO_INI));
-  svg.append('rect').attr('x', sx0).attr('y', 30).attr('height', H - 54).attr('width', Math.max(0, sx1 - sx0)).attr('fill', 'var(--shade)');
+  const x = d3.scaleUtc([xMin, xMax], [ml, Wd - mr]);
+  const band = (d0, d1, fill) => { const a0 = Math.max(ml, x(day(bucketOf(d0, g)))), a1 = Math.min(Wd - mr, x(day(d1))); if (a1 > a0) svg.append('rect').attr('x', a0).attr('y', 30).attr('height', H - 54).attr('width', a1 - a0).attr('fill', fill); };
+  band(P.base, PILOTO_INI, 'var(--shade)');
+  band(c0, addDays(c1r, 1), 'var(--sel)');
   svg.append('g').attr('transform', `translate(${ml},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(Wd - ml - mr)).tickFormat(ytf)).call(cleanAxis);
-  svg.append('g').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).ticks(Math.min(8, Math.max(2, Math.floor((Wd - ml - mr) / 55)))).tickFormat(fMon).tickSize(0).tickPadding(8)).call(cleanAxis);
-  HITOS.forEach((h, i) => {
-    const hx = x(day(h.d));
+  svg.append('g').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).ticks(Math.min(8, Math.max(2, Math.floor((Wd - ml - mr) / 60)))).tickFormat(g === 'dia' && (xMax - xMin) < 70 * 864e5 ? fDay : fMon).tickSize(0).tickPadding(8)).call(cleanAxis);
+  HITOS.forEach((h, i) => { const hx = x(day(h.d)); if (hx < ml || hx > Wd - mr) return;
     svg.append('line').attr('x1', hx).attr('x2', hx).attr('y1', 30).attr('y2', H - 24).attr('stroke', 'var(--ref)').attr('stroke-dasharray', '3 3');
-    svg.append('text').attr('x', hx).attr('y', 12 + (i % 2) * 12).attr('text-anchor', 'middle').attr('class', 'strong').text(i + 1);
-  });
-  if (k === 'c1') {
-    svg.append('line').attr('x1', ml).attr('x2', Wd - mr).attr('y1', y(META_C1)).attr('y2', y(META_C1)).attr('stroke', 'var(--ok)').attr('stroke-dasharray', '5 4');
-    svg.append('text').attr('x', ml + 4).attr('y', y(META_C1) - 5).text('Meta 95%');
-  }
+    svg.append('text').attr('x', hx).attr('y', 12 + (i % 2) * 12).attr('text-anchor', 'middle').attr('class', 'strong').text(i + 1); });
+  if (k === 'c1') { svg.append('line').attr('x1', ml).attr('x2', Wd - mr).attr('y1', y(META_C1)).attr('y2', y(META_C1)).attr('stroke', 'var(--ok)').attr('stroke-dasharray', '5 4');
+    svg.append('text').attr('x', ml + 4).attr('y', y(META_C1) - 5).text('Meta 95%'); }
   const line = d3.line().defined((d) => d.v != null).x((d) => x(d.x)).y((d) => y(d.v));
-  for (const s of series) svg.append('path').attr('d', line(s.pts)).attr('fill', 'none').attr('stroke', s.color).attr('stroke-width', s.w).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+  for (const s of series) {
+    svg.append('path').attr('d', line(s.pts)).attr('fill', 'none').attr('stroke', s.color).attr('stroke-width', s.w).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+    if (g !== 'dia' || s.pts.length < 40) svg.append('g').selectAll('circle').data(s.pts.filter((p) => p.v != null)).join('circle').attr('cx', (p) => x(p.x)).attr('cy', (p) => y(p.v)).attr('r', s.w > 2 ? 2.5 : 1.8).attr('fill', s.color);
+  }
   const lab = ends.filter((e) => e.last).map((e) => ({ ...e, ly: y(e.last.v) }));
   if (lab.length === 2 && Math.abs(lab[0].ly - lab[1].ly) < 14) { const mid = (lab[0].ly + lab[1].ly) / 2, up = lab[0].ly < lab[1].ly ? 0 : 1; lab[up].ly = mid - 7; lab[1 - up].ly = mid + 7; }
   for (const e of lab) svg.append('text').attr('x', x(e.last.x) + 6).attr('y', e.ly + 4).attr('class', e.s.w > 2 ? 'strong' : null).text(e.text);
-  const tip = tipFor(box), weeks = [...new Set(all.map((d) => +d.x))].sort((a, b) => a - b);
-  const dots = series.map((s) => svg.append('circle').attr('r', 4).attr('fill', s.color).attr('opacity', 0));
+  const tip = tipFor(box), keys = [...new Set(all.map((d) => +d.x))].sort((a, b) => a - b);
+  const dots = series.map((s) => svg.append('circle').attr('r', 4.5).attr('fill', s.color).attr('opacity', 0));
   const rule = svg.append('line').attr('y1', 30).attr('y2', H - 24).attr('stroke', 'var(--axis)').attr('opacity', 0);
   svg.append('rect').attr('x', ml).attr('y', 0).attr('width', Wd - ml - mr).attr('height', H).attr('fill', 'transparent')
     .on('mousemove', (ev) => {
-      const t = +x.invert(d3.pointer(ev)[0]); const wk = weeks.reduce((a, b) => Math.abs(b - t) < Math.abs(a - t) ? b : a);
-      rule.attr('x1', x(wk)).attr('x2', x(wk)).attr('opacity', 1);
-      const lines = series.map((s, i) => { const p = s.pts.find((q) => +q.x === wk);
+      const t = +x.invert(d3.pointer(ev)[0]); const kx = keys.reduce((a, b) => Math.abs(b - t) < Math.abs(a - t) ? b : a);
+      rule.attr('x1', x(kx)).attr('x2', x(kx)).attr('opacity', 1);
+      const lines = series.map((s, i) => { const p = s.pts.find((q) => +q.x === kx);
         if (p && p.v != null) dots[i].attr('cx', x(p.x)).attr('cy', y(p.v)).attr('opacity', 1); else dots[i].attr('opacity', 0);
         return { color: s.color, text: `${s.name}: ${p ? fVal(k, p.v) : '—'} (${p ? fInt(p.n) : 0} ${m.denL})` }; }).reverse();
-      tip.show(x(wk) * box.clientWidth / Wd, d3.pointer(ev, box)[1], 'Semana del ' + fDay(new Date(wk)), lines);
+      tip.show(x(kx) * box.clientWidth / Wd, d3.pointer(ev, box)[1], bucketLabel(iso(new Date(kx)), g), lines);
     }).on('mouseleave', () => { tip.hide(); rule.attr('opacity', 0); dots.forEach((d) => d.attr('opacity', 0)); });
   $('#hitos').textContent = 'Hitos: ' + HITOS.map((h, i) => `${i + 1} ${h.t} (${fDM(day(h.d))})`).join(' · ');
 }
 
-function drawVolume() {
-  const box = $('#ch-vol');
-  const pts = [...aggWeekly(P.pop).entries()].map(([s, a]) => ({ s, x: day(s), n: a.os })).filter((p) => p.n > 0).sort((a, b) => a.x - b.x);
+function drawVolume([c0, c1r]) {
+  const box = $('#ch-vol'), g = P.gran;
+  const from = P.periodo === 'rango' && P.desde < P.base ? P.desde : P.base;
+  const pts = [...aggSeries(P.pop, g, from).entries()].map(([s, a]) => ({ s, x: day(s), n: a.os })).filter((p) => p.n > 0).sort((a, b) => a.x - b.x);
   if (!pts.length) return emptyBox(box, 'Sin OS para esta selección');
   box.replaceChildren();
   const Wd = Math.max(280, box.clientWidth), H = 280;
   const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
-  const y = d3.scaleLinear([0, d3.max(pts, (d) => d.n)], [H - 24, 12]).nice();
+  const y = d3.scaleLinear([0, d3.max(pts, (d) => d.n)], [H - 24, 16]).nice();
   const ml = textW(svg, y.ticks(4).map((t) => L.format(',d')(t))) + 10;
-  const x = d3.scaleBand(pts.map((d) => d.s), [ml, Wd - 4]).padding(0.25);
+  const x = d3.scaleBand(pts.map((d) => d.s), [ml, Wd - 4]).padding(g === 'dia' ? 0.15 : 0.25);
   svg.append('g').attr('transform', `translate(${ml},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(Wd - ml - 4)).tickFormat(L.format(',d'))).call(cleanAxis);
+  const fmt = g === 'mes' ? (s) => fMon(day(s)) : (s) => fDay(day(s));
   const every = Math.max(1, Math.ceil(pts.length / Math.max(2, Math.floor((Wd - ml) / 60))));
-  svg.append('g').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).tickValues(pts.filter((d, i) => i % every === 0).map((d) => d.s)).tickFormat((s) => fDay(day(s))).tickSize(0).tickPadding(8)).call(cleanAxis);
-  const bw = Math.min(32, x.bandwidth()), tip = tipFor(box);
+  svg.append('g').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).tickValues(pts.filter((d, i) => i % every === 0).map((d) => d.s)).tickFormat(fmt).tickSize(0).tickPadding(8)).call(cleanAxis);
+  const bw = Math.min(40, x.bandwidth()), tip = tipFor(box);
+  const inSel = (d) => bucketEnd(d.s, g) >= c0 && d.s <= c1r;
   svg.append('g').selectAll('rect').data(pts).join('rect')
-    .attr('x', (d) => x(d.s) + (x.bandwidth() - bw) / 2).attr('width', bw).attr('y', (d) => y(d.n)).attr('height', (d) => y(0) - y(d.n)).attr('rx', 4)
-    .attr('fill', (d) => d.s >= mondayOf(P.base) ? 'var(--c1)' : 'var(--mutedbar)')
-    .on('mousemove', function (ev, d) { d3.select(this).attr('opacity', 0.75); const [px, py] = d3.pointer(ev, box); tip.show(px, py, 'Semana del ' + fDay(d.x), [{ text: `${popLabel(P.pop)}: ${fInt(d.n)} OS` }]); })
+    .attr('x', (d) => x(d.s) + (x.bandwidth() - bw) / 2).attr('width', bw).attr('y', (d) => y(d.n)).attr('height', (d) => y(0) - y(d.n)).attr('rx', Math.min(4, bw / 2))
+    .attr('fill', (d) => inSel(d) ? 'var(--c1)' : 'var(--mutedbar)')
+    .on('mousemove', function (ev, d) { d3.select(this).attr('opacity', 0.75); const [px, py] = d3.pointer(ev, box); tip.show(px, py, bucketLabel(d.s, g), [{ text: `${popLabel(P.pop)}: ${fInt(d.n)} OS` }]); })
     .on('mouseleave', function () { d3.select(this).attr('opacity', 1); tip.hide(); });
+  if (g !== 'dia') svg.append('g').selectAll('text').data(pts).join('text').attr('x', (d) => x(d.s) + x.bandwidth() / 2).attr('y', (d) => y(d.n) - 4)
+    .attr('text-anchor', 'middle').text((d) => x.bandwidth() > 22 ? fInt(d.n) : '');
 }
 
 function drawMotivos(cur) {
@@ -443,7 +506,7 @@ function drawMotivos(cur) {
   if (!a || !a.os) return emptyBox(box, 'Sin OS en este período');
   box.replaceChildren();
   const rows = Object.keys(CLASE).map((mo) => ({ mo, cl: CLASE[mo], n: a.mot[mo] || 0, pct: (a.mot[mo] || 0) / a.os, cp: c && c.os ? (c.mot[mo] || 0) / c.os : null })).sort((p, q) => q.pct - p.pct);
-  const Wd = Math.max(280, box.clientWidth), rowH = 36, H = rows.length * rowH + 8; box.style.minHeight = H + 'px';
+  const Wd = Math.max(280, box.clientWidth), rowH = 34, H = rows.length * rowH + 8; box.style.minHeight = H + 'px';
   const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
   const ml = textW(svg, rows.map((r) => r.mo)) + 12, mr = textW(svg, ['100,0% (9.999)']) + 10;
   const x = d3.scaleLinear([0, d3.max(rows, (r) => Math.max(r.pct, r.cp || 0)) || 0.01], [ml, Wd - mr]), tip = tipFor(box);
@@ -473,13 +536,13 @@ function drawRanking(cur) {
   const x = d3.scaleLinear([0, d3.max([...bars.map((b) => b.v), tot || 0]) * 1.02 || 1], [ml, Wd - mr]), tip = tipFor(box);
   bars.forEach((b, i) => {
     const y0 = i * rowH + 20, on = b.p === P.pop;
-    const g = svg.append('g').style('cursor', 'pointer').on('click', () => setP({ pop: b.p }))
+    const gg = svg.append('g').style('cursor', 'pointer').on('click', () => setP({ pop: b.p }))
       .on('mousemove', (ev) => { const [px, py] = d3.pointer(ev, box); tip.show(px, py, b.p, [{ text: `${m.label}: ${fVal(k, b.v)}` }, { text: `${fInt(b.n)} de ${fInt(b.N)} ${m.denL}` }]); })
       .on('mouseleave', () => tip.hide());
-    g.append('rect').attr('x', 0).attr('y', y0).attr('width', Wd).attr('height', rowH).attr('fill', 'transparent');
-    g.append('text').attr('x', ml - 8).attr('y', y0 + 15).attr('text-anchor', 'end').attr('class', on ? 'strong' : null).text(b.p);
-    g.append('rect').attr('x', ml).attr('y', y0 + 5).attr('height', 14).attr('rx', 4).attr('width', Math.max(0, x(b.v) - ml)).attr('fill', on ? 'var(--c1)' : 'var(--mutedbar)').attr('opacity', b.N < POCOS ? 0.55 : 1);
-    g.append('text').attr('x', x(b.v) + 6).attr('y', y0 + 16).attr('class', on ? 'strong' : null).text(labs[i]);
+    gg.append('rect').attr('x', 0).attr('y', y0).attr('width', Wd).attr('height', rowH).attr('fill', 'transparent');
+    gg.append('text').attr('x', ml - 8).attr('y', y0 + 15).attr('text-anchor', 'end').attr('class', on ? 'strong' : null).text(b.p);
+    gg.append('rect').attr('x', ml).attr('y', y0 + 5).attr('height', 14).attr('rx', 4).attr('width', Math.max(0, x(b.v) - ml)).attr('fill', on ? 'var(--c1)' : 'var(--mutedbar)').attr('opacity', b.N < POCOS ? 0.55 : 1);
+    gg.append('text').attr('x', x(b.v) + 6).attr('y', y0 + 16).attr('class', on ? 'strong' : null).text(labs[i]);
   });
   if (tot != null) {
     svg.append('line').attr('x1', x(tot)).attr('x2', x(tot)).attr('y1', 16).attr('y2', H).attr('stroke', 'var(--ref)').attr('stroke-dasharray', '4 3');
@@ -488,7 +551,7 @@ function drawRanking(cur) {
   }
 }
 
-/* ---------- Tabla ---------- */
+/* ---------- Tabla por POP ---------- */
 const COLS = [
   { k: 'pop', l: 'POP' }, { k: 'os', l: 'OS' }, { k: 'c1', l: '% Cumple 1ª ag.', m: 1 }, { k: 'd_c1', l: 'Δ Cumple vs resto' },
   { k: 'reag', l: '% Reagend.', m: 1 }, { k: 'reag_op', l: '% Reag. oper.', m: 1 }, { k: 'sla_sop', l: 'SLA sop ≤24h', m: 1 },
@@ -504,9 +567,8 @@ let sortK = null, sortD = 1;
 })();
 function drawTable(cur) {
   const rest = cur.get('Resto Central');
-  const rows = [...cur.entries()].filter(([p, a]) => a.os > 0 || a.abiertas > 0 || p === P.pop || GROUPS.includes(p)).map(([p, a]) => {
-    const all = a.hSop.concat(a.hInst);
-    const o = { pop: p, a, os: a.os, abiertas: a.abiertas, vencidas: a.vencidas, med: quant(all, 0.5), p90: quant(all, 0.9) };
+  const rows = [...cur.entries()].filter(([p, a]) => a.os > 0 || a.c1den > 0 || p === P.pop || GROUPS.includes(p)).map(([p, a]) => {
+    const o = { pop: p, a, os: a.os, abiertas: a.abiertas, vencidas: a.vencidas, med: quant(a.hAll, 0.5), p90: quant(a.hAll, 0.9) };
     for (const k of ['c1', 'reag', 'reag_op', 'sla_sop', 'sla_inst', 'sla_zoy', 'gar']) o[k] = val(a, k);
     o.d_c1 = o.c1 != null && val(rest, 'c1') != null ? o.c1 - val(rest, 'c1') : null;
     return o;
@@ -539,6 +601,7 @@ function drawTable(cur) {
 function draw() {
   document.querySelectorAll('[data-periodo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === P.periodo)));
   document.querySelectorAll('#chips button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === P.met)));
+  document.querySelectorAll('.gran button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.g === P.gran)));
   $('#f-base').value = P.base; $('#f-serv').value = P.serv;
   if (status !== 'ok') {
     $('#resumen').textContent = status === 'loading' ? 'Cargando datos…' : status === 'old'
@@ -546,43 +609,50 @@ function draw() {
       : 'No se pudieron cargar los datos (datos.csv).';
     return;
   }
-  // Opciones de filtros desde los datos
   const pops = [...new Set(ROWS.map((r) => r.pop))].sort((a, b) => a === '(en blanco)' ? 1 : b === '(en blanco)' ? -1 : a.localeCompare(b));
   fillSelect($('#f-pop'), [...pops, 'Resto Central', 'Total Central'], P.pop, popLabel);
   const dealers = [...new Set(ROWS.map((r) => r.dealer))].sort((a, b) => a === '(en blanco)' ? 1 : b === '(en blanco)' ? -1 : a.localeCompare(b));
   fillSelect($('#f-dealer'), ['Todos', ...dealers], P.dealer);
 
+  if (P.periodo === 'rango' && (!P.desde || !P.hasta)) P.periodo = 'piloto';
+  const cr = curRange();
+  for (const [id, v] of [['#f-desde', cr[0]], ['#f-hasta', cr[1] > DATA_HASTA ? DATA_HASTA : cr[1]]]) {
+    const inp = $(id); inp.min = DATA_DESDE; inp.max = DATA_HASTA; if (inp !== document.activeElement) inp.value = v;
+  }
   const servL = $('#f-serv').selectedOptions[0]?.textContent || P.serv;
-  const perL = P.periodo === 'base' ? `Línea base · ${fDayY(day(P.base))} – 18 oct 2026` : P.periodo === 'piloto' ? `Piloto · desde 19 oct 2026` : `Todo · desde ${fDayY(day(P.base))}`;
-  $('#periodo-label').textContent = `${perL} · ${servL} · Dealer: ${P.dealer} · POP: ${popLabel(P.pop)}`;
+  const hastaL = cr[1] > DATA_HASTA ? DATA_HASTA : cr[1];
+  const perL = P.periodo === 'base' ? 'Línea base' : P.periodo === 'piloto' ? 'Piloto' : 'Período elegido';
+  const rangoL = cr[0] === hastaL ? fDayY(day(cr[0])) : `${fDayY(day(cr[0]))} – ${fDayY(day(hastaL))}`;
+  $('#periodo-label').textContent = `${perL}: ${rangoL} · ${servL} · Dealer: ${P.dealer} · POP: ${popLabel(P.pop)}`;
   $('#fuente').textContent = `Fuente: export de ZOY · OS creadas hasta el ${fDayY(day(DATA_HASTA))} · ${fInt(ROWS.length)} OS de Soporte, Instalación, Comercial y Negociación`;
 
-  const cur = aggPeriod(P.periodo), base = P.periodo === 'base' ? cur : aggPeriod('base');
+  const base = aggRange(baseRange()), pil = aggRange(pilotRange());
+  const cur = P.periodo === 'base' ? base : P.periodo === 'piloto' ? pil : aggRange(cr);
+  // Las tarjetas comparan contra la línea base (o, si se mira la línea base, contra el resto de Central).
+  const ref = P.periodo === 'base' ? new Map([[P.pop, base.get(ctrlOf(P.pop))]]) : base;
+  const refLabel = P.periodo === 'base' ? 'Resto Central' : 'Línea base';
   const a = cur.get(P.pop);
-  const aviso = $('#aviso');
-  const enAlcance = P.pop === 'ASU021' && P.dealer === 'Neo Telecom' && P.serv === 'MVP';
-  if (P.periodo !== 'base' && DATA_HASTA < PILOTO_INI) { aviso.hidden = false; aviso.textContent = `El piloto empieza el 19/10/2026 y los datos llegan hasta el ${fDM(day(DATA_HASTA))}. Subí un export más reciente.`; }
+
+  const aviso = $('#aviso'), enAlcance = P.pop === 'ASU021' && P.dealer === 'Neo Telecom' && P.serv === 'MVP';
+  if (P.periodo === 'piloto' && DATA_HASTA < PILOTO_INI) { aviso.hidden = false; aviso.textContent = `El piloto empieza el 19/10/2026 y los datos llegan hasta el ${fDM(day(DATA_HASTA))}. Subí un export más reciente.`; }
   else if (!enAlcance) { aviso.hidden = false; aviso.textContent = 'Estás viendo una selección distinta del alcance del piloto (ASU021 · Neo Telecom · Soporte + Instalación). Usá «Restablecer» para volver.'; }
   else aviso.hidden = true;
 
-  // Resumen
   const res = $('#resumen'); res.replaceChildren();
-  if (!a || !a.os) res.textContent = `${popLabel(P.pop)} no tiene OS creadas en este período con estos filtros.`;
+  if (!a || (!a.os && !a.c1den)) res.textContent = `${popLabel(P.pop)} no tiene OS en ${rangoL} con estos filtros.`;
   else {
-    const b = (t) => { const e = el('b', null, t); return e; };
-    res.append(`${popLabel(P.pop)}: cumplimiento de 1ª agenda `, b(fPct(val(a, 'c1'))), ` (${fInt(a.c1ok)} de ${fInt(a.c1den)}; meta ≥95%), SLA soporte `, b(fPct(val(a, 'sla_sop'))),
+    const b = (t) => el('b', null, t);
+    res.append(`${popLabel(P.pop)} · ${perL.toLowerCase()} (${rangoL}): cumplimiento de 1ª agenda `, b(fPct(val(a, 'c1'))), ` (${fInt(a.c1ok)} de ${fInt(a.c1den)}; meta ≥95%), SLA soporte `, b(fPct(val(a, 'sla_sop'))),
       `, SLA instalación `, b(fPct(val(a, 'sla_inst'))), `, reagenda operativa `, b(fPct(val(a, 'reag_op'))));
-    if (P.periodo !== 'base') {
-      const vb = val(base.get(P.pop), 'reag_op'), v = val(a, 'reag_op');
-      const rel = v != null && vb ? (v - vb) / vb : null;
-      res.append(rel == null ? '.' : ` (${fRel(rel)} vs línea base; meta −20%).`);
-    } else res.append('.');
-    if (a.c1den < POCOS || a.os < POCOS) res.append(' Hay pocos casos todavía: conviene leer por semana y ampliar la observación.');
+    if (P.periodo !== 'base') { const vb = val(base.get(P.pop), 'reag_op'), v = val(a, 'reag_op'); const rel = v != null && vb ? (v - vb) / vb : null;
+      res.append(rel == null ? '.' : ` (${fRel(rel)} vs línea base; meta −20%).`); } else res.append('.');
+    if (a.c1den < POCOS || a.os < POCOS) res.append(' Hay pocos casos: conviene ampliar la observación antes de concluir.');
   }
 
-  drawCards(cur, base);
-  drawTrend();
-  drawVolume();
+  drawCards(cur, ref, refLabel);
+  drawComparativa(base, pil);
+  drawTrend(cr);
+  drawVolume(cr);
   drawMotivos(cur);
   drawRanking(cur);
   drawTable(cur);
