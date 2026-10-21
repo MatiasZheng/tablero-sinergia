@@ -79,6 +79,16 @@ tr.grp td { color: var(--muted); font-style: italic; }
 td.good { color: var(--ok); font-weight: 700; } td.bad { color: var(--bad); font-weight: 700; }
 .st { display: inline-block; min-width: 1.6em; padding: 0 6px; border-radius: 4px; font-weight: 700; text-align: center; }
 .st.ok { background: #157a38; color: #fff; } .st.no { background: #8f1d24; color: #fff; } .st.na { color: var(--muted); }
+.info { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; margin-left: 5px; border-radius: 50%; border: 1px solid currentColor; background: transparent; color: inherit; font: italic 700 10px/1 Georgia, serif; cursor: pointer; padding: 0; vertical-align: 1px; opacity: .85; }
+.info:hover, .info:focus-visible { opacity: 1; background: rgba(255,255,255,.18); outline: none; }
+.ipop { position: absolute; z-index: 50; max-width: 320px; background: #ffffff; color: #222; border-radius: 8px; box-shadow: 0 10px 28px rgba(0,0,0,.55); padding: 12px 14px; font-size: 13px; line-height: 1.45; text-align: left; }
+.ipop h3 { margin: 0 0 6px; font-size: 14px; color: #3a2db8; }
+.ipop p { margin: 0 0 6px; } .ipop p:last-child { margin: 0; }
+.ipop .lbl { font-weight: 700; color: #444; }
+.ipop .x { position: absolute; top: 6px; right: 8px; border: 0; background: none; font-size: 16px; cursor: pointer; color: #666; }
+th .thw { display: flex; align-items: center; justify-content: flex-end; } th:first-child .thw { justify-content: flex-start; }
+th .thw button.sort { width: auto; padding-right: 0; }
+th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; margin-right: 6px; flex: none; }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
@@ -353,6 +363,49 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 const bucketLabel = (s, g) => g === 'dia' ? fDayY(day(s)) : g === 'mes' ? fMonY(day(s)) : 'Semana del ' + fDay(day(s));
 const bucketEnd = (s, g) => g === 'dia' ? s : g === 'mes' ? iso(d3.utcDay.offset(d3.utcMonth.offset(day(s), 1), -1)) : addDays(s, 6);
 
+/* ---------- Ayuda de indicadores ---------- */
+const INFO = {
+  os: { t: 'OS creadas', q: 'Cuántas órdenes de servicio se crearon en el período.', c: 'Cuenta de OS por fecha de creación (Criado Em). Abajo: cuántas ya se ejecutaron y, a la fecha del export, cuántas siguen abiertas y cuántas ya pasaron su plazo de ZOY.', m: 'Es volumen, no tiene meta.' },
+  c1: { t: '% Cumple 1ª agenda', q: 'Si la OS se resolvió el mismo día en que se agendó por primera vez, sin moverla.', c: 'OS ejecutadas el mismo día de su 1ª agenda y no reagendadas ÷ OS cuya 1ª agenda cae en el período. Va por fecha de 1ª agenda (no de creación) y no cuenta el día del export, que todavía no terminó.', m: 'Meta ≥95% (Plan Go Live). Meta operativa: 100%.' },
+  reag: { t: '% Reagendadas', q: 'Qué parte de las OS tuvo que cambiar de fecha.', c: 'OS reagendadas ÷ OS creadas. Reagendada = N Agend. ≥ 2, o N Agend. = 1 con motivo de reagenda cargado (criterio de Gerencia: N Agend. = 1 es el primer agendamiento).', m: 'Bajar respecto de la línea base.' },
+  reag_op: { t: '% Reagenda operativa', q: 'Reagendas causadas por la operación (NEO o prestador), no por el cliente ni el clima.', c: 'OS con motivo Demora de contratista, Técnico, Infra o Reag. rápido ÷ OS creadas. Cliente y Lluvia no cuentan.', m: 'Meta del TAP: reducir al menos 20% (relativo) contra la línea base.' },
+  sla_sop: { t: 'SLA soporte ≤24 h', q: 'Qué parte de los soportes se resolvió dentro de 24 horas.', c: 'Soportes ejecutados en ≤24 h corridas desde la creación ÷ soportes ejecutados. Las OS abiertas o canceladas no entran.', m: 'Igual o mejor que la línea base (Plan Go Live).' },
+  sla_inst: { t: 'SLA instalación ≤48 h', q: 'Qué parte de las instalaciones se hizo dentro de 48 horas.', c: 'Instalaciones ejecutadas en ≤48 h corridas desde la creación ÷ instalaciones ejecutadas.', m: 'Igual o mejor que la línea base (Plan Go Live).' },
+  sla_zoy: { t: '% SLA ZOY', q: 'Si la OS se ejecutó antes del plazo que fija ZOY.', c: 'OS ejecutadas antes del Prazo Data ÷ OS ejecutadas.', m: 'Igual o mejor que la línea base.' },
+  gar: { t: '% Garantía', q: 'Qué parte de las OS es un retorno sobre un trabajo anterior.', c: 'OS con el campo Garantia cargado ÷ OS creadas.', m: 'Bajar: menos garantías = mejor calidad del primer trabajo.' },
+  horas: { t: 'Horas promedio a ejecución', q: 'Cuánto se tarda en promedio desde que se crea la OS hasta que se ejecuta.', c: 'Promedio de horas corridas entre Criado Em y Execucao de las OS ejecutadas.', m: 'Bajar.' },
+  med: { t: 'Mediana de horas', q: 'El tiempo “típico” de resolución: la mitad de las OS se resolvió en menos que este valor.', c: 'Mediana de horas corridas creación → ejecución de las OS ejecutadas. No se distorsiona por casos extremos, a diferencia del promedio.', m: 'Bajar.' },
+  p90: { t: 'P90 de horas', q: 'Los casos más lentos: el 90% de las OS se resolvió en menos que este valor.', c: 'Percentil 90 de horas corridas creación → ejecución. Muestra la “cola” de demoras que el promedio esconde.', m: 'Bajar (Plan Go Live pide mostrar mediana y P90).' },
+  d_c1: { t: 'Δ Cumple vs resto', q: 'Diferencia del POP contra el resto de Central en cumplimiento de 1ª agenda.', c: '% Cumple 1ª agenda del POP − el de Resto Central (sin ASU021), en puntos porcentuales (pp).', m: 'Positivo (verde) = el POP cumple más que el resto.' },
+  abiertas: { t: 'Abiertas', q: 'OS que todavía no se ejecutaron ni se cancelaron.', c: 'A la fecha del export, sin importar el período elegido.', m: 'Bajar.' },
+  vencidas: { t: 'Vencidas', q: 'OS abiertas que ya pasaron el plazo de ZOY.', c: 'Abiertas cuyo Prazo Data es anterior a la fecha del export.', m: 'Bajar.' },
+};
+const COMP_INFO = { 'Mediana horas soporte': 'med', 'P90 horas soporte': 'p90', 'Mediana horas instalación': 'med', 'P90 horas instalación': 'p90' };
+function infoBtn(key) { const b = el('button', 'info', 'i'); b.type = 'button'; b.dataset.info = key; b.setAttribute('aria-label', 'Qué mide ' + (INFO[key] ? INFO[key].t : '')); return b; }
+let POP_EL = null;
+function closeInfo() { if (POP_EL) { POP_EL.remove(); POP_EL = null; } }
+function openInfo(btn) {
+  closeInfo(); const d = INFO[btn.dataset.info]; if (!d) return;
+  const pop = el('div', 'ipop'); pop.setAttribute('role', 'dialog');
+  const x = el('button', 'x', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Cerrar'); x.addEventListener('click', closeInfo);
+  const p1 = el('p'); p1.append(el('span', 'lbl', 'Qué mide: '), d.q);
+  const p2 = el('p'); p2.append(el('span', 'lbl', 'Cómo se calcula: '), d.c);
+  const p3 = el('p'); p3.append(el('span', 'lbl', 'Meta / lectura: '), d.m);
+  pop.append(x, el('h3', null, d.t), p1, p2, p3);
+  document.body.append(pop); POP_EL = pop;
+  const r = btn.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+  let left = r.left + scrollX + r.width / 2 - pw / 2; left = Math.max(8 + scrollX, Math.min(left, scrollX + document.documentElement.clientWidth - pw - 8));
+  let top = r.bottom + scrollY + 8; if (r.bottom + ph + 16 > innerHeight && r.top - ph - 8 > 0) top = r.top + scrollY - ph - 8;
+  pop.style.left = left + 'px'; pop.style.top = top + 'px'; x.focus();
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.info');
+  if (b) { e.stopPropagation(); e.preventDefault(); if (POP_EL && POP_EL.dataset.for === b.dataset.info + b.closest('[id]')?.id) { closeInfo(); return; } openInfo(b); if (POP_EL) POP_EL.dataset.for = b.dataset.info + b.closest('[id]')?.id; return; }
+  if (POP_EL && !e.target.closest('.ipop')) closeInfo();
+}, true);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInfo(); });
+addEventListener('scroll', closeInfo, { passive: true });
+
 /* ---------- Tarjetas (compactas) ---------- */
 const TILE = { c1: 't-red', reag: 't-blue', reag_op: 't-gold', sla_sop: 't-green', sla_inst: 't-purple', gar: 't-red' };
 function deltaSpan(k, d) {
@@ -364,7 +417,8 @@ function drawCards(cur, ref, refLabel) {
   const a = cur.get(P.pop), b = ref.get(P.pop), cards = $('#cards'); cards.replaceChildren();
   {
     const c = el('div', 'tile t-indigo'); c.id = 'k-os';
-    c.append(el('div', 'k-l', 'OS creadas'), el('div', 'k-v', fInt(a ? a.os : null)),
+    const lo = el('div', 'k-l', 'OS creadas'); lo.append(infoBtn('os'));
+    c.append(lo, el('div', 'k-v', fInt(a ? a.os : null)),
       el('div', 'k-n', `${fInt(a ? a.ej : null)} ejecutadas`), el('div', 'k-c', `Hoy: ${fInt(a ? a.abiertas : null)} abiertas · ${fInt(a ? a.vencidas : null)} vencidas`));
     cards.append(c);
   }
@@ -372,7 +426,8 @@ function drawCards(cur, ref, refLabel) {
     const m = M[k], v = val(a, k), vb = val(b, k), c = el('div', 'tile ' + TILE[k]); c.id = 'k-' + k;
     const N = a ? a[m.den] : 0;
     c.title = `${m.label}: ${fInt(a ? a[m.num] : 0)} de ${fInt(N)} ${m.denL}. ${refLabel}: ${fVal(k, vb)}`;
-    c.append(el('div', 'k-l', m.label), el('div', 'k-v', fVal(k, v)), el('div', 'k-n', `${fInt(a ? a[m.num] : 0)} de ${fInt(N)} ${m.denL}`));
+    const lk = el('div', 'k-l', m.label); lk.append(infoBtn(k));
+    c.append(lk, el('div', 'k-v', fVal(k, v)), el('div', 'k-n', `${fInt(a ? a[m.num] : 0)} de ${fInt(N)} ${m.denL}`));
     const line = el('div', 'k-c');
     if (k === 'reag_op' && P.periodo !== 'base') {
       const rel = v != null && vb ? (v - vb) / vb : null;
@@ -389,9 +444,9 @@ function drawComparativa(base, pil) {
   const a = base.get(P.pop), b = pil.get(P.pop), c = pil.get(ctrlOf(P.pop));
   $('#comp-note').textContent = `${popLabel(P.pop)} · línea base ${fDayY(day(P.base))} – 18 oct 2026 vs piloto desde 19 oct 2026 (datos hasta ${fDayY(day(DATA_HASTA))}). La variación es piloto − línea base.`;
   const rows = [];
-  const pctRow = (k, meta, estado) => rows.push({ label: M[k].label, base: fVal(k, val(a, k)), bn: a ? a[M[k].den] : 0, pil: fVal(k, val(b, k)), pn: b ? b[M[k].den] : 0,
+  const pctRow = (k, meta, estado) => rows.push({ info: k, label: M[k].label, base: fVal(k, val(a, k)), bn: a ? a[M[k].den] : 0, pil: fVal(k, val(b, k)), pn: b ? b[M[k].den] : 0,
     k, d: val(a, k) != null && val(b, k) != null ? val(b, k) - val(a, k) : null, ctrl: fVal(k, val(c, k)), meta, estado });
-  rows.push({ label: 'OS creadas', base: fInt(a ? a.os : 0), pil: fInt(b ? b.os : 0), ctrl: fInt(c ? c.os : 0), meta: '—', estado: null });
+  rows.push({ info: 'os', label: 'OS creadas', base: fInt(a ? a.os : 0), pil: fInt(b ? b.os : 0), ctrl: fInt(c ? c.os : 0), meta: '—', estado: null });
   const vb = (k) => val(a, k), vp = (k) => val(b, k);
   pctRow('c1', '≥ 95%', vp('c1') == null ? null : vp('c1') >= META_C1);
   pctRow('reag', 'Bajar', vp('reag') == null || vb('reag') == null ? null : vp('reag') < vb('reag'));
@@ -407,7 +462,7 @@ function drawComparativa(base, pil) {
   }
   $('#comp tbody').replaceChildren(...rows.map((r) => {
     const tr = el('tr');
-    tr.append(el('td', null, r.label));
+    const tdL = el('td', null, r.label); const ik = r.info || COMP_INFO[r.label]; if (ik) tdL.append(infoBtn(ik)); tr.append(tdL);
     const tdB = el('td', null, r.base); if (r.bn != null) tdB.append(' ', el('small', null, `(${fInt(r.bn)})`));
     const tdP = el('td', null, r.pil); if (r.pn != null) tdP.append(' ', el('small', null, `(${fInt(r.pn)})`));
     if (r.pn != null && r.pn > 0 && r.pn < POCOS) tdP.append(' ', el('small', null, '⚠'));
@@ -562,8 +617,8 @@ const COLS = [
 let sortK = null, sortD = 1;
 (function head() {
   const tr = $('#tabla thead tr');
-  for (const c of COLS) { const th = el('th'); th.dataset.field = c.k; const b = el('button', null, c.l); b.type = 'button';
-    b.addEventListener('click', () => { if (sortK === c.k) sortD = -sortD; else { sortK = c.k; sortD = c.k === 'pop' ? 1 : -1; } draw(); }); th.append(b); tr.append(th); }
+  for (const c of COLS) { const th = el('th'); th.dataset.field = c.k; const w = el('div', 'thw'); const b = el('button', 'sort', c.l); b.type = 'button';
+    b.addEventListener('click', () => { if (sortK === c.k) sortD = -sortD; else { sortK = c.k; sortD = c.k === 'pop' ? 1 : -1; } draw(); }); w.append(b); if (INFO[c.k]) w.append(infoBtn(c.k)); th.append(w); tr.append(th); }
   $('#tabla tbody').addEventListener('click', (e) => { const r = e.target.closest('tr[data-pop]'); if (r) setP({ pop: r.dataset.pop }); });
 })();
 function drawTable(cur) {
