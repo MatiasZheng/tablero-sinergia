@@ -173,8 +173,9 @@ td.good { color: var(--ok); font-weight: 700; } td.bad { color: var(--bad); font
 
   <section class="defs" id="definiciones">
     <p><b>Alcance del piloto</b> (Plan Go Live MVP): POP ASU021, cartera Neo Telecom, Instalación y Soporte B2C. Operación controlada desde el 19/10/2026. Fuente: export «Relatorio Suportes» de ZOY; POP y Dealer tal cual vienen en el export.</p>
-    <p><b>% Cumple 1ª agenda</b> = OS ejecutadas el mismo día de su 1ª agenda y sin reagendamientos ÷ OS con 1ª agenda en el período (por fecha de 1ª agenda, igual que el panel de ZOY; el campo existe desde junio 2026). Meta ≥95%.
-    <b>% Reagendadas</b> = OS con N Agend. ≥ 1 ÷ OS creadas.
+    <p><b>Reagendada</b> = OS con N Agend. ≥ 2 o con motivo de reagenda cargado (N Agend. = 1 es el primer agendamiento).
+    <b>% Cumple 1ª agenda</b> = OS ejecutadas el mismo día de su 1ª agenda y no reagendadas ÷ OS con 1ª agenda en el período (por fecha de 1ª agenda; no cuenta el día del export, que aún no terminó; el campo existe desde junio 2026). Meta ≥95%.
+    <b>Reagendada</b> (criterio de Gerencia): N Agend. ≥ 2 o motivo de reagenda registrado; N Agend. = 1 es el primer agendamiento. <b>% Reagendadas</b> = OS reagendadas ÷ OS creadas.
     <b>% Reagenda operativa</b> = OS con motivo Demora de contratista, Técnico, Infra o Reag. rápido ÷ OS creadas; meta TAP: reducción relativa ≥20% vs línea base.
     <b>SLA soporte</b> = soportes ejecutados en ≤24 h corridas desde la creación ÷ soportes ejecutados; <b>SLA instalación</b> = instalaciones en ≤48 h ÷ instalaciones ejecutadas; meta: igual o mejor que la línea base. Mediana y P90 en horas creación → ejecución.
     <b>% SLA ZOY</b> = ejecutadas antes del Prazo Data ÷ ejecutadas. <b>% Garantía</b> = OS con el campo Garantia cargado ÷ OS creadas.
@@ -240,7 +241,7 @@ const quant = (arr, q) => { if (!arr || !arr.length) return null; const s = Floa
 
 function emptyAgg() { return { os: 0, ej: 0, reag: 0, reagop: 0, zoy: 0, gar: 0, hsum: 0, sopN: 0, sopOk: 0, instN: 0, instOk: 0, c1ok: 0, c1den: 0, abiertas: 0, vencidas: 0, hAll: [], hSop: [], hInst: [], mot: {} }; }
 function addCreated(a, r) {
-  a.os++; a.reag += r.nag >= 1 ? 1 : 0; a.reagop += r.reag_op; a.gar += r.gar;
+  a.os++; a.reag += r.reag; a.reagop += r.reag_op; a.gar += r.gar;
   if (CLASE[r.motivo]) a.mot[r.motivo] = (a.mot[r.motivo] || 0) + 1;
   if (r.ej) {
     a.ej++; a.zoy += r.sla_zoy; a.hsum += r.horas; a.hAll.push(r.horas);
@@ -250,7 +251,7 @@ function addCreated(a, r) {
 }
 
 /* ---------- Estado ---------- */
-let ROWS = null, DATA_HASTA = '', DATA_DESDE = '', status = 'loading';
+let ROWS = null, DATA_HASTA = '', DATA_DESDE = '', AGENDA_HASTA = '', status = 'loading';
 let P = { ...DEFAULTS };
 try { const h = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(DEFAULTS)) if (h.get(k)) P[k] = h.get(k); } catch (e) {}
 if (P.periodo === 'todo') P.periodo = 'piloto';
@@ -269,7 +270,7 @@ function aggRange([d0, d1]) {
   const out = new Map(), get = (g) => out.get(g) || out.set(g, emptyAgg()).get(g);
   for (const r of ROWS) {
     if (!servOk(r.servicio) || !dealerOk(r.dealer)) continue;
-    const inCr = r.creada >= d0 && r.creada <= d1, inA1 = r.a1 && r.a1 >= d0 && r.a1 <= d1;
+    const inCr = r.creada >= d0 && r.creada <= d1, inA1 = r.a1 && r.a1 >= d0 && r.a1 <= d1 && r.a1 <= AGENDA_HASTA;
     for (const g of groupsOf(r.pop)) {
       const a = get(g); a.abiertas += r.abierta; a.vencidas += r.vencida;
       if (inCr) addCreated(a, r);
@@ -283,7 +284,7 @@ function aggSeries(pop, gran, from) {
   for (const r of ROWS) {
     if (!servOk(r.servicio) || !dealerOk(r.dealer) || !groupsOf(r.pop).includes(pop)) continue;
     if (r.creada >= from && r.creada <= DATA_HASTA) addCreated(get(bucketOf(r.creada, gran)), r);
-    if (r.a1 && r.a1 >= from && r.a1 <= DATA_HASTA) { const a = get(bucketOf(r.a1, gran)); a.c1den++; a.c1ok += r.c1; }
+    if (r.a1 && r.a1 >= from && r.a1 <= AGENDA_HASTA) { const a = get(bucketOf(r.a1, gran)); a.c1den++; a.c1ok += r.c1; }
   }
   return out;
 }
@@ -291,11 +292,11 @@ function aggSeries(pop, gran, from) {
 /* ---------- Carga ---------- */
 fetch('datos.csv?v=' + Date.now()).then((r) => { if (!r.ok) throw new Error('http'); return r.text(); }).then((t) => {
   const raw = d3.csvParse(t);
-  if (!raw.columns.includes('agenda1')) { status = 'old'; draw(); return; }
+  if (!raw.columns.includes('reagendada')) { status = 'old'; draw(); return; }
   ROWS = raw.map((d) => ({ creada: d.creada, servicio: d.servicio, pop: d.pop, dealer: d.dealer, motivo: d.motivo,
     ej: +d.ejecutada, horas: d.horas === '' ? null : +d.horas, sla_plan: +d.sla_plan, sla_zoy: +d.sla_zoy,
-    abierta: +d.abierta, vencida: +d.vencida, a1: d.agenda1 || null, c1: +d.cumple_1a, nag: +d.n_reagendas, gar: +d.garantia, reag_op: +d.reag_operativa }));
-  DATA_HASTA = d3.max(ROWS, (r) => r.creada); DATA_DESDE = d3.min(ROWS, (r) => r.creada);
+    abierta: +d.abierta, vencida: +d.vencida, a1: d.agenda1 || null, c1: +d.cumple_1a, nag: +d.n_reagendas, reag: +d.reagendada, gar: +d.garantia, reag_op: +d.reag_operativa }));
+  DATA_HASTA = d3.max(ROWS, (r) => r.creada); DATA_DESDE = d3.min(ROWS, (r) => r.creada); AGENDA_HASTA = addDays(DATA_HASTA, -1);
   status = 'ok'; draw();
 }).catch(() => { status = 'error'; draw(); });
 

@@ -80,7 +80,7 @@ function construirDatos(XLSX, buffer) {
   let corte = -Infinity;
   for (const r of datos) { const e = serial(r[c['Criado Em']]); if (e != null && e > corte) corte = e; }
 
-  const cols = ['creada', 'servicio', 'pop', 'dealer', 'motivo', 'ejecutada', 'horas', 'sla_plan', 'sla_zoy', 'cancelada', 'abierta', 'vencida', 'agenda1', 'cumple_1a', 'n_reagendas', 'garantia', 'reag_operativa'];
+  const cols = ['creada', 'servicio', 'pop', 'dealer', 'motivo', 'ejecutada', 'horas', 'sla_plan', 'sla_zoy', 'cancelada', 'abierta', 'vencida', 'agenda1', 'cumple_1a', 'n_reagendas', 'reagendada', 'garantia', 'reag_operativa'];
   const esc = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
   const out = [cols.join(',')];
   let total = 0, maxDia = '';
@@ -97,6 +97,8 @@ function construirDatos(XLSX, buffer) {
     const nag = parseInt(r[c['N Agend.']], 10) || 0;
     const status = norm(r[c['Status']]);
     const ej = G != null ? 1 : 0;
+    // N Agend. = 1 es el primer agendamiento. Reagendada = N Agend. >= 2 o motivo de reagenda cargado.
+    const reag = nag >= 2 || motivo !== 'Sin reagenda' ? 1 : 0;
     const horas = ej ? (G - E) * 24 : null;
     const canc = status === 'cancelado' ? 1 : 0;
     const abierta = !ej && !canc && status !== 'auditado no ejecutado' ? 1 : 0;
@@ -107,8 +109,8 @@ function construirDatos(XLSX, buffer) {
       sla_zoy: ej && (H == null || G <= H) ? 1 : 0,
       cancelada: canc, abierta, vencida: abierta && H != null && H < corte ? 1 : 0,
       agenda1: A1 == null ? '' : iso(A1),
-      cumple_1a: A1 != null && ej && dayOf(G) === dayOf(A1) && nag === 0 ? 1 : 0,
-      n_reagendas: nag,
+      cumple_1a: A1 != null && ej && dayOf(G) === dayOf(A1) && !reag ? 1 : 0,
+      n_reagendas: nag, reagendada: reag,
       garantia: txt(r[c['Garantia']]) !== '' ? 1 : 0,
       reag_operativa: OPERATIVOS.includes(mot.toUpperCase()) ? 1 : 0,
     };
