@@ -47,7 +47,7 @@ a { color: var(--acc); }
 /* Convierte el export de ZOY (Relatorio Suportes) en datos.csv: una fila por OS, sin Id ni datos de clientes.
    POP y Dealer tal cual vienen en el export (vacío = "(en blanco)"). */
 function construirDatos(XLSX, buffer) {
-  const NEEDED = ['Id', 'Prazo Data', 'Pop', 'SubTipo', 'Status', 'Dealer', 'Criado Em', 'Execucao', 'Motivo Reagendamento', '1ª Agenda', 'N Agend.', 'Garantia'];
+  const NEEDED = ['Id', 'Prazo Data', 'Pop', 'SubTipo', 'Status', 'Dealer', 'Criado Em', 'Execucao', 'Motivo Reagendamento', '1ª Agenda', 'N Agend.', 'Garantia', 'Motivo Cancelamento'];
   const OPERATIVOS = ['INFRA', 'TECNICO', 'DEMORA DE CONTRATISTA', 'REAG. RAPIDO'];
   const META_SOPORTE = 24, META_OTROS = 48;
   const SERV = { soporte: 'Soporte', instalacion: 'Instalación', comercial: 'Comercial', negociacion: 'Negociación' };
@@ -80,7 +80,7 @@ function construirDatos(XLSX, buffer) {
   let corte = -Infinity;
   for (const r of datos) { const e = serial(r[c['Criado Em']]); if (e != null && e > corte) corte = e; }
 
-  const cols = ['creada', 'servicio', 'pop', 'dealer', 'motivo', 'ejecutada', 'horas', 'sla_plan', 'sla_zoy', 'cancelada', 'abierta', 'vencida', 'agenda1', 'cumple_1a', 'n_reagendas', 'reagendada', 'garantia', 'reag_operativa'];
+  const cols = ['creada', 'servicio', 'pop', 'dealer', 'motivo', 'ejecutada', 'horas', 'sla_plan', 'sla_zoy', 'cancelada', 'abierta', 'vencida', 'agenda1', 'cumple_1a', 'n_reagendas', 'reagendada', 'motivo_cancel', 'garantia', 'reag_operativa'];
   const esc = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
   const out = [cols.join(',')];
   let total = 0, maxDia = '';
@@ -111,6 +111,7 @@ function construirDatos(XLSX, buffer) {
       agenda1: A1 == null ? '' : iso(A1),
       cumple_1a: A1 != null && ej && dayOf(G) === dayOf(A1) && !reag ? 1 : 0,
       n_reagendas: nag, reagendada: reag,
+      motivo_cancel: canc ? (txt(r[c['Motivo Cancelamento']]) && txt(r[c['Motivo Cancelamento']]) !== '-' ? txt(r[c['Motivo Cancelamento']]) : 'Sin motivo cargado') : '',
       garantia: txt(r[c['Garantia']]) !== '' ? 1 : 0,
       reag_operativa: OPERATIVOS.includes(mot.toUpperCase()) ? 1 : 0,
     };

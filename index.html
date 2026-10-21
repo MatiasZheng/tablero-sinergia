@@ -89,6 +89,14 @@ td.good { color: var(--ok); font-weight: 700; } td.bad { color: var(--bad); font
 th .thw { display: flex; align-items: center; justify-content: flex-end; } th:first-child .thw { justify-content: flex-start; }
 th .thw button.sort { width: auto; padding-right: 0; }
 th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; margin-right: 6px; flex: none; }
+.h3 { font-size: 13px; font-weight: 700; margin: 0 0 6px; color: var(--fg); }
+.cmini { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: 8px; }
+.cmini .tile { padding: 6px 8px; } .cmini .k-v { font-size: 20px; }
+.t-sop { background: var(--z-gold); } .t-inst { background: var(--z-blue); } .t-com { background: var(--z-green); } .t-neg { background: var(--z-purple); } .t-tot { background: var(--z-red); }
+.tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--line); flex-wrap: wrap; }
+.tabs button { font: inherit; font-weight: 700; font-size: 14px; background: var(--panel); color: var(--muted); border: 1px solid var(--line); border-bottom: 0; border-radius: var(--r) var(--r) 0 0; padding: 9px 16px; cursor: pointer; margin-bottom: -2px; }
+.tabs button[aria-selected="true"] { background: #5b48e0; color: #fff; border-color: #5b48e0; }
+[data-view][hidden] { display: none !important; }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
@@ -131,12 +139,18 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 
   <p class="alert" id="aviso" hidden></p>
 
-  <section id="indicadores">
+  <nav class="tabs" role="tablist" aria-label="Vistas">
+    <button type="button" role="tab" data-vista="piloto">Piloto: línea base vs piloto</button>
+    <button type="button" role="tab" data-vista="cancel">Cancelaciones</button>
+    <button type="button" role="tab" data-vista="pops">Comparación por POP</button>
+  </nav>
+
+  <section id="indicadores" data-view="piloto">
     <p class="period" id="periodo-label"></p>
     <div class="cards" id="cards"></div>
   </section>
 
-  <section class="panel" id="comparativa">
+  <section class="panel" id="comparativa" data-view="piloto">
     <h2>Comparativa línea base vs piloto</h2>
     <p class="note" id="comp-note"></p>
     <div class="tw"><table id="comp"><thead><tr>
@@ -145,7 +159,7 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
     </tr></thead><tbody></tbody></table></div>
   </section>
 
-  <section class="grid2">
+  <section class="grid2" data-view="piloto">
     <div class="panel" id="evolucion">
       <h2>Evolución</h2>
       <p class="note">Sombreado gris: línea base · azul: período elegido. Líneas punteadas: hitos del proyecto. Los períodos recientes aún tienen OS abiertas.</p>
@@ -161,13 +175,27 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
     </div>
   </section>
 
-  <section class="grid2">
+  <section class="grid2" data-view="piloto">
     <div class="panel" id="motivos">
       <h2>Motivos de reagendamiento</h2>
       <p class="note">% de OS creadas con cada motivo en el período elegido. Barra fina: resto de Central. “Operativo” es lo atribuible a NEO / prestador (meta TAP: −20%).</p>
       <div class="legend" id="mot-legend"></div>
       <div class="chart" id="ch-mot"></div>
     </div>
+  </section>
+
+  <section class="panel" id="cancelaciones" data-view="cancel">
+    <h2>Cancelaciones <button type="button" class="info" data-info="canc" aria-label="Qué mide">i</button></h2>
+    <p class="note">Por fecha de creación, en el período, dealer y POP elegidos. Este bloque tiene su propio filtro de servicio: por defecto muestra los 4.</p>
+    <div class="bar"><div class="chips" id="cserv" role="group" aria-label="Servicios de cancelaciones"></div><span class="note" id="cancel-aviso" style="margin:0"></span></div>
+    <div class="cmini" id="cmini"></div>
+    <div class="grid2" style="margin-top:12px">
+      <div><h3 class="h3">Canceladas por POP</h3><div class="legend" id="cleg"></div><div class="chart" id="ch-cpop"></div></div>
+      <div><h3 class="h3" id="cmot-title">Motivos de cancelación</h3><p class="note" id="cmot-note"></p><div class="chart" id="ch-cmot"></div></div>
+    </div>
+  </section>
+
+  <section class="grid2" data-view="pops">
     <div class="panel" id="ranking">
       <h2>Ranking de POP</h2>
       <p class="note">Indicador elegido en Evolución, en el período y filtros actuales. Línea: total Central. Clic en un POP para seleccionarlo.</p>
@@ -175,7 +203,7 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
     </div>
   </section>
 
-  <section class="panel" id="comparacion">
+  <section class="panel" id="comparacion" data-view="pops">
     <h2>Comparación por POP</h2>
     <p class="note">Período elegido. Cada % con su denominador. “Resto Central (sin ASU021)” es el grupo de control. Abiertas y vencidas son a la fecha de corte.</p>
     <div class="tw"><table id="tabla"><thead><tr></tr></thead><tbody></tbody></table></div>
@@ -183,8 +211,7 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 
   <section class="defs" id="definiciones">
     <p><b>Alcance del piloto</b> (Plan Go Live MVP): POP ASU021, cartera Neo Telecom, Instalación y Soporte B2C. Operación controlada desde el 19/10/2026. Fuente: export «Relatorio Suportes» de ZOY; POP y Dealer tal cual vienen en el export.</p>
-    <p><b>Reagendada</b> = OS con N Agend. ≥ 2 o con motivo de reagenda cargado (N Agend. = 1 es el primer agendamiento).
-    <b>% Cumple 1ª agenda</b> = OS ejecutadas el mismo día de su 1ª agenda y no reagendadas ÷ OS con 1ª agenda en el período (por fecha de 1ª agenda; no cuenta el día del export, que aún no terminó; el campo existe desde junio 2026). Meta ≥95%.
+    <p><b>% Cumple 1ª agenda</b> = OS ejecutadas el mismo día de su 1ª agenda y no reagendadas ÷ OS con 1ª agenda en el período (por fecha de 1ª agenda; no cuenta el día del export, que aún no terminó; el campo existe desde junio 2026). Meta ≥95%.
     <b>Reagendada</b> (criterio de Gerencia): N Agend. ≥ 2 o motivo de reagenda registrado; N Agend. = 1 es el primer agendamiento. <b>% Reagendadas</b> = OS reagendadas ÷ OS creadas.
     <b>% Reagenda operativa</b> = OS con motivo Demora de contratista, Técnico, Infra o Reag. rápido ÷ OS creadas; meta TAP: reducción relativa ≥20% vs línea base.
     <b>SLA soporte</b> = soportes ejecutados en ≤24 h corridas desde la creación ÷ soportes ejecutados; <b>SLA instalación</b> = instalaciones en ≤48 h ÷ instalaciones ejecutadas; meta: igual o mejor que la línea base. Mediana y P90 en horas creación → ejecución.
@@ -205,7 +232,7 @@ const HITOS = [
   { d: '2026-11-15', t: 'Gate 1 (TAP H8)' },
 ];
 const META_C1 = 0.95, META_REAG_OP = -0.20, POCOS = 30;
-const DEFAULTS = { periodo: 'piloto', desde: '', hasta: '', base: '2026-04-01', pop: 'ASU021', serv: 'MVP', dealer: 'Neo Telecom', met: 'c1', gran: 'semana' };
+const DEFAULTS = { periodo: 'piloto', desde: '', hasta: '', base: '2026-04-01', pop: 'ASU021', serv: 'MVP', dealer: 'Neo Telecom', met: 'c1', gran: 'semana', cserv: 'Los 4', vista: 'piloto' };
 const CLASE = { 'CLIENTE': 'Cliente', 'LLUVIA': 'Fuerza mayor', 'INFRA': 'Operativo', 'TECNICO': 'Operativo', 'DEMORA DE CONTRATISTA': 'Operativo', 'REAG. RAPIDO': 'Operativo' };
 const GROUPS = ['Resto Central', 'Total Central'];
 
@@ -242,6 +269,7 @@ const M = {
   sla_inst: { label: 'SLA instalación ≤48 h', short: 'SLA instalación', up: true, pct: true, num: 'instOk', den: 'instN', denL: 'instalaciones ejec.' },
   sla_zoy: { label: '% SLA ZOY', short: 'SLA ZOY', up: true, pct: true, num: 'zoy', den: 'ej', denL: 'OS ejecutadas' },
   gar: { label: '% Garantía', short: 'Garantía', up: false, pct: true, num: 'gar', den: 'os', denL: 'OS creadas' },
+  canc: { label: '% Canceladas', short: 'Canceladas', up: false, pct: true, num: 'canc', den: 'os', denL: 'OS creadas' },
   horas: { label: 'Horas prom. a ejecución', short: 'Horas prom.', up: false, pct: false, num: 'hsum', den: 'ej', denL: 'OS ejecutadas' },
 };
 const val = (a, k) => { if (!a) return null; const m = M[k]; return a[m.den] ? a[m.num] / a[m.den] : null; };
@@ -249,9 +277,9 @@ const fVal = (k, v) => M[k].pct ? fPct(v) : fH(v);
 const fDelta = (k, v) => M[k].pct ? fPP(v) : fDH(v);
 const quant = (arr, q) => { if (!arr || !arr.length) return null; const s = Float64Array.from(arr).sort(); return d3.quantileSorted(s, q); };
 
-function emptyAgg() { return { os: 0, ej: 0, reag: 0, reagop: 0, zoy: 0, gar: 0, hsum: 0, sopN: 0, sopOk: 0, instN: 0, instOk: 0, c1ok: 0, c1den: 0, abiertas: 0, vencidas: 0, hAll: [], hSop: [], hInst: [], mot: {} }; }
+function emptyAgg() { return { canc: 0, mc: {}, os: 0, ej: 0, reag: 0, reagop: 0, zoy: 0, gar: 0, hsum: 0, sopN: 0, sopOk: 0, instN: 0, instOk: 0, c1ok: 0, c1den: 0, abiertas: 0, vencidas: 0, hAll: [], hSop: [], hInst: [], mot: {} }; }
 function addCreated(a, r) {
-  a.os++; a.reag += r.reag; a.reagop += r.reag_op; a.gar += r.gar;
+  a.os++; if (r.canc) { a.canc++; a.mc[r.mcan] = (a.mc[r.mcan] || 0) + 1; } a.reag += r.reag; a.reagop += r.reag_op; a.gar += r.gar;
   if (CLASE[r.motivo]) a.mot[r.motivo] = (a.mot[r.motivo] || 0) + 1;
   if (r.ej) {
     a.ej++; a.zoy += r.sla_zoy; a.hsum += r.horas; a.hAll.push(r.horas);
@@ -302,16 +330,17 @@ function aggSeries(pop, gran, from) {
 /* ---------- Carga ---------- */
 fetch('datos.csv?v=' + Date.now()).then((r) => { if (!r.ok) throw new Error('http'); return r.text(); }).then((t) => {
   const raw = d3.csvParse(t);
-  if (!raw.columns.includes('reagendada')) { status = 'old'; draw(); return; }
+  if (!raw.columns.includes('motivo_cancel')) { status = 'old'; draw(); return; }
   ROWS = raw.map((d) => ({ creada: d.creada, servicio: d.servicio, pop: d.pop, dealer: d.dealer, motivo: d.motivo,
     ej: +d.ejecutada, horas: d.horas === '' ? null : +d.horas, sla_plan: +d.sla_plan, sla_zoy: +d.sla_zoy,
-    abierta: +d.abierta, vencida: +d.vencida, a1: d.agenda1 || null, c1: +d.cumple_1a, nag: +d.n_reagendas, reag: +d.reagendada, gar: +d.garantia, reag_op: +d.reag_operativa }));
+    abierta: +d.abierta, vencida: +d.vencida, a1: d.agenda1 || null, c1: +d.cumple_1a, nag: +d.n_reagendas, reag: +d.reagendada, canc: +d.cancelada, mcan: d.motivo_cancel, gar: +d.garantia, reag_op: +d.reag_operativa }));
   DATA_HASTA = d3.max(ROWS, (r) => r.creada); DATA_DESDE = d3.min(ROWS, (r) => r.creada); AGENDA_HASTA = addDays(DATA_HASTA, -1);
   status = 'ok'; draw();
 }).catch(() => { status = 'error'; draw(); });
 
 /* ---------- Controles ---------- */
 const $ = (s) => document.querySelector(s);
+document.querySelectorAll('[data-vista]').forEach((b) => b.addEventListener('click', () => setP({ vista: b.dataset.vista })));
 document.querySelectorAll('[data-periodo]').forEach((b) => b.addEventListener('click', () => setP({ periodo: b.dataset.periodo, desde: '', hasta: '' })));
 const onDate = () => {
   const d = $('#f-desde').value, h = $('#f-hasta').value;
@@ -378,6 +407,7 @@ const INFO = {
   p90: { t: 'P90 de horas', q: 'Los casos más lentos: el 90% de las OS se resolvió en menos que este valor.', c: 'Percentil 90 de horas corridas creación → ejecución. Muestra la “cola” de demoras que el promedio esconde.', m: 'Bajar (Plan Go Live pide mostrar mediana y P90).' },
   d_c1: { t: 'Δ Cumple vs resto', q: 'Diferencia del POP contra el resto de Central en cumplimiento de 1ª agenda.', c: '% Cumple 1ª agenda del POP − el de Resto Central (sin ASU021), en puntos porcentuales (pp).', m: 'Positivo (verde) = el POP cumple más que el resto.' },
   abiertas: { t: 'Abiertas', q: 'OS que todavía no se ejecutaron ni se cancelaron.', c: 'A la fecha del export, sin importar el período elegido.', m: 'Bajar.' },
+  canc: { t: '% Canceladas', q: 'Qué parte de las OS creadas terminó cancelada (Status = Cancelado en ZOY).', c: 'OS canceladas ÷ OS creadas, por fecha de creación. El motivo sale de la columna Motivo Cancelamento del export.', m: 'Bajar. En instalaciones casi nunca hay POP cargado: analizarlas por motivo.' },
   vencidas: { t: 'Vencidas', q: 'OS abiertas que ya pasaron el plazo de ZOY.', c: 'Abiertas cuyo Prazo Data es anterior a la fecha del export.', m: 'Bajar.' },
 };
 const COMP_INFO = { 'Mediana horas soporte': 'med', 'P90 horas soporte': 'p90', 'Mediana horas instalación': 'med', 'P90 horas instalación': 'p90' };
@@ -455,6 +485,7 @@ function drawComparativa(base, pil) {
   pctRow('sla_sop', '≥ línea base', vp('sla_sop') == null || vb('sla_sop') == null ? null : vp('sla_sop') >= vb('sla_sop'));
   pctRow('sla_inst', '≥ línea base', vp('sla_inst') == null || vb('sla_inst') == null ? null : vp('sla_inst') >= vb('sla_inst'));
   pctRow('sla_zoy', '≥ línea base', vp('sla_zoy') == null || vb('sla_zoy') == null ? null : vp('sla_zoy') >= vb('sla_zoy'));
+  pctRow('canc', 'Bajar', vp('canc') == null || vb('canc') == null ? null : vp('canc') <= vb('canc'));
   pctRow('gar', 'Bajar', vp('gar') == null || vb('gar') == null ? null : vp('gar') <= vb('gar'));
   for (const [lab, arr, q] of [['Mediana horas soporte', 'hSop', 0.5], ['P90 horas soporte', 'hSop', 0.9], ['Mediana horas instalación', 'hInst', 0.5], ['P90 horas instalación', 'hInst', 0.9]]) {
     const x = quant(a && a[arr], q), y = quant(b && b[arr], q);
@@ -578,6 +609,90 @@ function drawMotivos(cur) {
   });
 }
 
+const SERVS = ['Soporte', 'Instalación', 'Comercial', 'Negociación'];
+const SCOL = { 'Soporte': 'var(--z-gold)', 'Instalación': 'var(--z-blue)', 'Comercial': 'var(--z-green)', 'Negociación': 'var(--z-purple)' };
+const STILE = { 'Soporte': 't-sop', 'Instalación': 't-inst', 'Comercial': 't-com', 'Negociación': 't-neg' };
+(function () {
+  for (const k of ['Los 4', ...SERVS]) { const b = document.createElement('button'); b.type = 'button'; b.dataset.cs = k; b.textContent = k;
+    b.addEventListener('click', () => setP({ cserv: k })); $('#cserv').append(b); }
+})();
+// Cancelaciones: usa su propio filtro de servicio (no el filtro general).
+function aggCancel([d0, d1]) {
+  const sv = P.cserv === 'Los 4' ? SERVS : [P.cserv], out = new Map();
+  const get = (g) => out.get(g) || out.set(g, { os: {}, canc: {}, mc: {}, tos: 0, tcanc: 0 }).get(g);
+  for (const r of ROWS) {
+    if (!sv.includes(r.servicio) || !dealerOk(r.dealer) || r.creada < d0 || r.creada > d1) continue;
+    for (const g of groupsOf(r.pop)) {
+      const a = get(g); a.os[r.servicio] = (a.os[r.servicio] || 0) + 1; a.tos++;
+      if (r.canc) { a.canc[r.servicio] = (a.canc[r.servicio] || 0) + 1; a.tcanc++; a.mc[r.mcan] = (a.mc[r.mcan] || 0) + 1; }
+    }
+  }
+  return out;
+}
+function drawCancel(range) {
+  document.querySelectorAll('#cserv button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cs === P.cserv)));
+  const cur = aggCancel(range), sv = P.cserv === 'Los 4' ? SERVS : [P.cserv];
+  const tot = cur.get('Total Central'), sel = cur.get(P.pop), ctrl = cur.get(ctrlOf(P.pop)), blank = cur.get('(en blanco)');
+  // Resumen por servicio (Total Central, o el POP elegido)
+  const mini = $('#cmini'); mini.replaceChildren();
+  const base = sel || { os: {}, canc: {}, tos: 0, tcanc: 0 };
+  for (const s of sv) {
+    const n = base.canc[s] || 0, N = base.os[s] || 0, t = el('div', 'tile ' + STILE[s]);
+    t.append(el('div', 'k-l', s), el('div', 'k-v', fInt(n)), el('div', 'k-n', `${fPct(N ? n / N : null)} de ${fInt(N)} OS`)); mini.append(t);
+  }
+  if (sv.length > 1) { const t = el('div', 'tile t-tot'); t.append(el('div', 'k-l', 'Total'), el('div', 'k-v', fInt(base.tcanc)), el('div', 'k-n', `${fPct(base.tos ? base.tcanc / base.tos : null)} de ${fInt(base.tos)} OS`)); mini.append(t); }
+  $('#cancel-aviso').textContent = `${popLabel(P.pop)} · ` + (blank && blank.tcanc && tot ? `En Central, ${fInt(blank.tcanc)} de ${fInt(tot.tcanc)} canceladas (${fPct(blank.tcanc / tot.tcanc)}) no tienen POP en ZOY` + ((blank.canc['Instalación'] || 0) > blank.tcanc / 2 ? ', casi todas instalaciones.' : '.') : '');
+  // Leyenda
+  $('#cleg').replaceChildren(...sv.map((s) => { const x = el('span'); const i = el('i'); i.style.background = SCOL[s]; x.append(i, s); return x; }));
+  // Canceladas por POP (apiladas por servicio)
+  const box = $('#ch-cpop');
+  const bars = [...cur.entries()].filter(([p, a]) => !GROUPS.includes(p) && a.tcanc > 0).map(([p, a]) => ({ p, a })).sort((x, y) => y.a.tcanc - x.a.tcanc);
+  if (!bars.length) emptyBox(box, 'Sin canceladas en este período');
+  else {
+    box.replaceChildren();
+    const Wd = Math.max(280, box.clientWidth), rowH = 24, H = bars.length * rowH + 8; box.style.minHeight = H + 'px';
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
+    const labs = bars.map((b) => `${fInt(b.a.tcanc)} · ${fPct(b.a.tcanc / b.a.tos)}`);
+    const ml = textW(svg, bars.map((b) => b.p)) + 12, mr = textW(svg, labs, 'strong') + 10;
+    const x = d3.scaleLinear([0, d3.max(bars, (b) => b.a.tcanc)], [ml, Wd - mr]), tip = tipFor(box);
+    bars.forEach((b, i) => {
+      const y0 = i * rowH + 4, on = b.p === P.pop;
+      const gg = svg.append('g').style('cursor', 'pointer').on('click', () => setP({ pop: b.p }))
+        .on('mousemove', (ev) => { const [px, py] = d3.pointer(ev, box);
+          tip.show(px, py, `${b.p} · ${fInt(b.a.tcanc)} canceladas de ${fInt(b.a.tos)} OS (${fPct(b.a.tcanc / b.a.tos)})`,
+            sv.filter((s) => b.a.os[s]).map((s) => ({ color: SCOL[s], text: `${s}: ${fInt(b.a.canc[s] || 0)} de ${fInt(b.a.os[s])} (${fPct((b.a.canc[s] || 0) / b.a.os[s])})` }))); })
+        .on('mouseleave', () => tip.hide());
+      gg.append('rect').attr('x', 0).attr('y', y0).attr('width', Wd).attr('height', rowH).attr('fill', on ? 'rgba(255,255,255,.08)' : 'transparent').attr('rx', 4);
+      gg.append('text').attr('x', ml - 8).attr('y', y0 + 15).attr('text-anchor', 'end').attr('class', on ? 'strong' : null).text(b.p);
+      let x0 = ml;
+      for (const s of sv) { const n = b.a.canc[s] || 0; if (!n) continue; const w = x(n) - ml;
+        gg.append('rect').attr('x', x0).attr('y', y0 + 5).attr('height', 14).attr('width', Math.max(0, w)).attr('fill', SCOL[s]); x0 += w; }
+      gg.append('text').attr('x', x0 + 6).attr('y', y0 + 16).attr('class', on ? 'strong' : null).text(labs[i]);
+    });
+  }
+  // Motivos del POP elegido
+  const mb = $('#ch-cmot');
+  $('#cmot-title').textContent = `Motivos de cancelación · ${popLabel(P.pop)}`;
+  $('#cmot-note').textContent = `% de las ${fInt(sel ? sel.tcanc : 0)} OS canceladas (${sv.length > 1 ? 'los 4 servicios' : P.cserv}). Barra fina: ${popLabel(ctrlOf(P.pop))}.`;
+  if (!sel || !sel.tcanc) { emptyBox(mb, 'Sin canceladas para este POP en el período'); return; }
+  mb.replaceChildren();
+  let rows = Object.entries(sel.mc).map(([mo, n]) => ({ mo, n, pct: n / sel.tcanc, cp: ctrl && ctrl.tcanc ? (ctrl.mc[mo] || 0) / ctrl.tcanc : null })).sort((p, q) => q.n - p.n);
+  if (rows.length > 10) { const rest = rows.slice(9); rows = rows.slice(0, 9).concat([{ mo: 'Otros motivos', n: d3.sum(rest, (r) => r.n), pct: d3.sum(rest, (r) => r.pct), cp: ctrl && ctrl.tcanc ? d3.sum(rest, (r) => r.cp || 0) : null }]); }
+  const Wd = Math.max(280, mb.clientWidth), rowH = 30, H = rows.length * rowH + 8; mb.style.minHeight = H + 'px';
+  const svg = d3.select(mb).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
+  const ml = Math.min(Wd * 0.45, textW(svg, rows.map((r) => r.mo)) + 12), mr = textW(svg, ['100,0% (999)'], 'strong') + 10;
+  const x = d3.scaleLinear([0, d3.max(rows, (r) => Math.max(r.pct, r.cp || 0)) || 0.01], [ml, Wd - mr]), tip = tipFor(mb);
+  rows.forEach((r, i) => {
+    const y0 = i * rowH + 4;
+    svg.append('text').attr('x', ml - 8).attr('y', y0 + 13).attr('text-anchor', 'end').text(r.mo.length > 34 ? r.mo.slice(0, 33) + '…' : r.mo);
+    svg.append('rect').attr('x', ml).attr('y', y0 + 3).attr('height', 13).attr('rx', 4).attr('width', Math.max(0, x(r.pct) - ml)).attr('fill', 'var(--z-red)');
+    if (r.cp != null) svg.append('rect').attr('x', ml).attr('y', y0 + 19).attr('height', 4).attr('rx', 2).attr('width', Math.max(0, x(r.cp) - ml)).attr('fill', 'var(--mutedbar)');
+    svg.append('text').attr('x', x(r.pct) + 6).attr('y', y0 + 14).attr('class', 'strong').text(`${fPct(r.pct)} (${fInt(r.n)})`);
+    svg.append('rect').attr('x', 0).attr('y', y0).attr('width', Wd).attr('height', rowH).attr('fill', 'transparent')
+      .on('mousemove', (ev) => { const [px, py] = d3.pointer(ev, mb); tip.show(px, py, r.mo, [{ color: 'var(--z-red)', text: `${popLabel(P.pop)}: ${fPct(r.pct)} (${fInt(r.n)} de ${fInt(sel.tcanc)})` }, { color: 'var(--mutedbar)', text: `${popLabel(ctrlOf(P.pop))}: ${fPct(r.cp)}` }]); })
+      .on('mouseleave', () => tip.hide());
+  });
+}
 function drawRanking(cur) {
   const box = $('#ch-rank'), k = M[P.met] ? P.met : 'c1', m = M[k];
   const bars = [...cur.entries()].filter(([p, a]) => !GROUPS.includes(p) && val(a, k) != null).map(([p, a]) => ({ p, v: val(a, k), n: a[m.num], N: a[m.den] }))
@@ -612,20 +727,20 @@ const COLS = [
   { k: 'pop', l: 'POP' }, { k: 'os', l: 'OS' }, { k: 'c1', l: '% Cumple 1ª ag.', m: 1 }, { k: 'd_c1', l: 'Δ Cumple vs resto' },
   { k: 'reag', l: '% Reagend.', m: 1 }, { k: 'reag_op', l: '% Reag. oper.', m: 1 }, { k: 'sla_sop', l: 'SLA sop ≤24h', m: 1 },
   { k: 'sla_inst', l: 'SLA inst ≤48h', m: 1 }, { k: 'sla_zoy', l: '% SLA ZOY', m: 1 }, { k: 'med', l: 'Mediana h' }, { k: 'p90', l: 'P90 h' },
-  { k: 'gar', l: '% Garantía', m: 1 }, { k: 'abiertas', l: 'Abiertas' }, { k: 'vencidas', l: 'Vencidas' },
+  { k: 'gar', l: '% Garantía', m: 1 }, { k: 'ncanc', l: 'Canceladas', inf: 'canc' }, { k: 'canc', l: '% Cancel.', m: 1 }, { k: 'abiertas', l: 'Abiertas' }, { k: 'vencidas', l: 'Vencidas' },
 ];
 let sortK = null, sortD = 1;
 (function head() {
   const tr = $('#tabla thead tr');
   for (const c of COLS) { const th = el('th'); th.dataset.field = c.k; const w = el('div', 'thw'); const b = el('button', 'sort', c.l); b.type = 'button';
-    b.addEventListener('click', () => { if (sortK === c.k) sortD = -sortD; else { sortK = c.k; sortD = c.k === 'pop' ? 1 : -1; } draw(); }); w.append(b); if (INFO[c.k]) w.append(infoBtn(c.k)); th.append(w); tr.append(th); }
+    b.addEventListener('click', () => { if (sortK === c.k) sortD = -sortD; else { sortK = c.k; sortD = c.k === 'pop' ? 1 : -1; } draw(); }); w.append(b); if (INFO[c.inf || c.k]) w.append(infoBtn(c.inf || c.k)); th.append(w); tr.append(th); }
   $('#tabla tbody').addEventListener('click', (e) => { const r = e.target.closest('tr[data-pop]'); if (r) setP({ pop: r.dataset.pop }); });
 })();
 function drawTable(cur) {
   const rest = cur.get('Resto Central');
   const rows = [...cur.entries()].filter(([p, a]) => a.os > 0 || a.c1den > 0 || p === P.pop || GROUPS.includes(p)).map(([p, a]) => {
-    const o = { pop: p, a, os: a.os, abiertas: a.abiertas, vencidas: a.vencidas, med: quant(a.hAll, 0.5), p90: quant(a.hAll, 0.9) };
-    for (const k of ['c1', 'reag', 'reag_op', 'sla_sop', 'sla_inst', 'sla_zoy', 'gar']) o[k] = val(a, k);
+    const o = { pop: p, a, ncanc: a.canc, os: a.os, abiertas: a.abiertas, vencidas: a.vencidas, med: quant(a.hAll, 0.5), p90: quant(a.hAll, 0.9) };
+    for (const k of ['c1', 'reag', 'reag_op', 'sla_sop', 'sla_inst', 'sla_zoy', 'gar', 'canc']) o[k] = val(a, k);
     o.d_c1 = o.c1 != null && val(rest, 'c1') != null ? o.c1 - val(rest, 'c1') : null;
     return o;
   });
@@ -655,6 +770,8 @@ function drawTable(cur) {
 
 /* ---------- Dibujo principal ---------- */
 function draw() {
+  document.querySelectorAll('[data-vista]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.vista === P.vista)));
+  document.querySelectorAll('[data-view]').forEach((s) => { s.hidden = s.dataset.view !== P.vista; });
   document.querySelectorAll('[data-periodo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === P.periodo)));
   document.querySelectorAll('#chips button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === P.met)));
   document.querySelectorAll('.gran button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.g === P.gran)));
@@ -705,13 +822,9 @@ function draw() {
     if (a.c1den < POCOS || a.os < POCOS) res.append(' Hay pocos casos: conviene ampliar la observación antes de concluir.');
   }
 
-  drawCards(cur, ref, refLabel);
-  drawComparativa(base, pil);
-  drawTrend(cr);
-  drawVolume(cr);
-  drawMotivos(cur);
-  drawRanking(cur);
-  drawTable(cur);
+  if (P.vista === 'piloto') { drawCards(cur, ref, refLabel); drawComparativa(base, pil); drawTrend(cr); drawVolume(cr); drawMotivos(cur); }
+  else if (P.vista === 'cancel') drawCancel(cr);
+  else { drawRanking(cur); drawTable(cur); }
 }
 draw();
 })();
