@@ -1,90 +1,205 @@
 creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abierta,vencida,agenda1,cumple_1a,n_reagendas,reagendada,motivo_cancel,garantia,reag_operativa
+2026-10-23,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-23,Soporte,ASU031,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-23,Comercial,LUQ021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-23,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-24,0,1,0,,1,0
+2026-10-23,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-23,Soporte,ASU031,CGZ Telecomunicaciones,TECNICO,0,,0,0,0,1,0,2026-10-24,0,1,1,,0,1
+2026-10-23,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-23,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-23,Soporte,SLO011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-23,Soporte,ASU021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-24,0,0,0,,0,0
+2026-10-23,Soporte,MRA011,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,1,0
+2026-10-23,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-24,0,0,0,,0,0
+2026-10-22,Soporte,LUQ011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,ASU011,Neo Telecom,Sin reagenda,1,11.08,1,1,0,0,0,2026-10-23,1,0,0,,0,0
+2026-10-22,Soporte,MRA011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,ASU021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,FDM011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-24,0,0,0,,0,0
+2026-10-22,Soporte,FDM011,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-23,0,1,1,,0,1
+2026-10-22,Soporte,ASU011,Neo Telecom,Sin reagenda,1,14.12,1,1,0,0,0,2026-10-23,1,0,0,,1,0
+2026-10-22,Soporte,LUQ021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,LBM011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,ASU031,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-23,0,1,1,,0,0
+2026-10-22,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,1,0
+2026-10-22,Soporte,LUQ021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,SLO021,Neo Telecom,Sin reagenda,1,15.92,1,1,0,0,0,2026-10-23,1,0,0,,0,0
+2026-10-22,Soporte,LBM011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,1,0
+2026-10-22,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,ASUX11,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,SLO021,Neo Telecom,CLIENTE,1,15.92,1,1,0,0,0,2026-10-23,0,1,1,,1,0
+2026-10-22,Comercial,ASU031,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,YPN011,Neo Telecom,Sin reagenda,1,16.08,1,1,0,0,0,2026-10-23,1,0,0,,1,0
+2026-10-22,Soporte,ASU021,Neo Telecom,Sin reagenda,1,2.88,1,1,0,0,0,2026-10-23,0,1,0,,1,0
+2026-10-22,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,0,2026-10-23,0,2,1,,0,0
+2026-10-22,Soporte,LBM011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,MRA011,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Instalación,(en blanco),CGZ Telecomunicaciones,Sin reagenda,1,19.63,1,1,0,0,0,2026-10-23,1,1,0,,0,0
+2026-10-22,Soporte,MRA011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,LBM011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,0,2026-10-23,0,2,1,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Soporte,YPN011,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,1,0
+2026-10-22,Soporte,LUQ021,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-23,0,1,1,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,LBM011,Neo Telecom,DEMORA DE CONTRATISTA,1,19.95,1,1,0,0,0,2026-10-23,0,4,1,,0,1
+2026-10-22,Instalación,MRA011,CGZ Telecomunicaciones,Sin reagenda,1,3.95,1,1,0,0,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Comercial,LUQ021,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-23,0,0,0,Motivo no Informado,0,0
+2026-10-22,Soporte,ASU011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-23,0,2,1,,1,0
+2026-10-22,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,MRA011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,FDM011,Neo Telecom,CLIENTE,1,3.35,1,1,0,0,0,2026-10-23,0,1,1,,0,0
+2026-10-22,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-22,Soporte,EMB011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-23,0,2,1,,0,0
+2026-10-22,Soporte,LBM011,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-23,0,1,1,,0,1
+2026-10-22,Soporte,SLO021,Neo Telecom,TECNICO,1,4.75,1,1,0,0,0,2026-10-23,0,1,1,,0,1
+2026-10-22,Soporte,ASU021,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-23,0,3,1,,0,1
+2026-10-22,Soporte,MRA011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Comercial,FDM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Soporte,EMB011,Neo Telecom,Sin reagenda,1,2.92,1,1,0,0,0,2026-10-23,0,1,0,,0,0
+2026-10-22,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,0,2026-10-22,0,2,1,,0,1
+2026-10-22,Negociación,SLO021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-23,0,0,0,,0,0
+2026-10-22,Instalación,SLO021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,6.17,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-22,Instalación,(en blanco),Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-23,0,4,1,,0,1
+2026-10-22,Soporte,LUQ011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-23,0,2,1,,1,0
+2026-10-22,Soporte,MRA011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,1,2026-10-24,0,0,0,,1,0
+2026-10-22,Soporte,YPN011,Neo Telecom,Sin reagenda,1,4,1,1,0,0,0,2026-10-23,0,1,0,,1,0
+2026-10-22,Comercial,MRA011,Neo Telecom,TECNICO,1,3.25,1,1,0,0,0,2026-10-22,0,1,1,,0,1
+2026-10-21,Soporte,ASU031,Neo Telecom,LLUVIA,1,14.67,1,0,0,0,0,2026-10-22,0,1,1,,0,0
+2026-10-21,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,15.65,1,0,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,15.65,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,LBM011,Neo Telecom,Sin reagenda,1,13.92,1,1,0,0,0,2026-10-22,1,0,0,,1,0
+2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,14.53,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Instalación,ASU031,CGZ Telecomunicaciones,CLIENTE,1,21.67,1,1,0,0,0,2026-10-22,0,1,1,,0,0
+2026-10-21,Instalación,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,21.3,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Instalación,(en blanco),Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-22,0,2,1,,0,0
+2026-10-21,Soporte,LUQ011,Neo Telecom,Sin reagenda,1,15.45,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,LUQ011,VITERBO,CLIENTE,1,20.12,1,0,0,0,0,2026-10-22,0,2,1,,0,0
+2026-10-21,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,17.5,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,EMB011,CGZ Telecomunicaciones,Sin reagenda,1,16.62,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,ASU021,Neo Telecom,Sin reagenda,1,1.83,1,1,0,0,0,2026-10-22,0,1,0,,1,0
+2026-10-21,Instalación,ASUX11,CGZ Telecomunicaciones,Sin reagenda,1,19.03,1,1,0,0,0,2026-10-22,1,1,0,,0,0
+2026-10-21,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,1,0,0,,0,0,0,Motivo no Informado,0,0
+2026-10-21,Comercial,ASUX11,FIBRAX CORPORETION E.A.S.,CLIENTE,1,1.1,1,1,0,0,0,2026-10-21,0,2,1,,0,0
+2026-10-21,Soporte,ASU031,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-21,0,3,1,,1,1
+2026-10-21,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,3.72,1,1,0,0,0,2026-10-22,0,1,0,,0,0
+2026-10-21,Comercial,ASU021,CGZ Telecomunicaciones,CLIENTE,0,,0,0,0,1,1,2026-10-22,0,3,1,,0,0
+2026-10-21,Soporte,FDM011,Neo Telecom,Sin reagenda,1,19.93,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Instalación,MRA011,CGZ Telecomunicaciones,Sin reagenda,1,2.77,1,1,0,0,0,2026-10-22,0,1,0,,0,0
+2026-10-21,Instalación,MAR001,CGZ Telecomunicaciones,Sin reagenda,1,25.18,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,MRA011,Neo Telecom,CLIENTE,1,18.43,1,1,0,0,0,2026-10-21,0,1,1,,1,0
+2026-10-21,Soporte,ASU021,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-22,0,5,1,,0,0
+2026-10-21,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,1,0,0,,0,0,0,Motivo no Informado,0,0
+2026-10-21,Instalación,(en blanco),Neo Telecom,INFRA,0,,0,0,1,0,0,2026-10-22,0,2,1,Zona sin columnas,0,1
+2026-10-21,Instalación,ASUX11,CGZ Telecomunicaciones,Sin reagenda,1,19.65,1,1,0,0,0,2026-10-22,1,1,0,,0,0
+2026-10-21,Soporte,SLO021,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-22,0,0,0,Link Loss Recuperado,0,0
+2026-10-21,Instalación,MRA011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,23.65,1,1,0,0,0,2026-10-22,1,1,0,,0,0
+2026-10-21,Instalación,YPN011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,22.48,1,1,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,SLO021,Neo Telecom,TECNICO,1,1.28,1,1,0,0,0,2026-10-22,0,1,1,,0,1
+2026-10-21,Soporte,ASU031,Neo Telecom,CLIENTE,1,0.95,1,1,0,0,0,2026-10-21,0,1,1,,0,0
 2026-10-21,Comercial,LUQ011,Neo Telecom,Sin reagenda,1,0.32,1,1,0,0,0,2026-10-21,1,0,0,,0,0
-2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-21,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-21,Instalación,MRA011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,22.92,1,1,0,0,0,2026-10-22,1,1,0,,0,0
+2026-10-21,Instalación,MRA011,CGZ Telecomunicaciones,Sin reagenda,1,24.92,1,1,0,0,0,2026-10-22,1,1,0,,0,0
+2026-10-21,Instalación,MRA011,CGZ Telecomunicaciones,CLIENTE,1,29.37,1,1,0,0,0,2026-10-22,0,3,1,,0,0
 2026-10-21,Comercial,FDM011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-24,0,0,0,,0,0
-2026-10-21,Soporte,EMB011,Neo Telecom,TECNICO,0,,0,0,0,1,0,2026-10-21,0,2,1,,0,1
-2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-22,0,1,0,,0,0
-2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,1,0
-2026-10-21,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-21,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-22,0,0,0,,0,0
-2026-10-21,Soporte,MRA011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,1,0
-2026-10-21,Comercial,EMB011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-21,Soporte,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-22,0,0,0,,0,0
-2026-10-21,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-21,Soporte,ASUX11,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,1,0
-2026-10-21,Soporte,ASU011,VITERBO,Sin reagenda,0,,0,0,0,1,0,2026-10-22,0,0,0,,0,0
-2026-10-21,Soporte,ASU021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,1,0,,0,0
-2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,1,0,,0,0
-2026-10-21,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-21,Soporte,EMB011,Neo Telecom,INFRA,0,,0,0,0,1,1,2026-10-21,0,3,1,,0,1
+2026-10-21,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,0,2026-10-22,0,4,1,,0,1
+2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,2.9,1,1,0,0,0,2026-10-21,1,1,0,,1,0
+2026-10-21,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,5.22,1,1,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,4.57,1,1,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-21,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,26.38,0,0,0,0,0,2026-10-22,1,0,0,,0,0
+2026-10-21,Soporte,MRA011,Neo Telecom,Sin reagenda,1,2.33,1,1,0,0,0,2026-10-21,1,0,0,,1,0
+2026-10-21,Comercial,EMB011,Neo Telecom,CLIENTE,1,21.9,1,0,0,0,0,2026-10-21,0,2,1,,0,0
+2026-10-21,Soporte,LBM011,FIBRAX CORPORETION E.A.S.,CLIENTE,1,31.57,0,0,0,0,0,2026-10-22,0,1,1,,0,0
+2026-10-21,Instalación,ASU011,FIBRAX CORPORETION E.A.S.,TECNICO,1,8.98,1,1,0,0,0,2026-10-22,0,2,1,,0,1
+2026-10-21,Soporte,ASUX11,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,7.37,1,1,0,0,0,2026-10-21,1,0,0,,1,0
+2026-10-21,Soporte,ASU011,VITERBO,TECNICO,0,,0,0,0,1,1,2026-10-22,0,2,1,,0,1
+2026-10-21,Soporte,ASU021,CGZ Telecomunicaciones,CLIENTE,1,23.58,1,0,0,0,0,2026-10-21,0,1,1,,0,0
+2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,7.17,1,1,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,7.77,1,1,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-21,Instalación,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,6.67,1,1,0,0,0,2026-10-21,1,1,0,,0,0
+2026-10-21,Instalación,LUQ011,CGZ Telecomunicaciones,Sin reagenda,1,6.03,1,1,0,0,0,2026-10-21,1,1,0,,0,0
+2026-10-21,Instalación,ASUX031,CGZ Telecomunicaciones,Sin reagenda,1,9.05,1,1,0,0,0,2026-10-22,0,1,0,,0,0
 2026-10-21,Soporte,YPN011,Neo Telecom,Sin reagenda,1,4.17,1,1,0,0,0,2026-10-22,0,1,0,,0,0
 2026-10-20,Soporte,SLO021,Neo Telecom,Sin reagenda,1,10.73,1,1,0,0,0,2026-10-21,1,1,0,,0,0
 2026-10-20,Soporte,ASU031,Neo Telecom,TECNICO,1,14.05,1,1,0,0,0,2026-10-24,0,1,1,,0,1
-2026-10-20,Comercial,EMB011,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,1
-2026-10-20,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-20,Soporte,ASU031,CGZ Telecomunicaciones,INFRA,0,,0,0,0,1,0,2026-10-21,0,1,1,,1,1
+2026-10-20,Comercial,EMB011,Neo Telecom,INFRA,0,,0,0,0,1,1,2026-10-21,0,1,1,,0,1
+2026-10-20,Instalación,LUQ011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,17.95,1,1,0,0,0,2026-10-22,0,1,0,,0,0
+2026-10-20,Soporte,ASU031,CGZ Telecomunicaciones,INFRA,0,,0,0,1,0,0,2026-10-21,0,1,1,Link Loss Recuperado,1,1
 2026-10-20,Soporte,MRA011,Neo Telecom,Sin reagenda,1,15.68,1,1,0,0,0,2026-10-21,1,1,0,,0,0
-2026-10-20,Soporte,FDM011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,1,0
-2026-10-20,Soporte,SLO021,VITERBO,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-20,Soporte,LUQ011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-22,0,2,1,,0,0
-2026-10-20,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
-2026-10-20,Comercial,YPN011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
-2026-10-20,Soporte,ASU021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,1,0,,0,0
-2026-10-20,Instalación,(en blanco),FIBRAX CORPORETION E.A.S.,Sin reagenda,1,17.55,1,1,0,0,0,2026-10-21,1,1,0,,0,0
+2026-10-20,Soporte,FDM011,Neo Telecom,TECNICO,0,,0,0,0,1,1,2026-10-21,0,3,1,,1,1
+2026-10-20,Soporte,SLO021,VITERBO,CLIENTE,1,40.58,0,0,0,0,0,2026-10-21,0,2,1,,0,0
+2026-10-20,Soporte,LUQ011,Neo Telecom,CLIENTE,1,22.87,1,1,0,0,0,2026-10-22,0,2,1,,0,0
+2026-10-20,Instalación,LUQ021,FIBRAX CORPORETION E.A.S.,CLIENTE,1,21.22,1,1,0,0,0,2026-10-21,0,1,1,,0,0
+2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,1,44.67,0,0,0,0,0,2026-10-21,0,2,1,,0,0
+2026-10-20,Comercial,YPN011,Neo Telecom,CLIENTE,1,38.48,1,0,0,0,0,2026-10-21,0,3,1,,0,0
+2026-10-20,Soporte,ASU021,Neo Telecom,TECNICO,1,21.67,1,1,0,0,0,2026-10-21,0,3,1,,0,1
+2026-10-20,Instalación,LUQ011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,17.55,1,1,0,0,0,2026-10-21,1,1,0,,0,0
 2026-10-20,Soporte,LUQ021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,15.82,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,SLO021,Neo Telecom,Sin reagenda,1,16.28,1,1,0,0,0,2026-10-21,1,0,0,,1,0
 2026-10-20,Soporte,SLO021,Neo Telecom,Sin reagenda,1,18.45,1,1,0,0,0,2026-10-21,1,0,0,,0,0
-2026-10-20,Soporte,LUQ011,Neo Telecom,TECNICO,0,,0,0,0,1,0,2026-10-21,0,1,1,,1,1
+2026-10-20,Soporte,LUQ011,Neo Telecom,TECNICO,1,21.5,1,1,0,0,0,2026-10-21,0,1,1,,1,1
 2026-10-20,Soporte,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,16.7,1,1,0,0,0,2026-10-21,1,1,0,,0,0
 2026-10-20,Soporte,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,18.13,1,1,0,0,0,2026-10-21,1,1,0,,1,0
-2026-10-20,Negociación,EMB011,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,1
-2026-10-20,Negociación,LBM011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
+2026-10-20,Negociación,EMB011,Neo Telecom,INFRA,0,,0,0,0,1,1,2026-10-21,0,1,1,,0,1
+2026-10-20,Negociación,LBM011,Neo Telecom,CLIENTE,1,44.25,1,0,0,0,0,2026-10-21,0,4,1,,0,0
 2026-10-20,Soporte,LUQ011,Neo Telecom,Sin reagenda,1,19.1,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,19.27,1,1,0,0,0,2026-10-21,1,0,0,,0,0
-2026-10-20,Soporte,YPN011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-20,Comercial,LUQ021,CGZ Telecomunicaciones,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
-2026-10-20,Soporte,EMB011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-20,Soporte,ASU021,VITERBO,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,1,0
-2026-10-20,Soporte,MRA011,CGZ Telecomunicaciones,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
+2026-10-20,Soporte,YPN011,CGZ Telecomunicaciones,CLIENTE,1,40.45,0,0,0,0,0,2026-10-21,0,1,1,,0,0
+2026-10-20,Comercial,LUQ021,CGZ Telecomunicaciones,INFRA,0,,0,0,1,0,0,2026-10-21,0,2,1,Motivos Personales (cliente ya no desea),0,1
+2026-10-20,Soporte,EMB011,CGZ Telecomunicaciones,Sin reagenda,1,24.65,0,0,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-20,Soporte,ASU021,VITERBO,INFRA,0,,0,0,1,0,0,2026-10-21,0,2,1,Zona sin columnas,1,1
+2026-10-20,Soporte,MRA011,CGZ Telecomunicaciones,CLIENTE,1,24.23,0,0,0,0,0,2026-10-21,0,1,1,,0,0
 2026-10-20,Soporte,ASUX11,Neo Telecom,Sin reagenda,1,19.15,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,20.35,1,1,0,0,0,2026-10-21,1,1,0,,0,0
-2026-10-20,Soporte,EMB011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
-2026-10-20,Soporte,LUQ021,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-22,0,2,1,,1,0
-2026-10-20,Negociación,LUQ021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
+2026-10-20,Soporte,EMB011,Neo Telecom,Sin reagenda,1,22.48,1,1,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-20,Soporte,LUQ021,Neo Telecom,LLUVIA,1,45.23,0,1,0,0,0,2026-10-22,0,3,1,,1,0
+2026-10-20,Negociación,LUQ021,Neo Telecom,Sin reagenda,1,24.05,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,Sin reagenda,1,18.78,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,Sin reagenda,1,19.4,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,Sin reagenda,1,21.67,1,1,0,0,0,2026-10-21,1,0,0,,0,0
-2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
+2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,1,23.87,1,0,0,0,0,2026-10-21,0,1,1,,0,0
 2026-10-20,Soporte,LBM011,Neo Telecom,Sin reagenda,1,21.75,1,1,0,0,0,2026-10-21,1,0,0,,0,0
-2026-10-20,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-20,Instalación,ASU031,FIBRAX CORPORETION E.A.S.,CLIENTE,1,47.72,1,0,0,0,0,2026-10-22,0,2,1,,0,0
 2026-10-20,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-20,Instalación,(en blanco),CGZ Telecomunicaciones,CLIENTE,1,21.48,1,1,0,0,0,2026-10-21,0,2,1,,0,0
-2026-10-20,Instalación,(en blanco),Neo Telecom,TECNICO,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,1
-2026-10-20,Soporte,ASU021,Neo Telecom,DEMORA DE CONTRATISTA,0,,0,0,0,1,1,2026-10-20,0,1,1,,0,1
-2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,0
+2026-10-20,Instalación,LUQ011,CGZ Telecomunicaciones,CLIENTE,1,21.48,1,1,0,0,0,2026-10-21,0,2,1,,0,0
+2026-10-20,Instalación,(en blanco),Neo Telecom,TECNICO,0,,0,0,0,1,0,2026-10-21,0,3,1,,0,1
+2026-10-20,Soporte,ASU021,Neo Telecom,DEMORA DE CONTRATISTA,1,26.05,0,0,0,0,0,2026-10-20,0,1,1,,0,1
+2026-10-20,Soporte,YPN011,Neo Telecom,TECNICO,1,28.62,0,0,0,0,0,2026-10-21,0,2,1,,0,1
 2026-10-20,Soporte,YPN011,Neo Telecom,Sin reagenda,1,22.63,1,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-20,Soporte,LUQ011,CGZ Telecomunicaciones,Sin reagenda,1,4.35,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-20,Soporte,LBM011,Neo Telecom,INFRA,1,21.32,1,0,0,0,0,2026-10-20,0,2,1,,0,1
 2026-10-20,Comercial,LUQ021,Neo Telecom,Sin reagenda,1,5.62,1,0,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,1,6.25,1,1,0,0,0,2026-10-21,0,2,1,,0,0
 2026-10-20,Soporte,FDM011,Neo Telecom,Sin reagenda,1,5.4,1,1,0,0,0,2026-10-20,1,0,0,,1,0
-2026-10-20,Soporte,FDM011,CGZ Telecomunicaciones,CLIENTE,0,,0,0,0,1,0,2026-10-22,0,2,1,,0,0
+2026-10-20,Soporte,FDM011,CGZ Telecomunicaciones,CLIENTE,1,28.8,0,1,0,0,0,2026-10-22,0,2,1,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,1,3.5,1,1,0,0,0,2026-10-20,0,1,1,,0,0
 2026-10-20,Soporte,ASU031,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-20,0,0,0,Link Loss Recuperado,0,0
 2026-10-20,Soporte,YPN011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,7.42,1,1,0,0,0,2026-10-20,1,0,0,,1,0
 2026-10-20,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,4.35,1,1,0,0,0,2026-10-20,1,0,0,,0,0
-2026-10-20,Instalación,(en blanco),(en blanco),TECNICO,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,1
+2026-10-20,Instalación,LUQ011,FIBRAX CORPORETION E.A.S.,TECNICO,1,29.7,1,1,0,0,0,2026-10-21,0,1,1,,0,1
 2026-10-20,Soporte,LBM011,CGZ Telecomunicaciones,INFRA,0,,0,0,1,0,0,2026-10-20,0,1,1,Motivos Personales (cliente ya no desea),0,1
 2026-10-20,Soporte,YPN011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,6.67,1,1,0,0,0,2026-10-20,1,0,0,,0,0
-2026-10-20,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-20,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,1,2026-10-22,0,2,1,,0,0
 2026-10-20,Instalación,LUQ011,CGZ Telecomunicaciones,Sin reagenda,1,2.9,1,1,0,0,0,2026-10-20,1,1,0,,0,0
-2026-10-20,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,0,2026-10-20,0,2,1,,0,1
+2026-10-20,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,2026-10-20,0,2,1,Motivo no Informado,0,1
 2026-10-20,Soporte,LUQ011,CGZ Telecomunicaciones,Sin reagenda,1,4.33,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,Sin reagenda,1,7.93,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-20,Comercial,SLO021,Neo Telecom,CLIENTE,1,27.43,1,1,0,0,0,2026-10-21,0,2,1,,0,0
@@ -92,7 +207,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-20,Instalación,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,4.23,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-20,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-20,0,1,0,Ya cuenta con el servicio,1,0
 2026-10-20,Soporte,YPN011,Neo Telecom,CLIENTE,1,9.78,1,1,0,0,0,2026-10-21,0,1,1,,0,0
-2026-10-20,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,2026-10-21,0,2,1,,0,1
+2026-10-20,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,2026-10-21,0,2,1,Motivo no Informado,0,1
 2026-10-20,Soporte,SLO011,CGZ Telecomunicaciones,CLIENTE,1,27.58,0,1,0,0,0,2026-10-21,0,2,1,,0,0
 2026-10-19,Instalación,YPN011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,14.38,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Soporte,YPN011,Neo Telecom,Sin reagenda,1,12.72,1,1,0,0,0,2026-10-20,1,0,0,,1,0
@@ -100,13 +215,13 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-19,Soporte,YPN011,Neo Telecom,Sin reagenda,1,11.43,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Soporte,ASU031,CGZ Telecomunicaciones,Sin reagenda,1,13.43,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-19,Soporte,ASU021,Neo Telecom,CLIENTE,1,38.28,0,1,0,0,0,2026-10-21,0,1,1,,0,0
-2026-10-19,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-21,0,0,0,,0,0
+2026-10-19,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,1,2026-10-21,0,2,1,,0,0
 2026-10-19,Soporte,YPN011,Neo Telecom,Sin reagenda,1,20.25,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-19,Soporte,ASU011,CGZ Telecomunicaciones,Sin reagenda,1,17.13,1,0,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-19,Soporte,YPN011,Neo Telecom,Sin reagenda,1,19.32,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-19,Soporte,ASU011,Neo Telecom,Sin reagenda,1,13.95,1,1,0,0,0,2026-10-20,1,1,0,,0,0
-2026-10-19,Soporte,LUQ011,Neo Telecom,TECNICO,0,,0,0,0,1,1,2026-10-20,0,2,1,,0,1
-2026-10-19,Instalación,(en blanco),CGZ Telecomunicaciones,Sin reagenda,1,39.6,1,1,0,0,0,2026-10-21,1,1,0,,0,0
+2026-10-19,Soporte,LUQ011,Neo Telecom,INFRA,0,,0,0,1,0,0,2026-10-20,0,4,1,Problemas técnicos (tardanza),0,1
+2026-10-19,Instalación,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,39.6,1,1,0,0,0,2026-10-21,1,1,0,,0,0
 2026-10-19,Instalación,LUQ011,FIBRAX CORPORETION E.A.S.,TECNICO,1,20.2,1,1,0,0,0,2026-10-20,0,2,1,,0,1
 2026-10-19,Comercial,LUQ021,Neo Telecom,Sin reagenda,1,18.95,1,0,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-19,Soporte,EMB011,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,1,0,0,2026-10-20,0,0,0,Link Loss Recuperado,1,0
@@ -134,16 +249,16 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-19,Soporte,FDM011,Neo Telecom,CLIENTE,1,3.4,1,1,0,0,0,2026-10-19,0,1,1,,1,0
 2026-10-19,Instalación,SLO011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,27.25,1,1,0,0,0,2026-10-20,1,0,0,,0,0
 2026-10-19,Soporte,LBM011,Neo Telecom,CLIENTE,1,2.1,1,1,0,0,0,2026-10-19,0,1,1,,0,0
-2026-10-19,Soporte,ASUX11,FIBRAX CORPORETION E.A.S.,TECNICO,0,,0,0,0,1,0,2026-10-20,0,3,1,,1,1
+2026-10-19,Soporte,ASUX11,FIBRAX CORPORETION E.A.S.,TECNICO,0,,0,0,0,1,1,2026-10-20,0,3,1,,1,1
 2026-10-19,Instalación,SLO021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,21.25,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Instalación,LBM011,FIBRAX CORPORETION E.A.S.,CLIENTE,1,27,1,1,0,0,0,2026-10-20,0,1,1,,0,0
 2026-10-19,Soporte,ASU021,Neo Telecom,Sin reagenda,1,22.95,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Comercial,LUQ011,Neo Telecom,Sin reagenda,1,22.17,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Soporte,YPN011,Neo Telecom,Sin reagenda,1,23.2,1,1,0,0,0,2026-10-20,1,0,0,,0,0
-2026-10-19,Soporte,LUQ021,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-19,0,2,1,,0,0
+2026-10-19,Soporte,LUQ021,Neo Telecom,INFRA,0,,0,0,0,1,1,2026-10-19,0,4,1,,0,1
 2026-10-19,Soporte,YPN011,Neo Telecom,CLIENTE,1,24.92,0,1,0,0,0,2026-10-20,0,1,1,,1,0
 2026-10-19,Soporte,YPN011,Neo Telecom,Sin reagenda,1,23.12,1,1,0,0,0,2026-10-20,1,0,0,,0,0
-2026-10-19,Instalación,(en blanco),Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-21,0,1,1,,0,1
+2026-10-19,Instalación,(en blanco),Neo Telecom,INFRA,0,,0,0,1,0,0,2026-10-21,0,1,1,Motivo no Informado,0,1
 2026-10-19,Instalación,LUQ011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,23.98,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Instalación,ASUX11,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,21.93,1,1,0,0,0,2026-10-20,1,1,0,,0,0
 2026-10-19,Soporte,LUQ011,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-19,0,0,0,Motivo no Informado,0,0
@@ -154,16 +269,16 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-19,Instalación,ASUX021,CGZ Telecomunicaciones,Sin reagenda,1,6.02,1,1,0,0,0,2026-10-20,0,1,0,,0,0
 2026-10-19,Comercial,ASU021,FIBRAX CORPORETION E.A.S.,TECNICO,1,5.87,1,1,0,0,0,2026-10-21,0,1,1,,0,1
 2026-10-19,Soporte,ASU031,Neo Telecom,CLIENTE,1,26.13,0,0,0,0,0,2026-10-20,0,1,1,,0,0
-2026-10-19,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,0,2026-10-19,0,2,1,,0,1
+2026-10-19,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,2026-10-19,0,2,1,Sin acometida,0,1
 2026-10-19,Instalación,ASUX031,CGZ Telecomunicaciones,INFRA,1,25.98,1,1,0,0,0,2026-10-20,0,3,1,,0,1
 2026-10-19,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,5.42,1,1,0,0,0,2026-10-19,1,0,0,,0,0
 2026-10-19,Soporte,FDM011,FIBRAX CORPORETION E.A.S.,TECNICO,1,26.25,0,1,0,0,0,2026-10-20,0,1,1,,1,1
 2026-10-19,Soporte,ASU031,VITERBO,Sin reagenda,1,4.52,1,1,0,0,0,2026-10-19,1,0,0,,0,0
 2026-10-19,Soporte,YPN011,Neo Telecom,CLIENTE,1,4.65,1,1,0,0,0,2026-10-19,0,1,1,,0,0
-2026-10-19,Instalación,(en blanco),Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-20,0,3,1,,0,0
+2026-10-19,Instalación,LUQ011,FIBRAX CORPORETION E.A.S.,CLIENTE,1,52.23,0,0,0,0,0,2026-10-20,0,3,1,,0,0
 2026-10-19,Soporte,LBM011,Neo Telecom,INFRA,1,49.43,0,0,0,0,0,2026-10-20,0,5,1,,0,1
 2026-10-19,Instalación,LUQ021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,26.27,1,1,0,0,0,2026-10-20,1,1,0,,0,0
-2026-10-19,Instalación,(en blanco),FIBRAX CORPORETION E.A.S.,Sin reagenda,1,50.48,0,1,0,0,0,2026-10-21,1,0,0,,0,0
+2026-10-19,Instalación,LUQ021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,50.48,0,1,0,0,0,2026-10-21,1,0,0,,0,0
 2026-10-19,Comercial,SLO021,Neo Telecom,CLIENTE,1,7.18,1,1,0,0,0,2026-10-19,0,1,1,,0,0
 2026-10-19,Soporte,YPN011,Neo Telecom,CLIENTE,1,7.22,1,1,0,0,0,2026-10-19,0,1,1,,0,0
 2026-10-19,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,1,0,0,2026-10-21,0,1,1,Motivos Personales (cliente ya no desea),0,0
@@ -207,7 +322,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-17,Soporte,ASU021,FIBRAX CORPORETION E.A.S.,CLIENTE,1,35.9,0,1,0,0,0,2026-10-18,0,1,1,,1,0
 2026-10-17,Soporte,YPN011,Neo Telecom,Sin reagenda,1,38.87,0,1,0,0,0,2026-10-19,1,0,0,,0,0
 2026-10-17,Instalación,ASU031,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,15.92,1,1,0,0,0,2026-10-18,1,1,0,,0,0
-2026-10-17,Soporte,YPN011,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-19,0,2,1,,0,0
+2026-10-17,Soporte,YPN011,Neo Telecom,CLIENTE,0,,0,0,1,0,0,2026-10-19,0,3,1,Visita Inecessaria,0,0
 2026-10-17,Instalación,ASU031,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,16.32,1,1,0,0,0,2026-10-18,1,1,0,,0,0
 2026-10-17,Soporte,YPN011,Neo Telecom,DEMORA DE CONTRATISTA,1,43.43,0,0,0,0,0,2026-10-19,0,1,1,,0,1
 2026-10-17,Soporte,YPN011,Neo Telecom,Sin reagenda,1,45.1,0,0,0,0,0,2026-10-19,1,1,0,,1,0
@@ -220,13 +335,13 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-17,Soporte,LUQ021,Neo Telecom,CLIENTE,1,19.9,1,1,0,0,0,2026-10-19,0,1,1,,0,0
 2026-10-17,Soporte,YPN011,Neo Telecom,Sin reagenda,1,40.37,0,1,0,0,0,2026-10-19,1,0,0,,0,0
 2026-10-17,Soporte,LUQ021,Neo Telecom,CLIENTE,1,65.57,0,0,0,0,0,2026-10-19,0,2,1,,0,0
-2026-10-17,Instalación,(en blanco),Neo Telecom,TECNICO,0,,0,0,0,1,1,2026-10-21,0,1,1,,0,1
+2026-10-17,Instalación,LUQ021,FIBRAX CORPORETION E.A.S.,TECNICO,1,91.98,0,0,0,0,0,2026-10-21,0,1,1,,0,1
 2026-10-17,Soporte,ASU021,Neo Telecom,Sin reagenda,1,43.6,0,1,0,0,0,2026-10-19,1,0,0,,0,0
 2026-10-17,Soporte,YPN011,Neo Telecom,TECNICO,1,40.92,0,0,0,0,0,2026-10-18,0,2,1,,0,1
 2026-10-17,Soporte,LBM011,Neo Telecom,Sin reagenda,1,20.7,1,1,0,0,0,2026-10-18,1,0,0,,0,0
 2026-10-17,Instalación,ASU031,CGZ Telecomunicaciones,Sin reagenda,1,45.67,1,1,0,0,0,2026-10-19,1,1,0,,0,0
 2026-10-17,Comercial,MRA011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,0.63,1,1,0,0,0,2026-10-19,0,1,0,,0,0
-2026-10-17,Soporte,LBM011,Neo Telecom,INFRA,0,,0,0,0,1,1,2026-10-18,0,4,1,,1,1
+2026-10-17,Soporte,LBM011,Neo Telecom,INFRA,1,96.73,0,0,0,0,0,2026-10-18,0,4,1,,1,1
 2026-10-17,Soporte,ASU021,Neo Telecom,CLIENTE,1,71.05,0,0,0,0,0,2026-10-18,0,4,1,,0,0
 2026-10-17,Soporte,ASU011,Neo Telecom,CLIENTE,1,46.4,0,0,0,0,0,2026-10-18,0,3,1,,0,0
 2026-10-17,Soporte,FDM011,Neo Telecom,CLIENTE,1,43.3,0,0,0,0,0,2026-10-18,0,2,1,,0,0
@@ -250,7 +365,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-17,Soporte,EMB011,Neo Telecom,CLIENTE,1,52.15,0,0,0,0,0,2026-10-20,0,2,1,,1,0
 2026-10-17,Instalación,SLO021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,31.45,1,1,0,0,0,2026-10-18,1,0,0,,0,0
 2026-10-17,Soporte,ASU011,Neo Telecom,CLIENTE,1,51.18,0,0,0,0,0,2026-10-17,0,2,1,,0,0
-2026-10-17,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,1,,0,0,0,,0,0
+2026-10-17,Instalación,FDM011,VITERBO,CLIENTE,1,131.47,0,0,0,0,0,2026-10-22,0,2,1,,0,0
 2026-10-17,Soporte,LUQ021,Neo Telecom,CLIENTE,1,28.72,0,0,0,0,0,2026-10-17,0,2,1,,0,0
 2026-10-17,Soporte,LBM011,Neo Telecom,Sin reagenda,1,55.73,0,0,0,0,0,2026-10-17,0,0,0,,0,0
 2026-10-16,Soporte,MRA011,Neo Telecom,Sin reagenda,1,13.5,1,1,0,0,0,2026-10-17,1,0,0,,0,0
@@ -258,19 +373,19 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-16,Soporte,YPN011,Neo Telecom,CLIENTE,1,38.83,0,0,0,0,0,2026-10-17,0,1,1,,0,0
 2026-10-16,Soporte,LUQ011,Neo Telecom,Sin reagenda,1,59.67,0,0,0,0,0,2026-10-19,1,0,0,,1,0
 2026-10-16,Soporte,YPN011,Neo Telecom,CLIENTE,1,35.07,0,0,0,0,0,2026-10-17,0,2,1,,0,0
-2026-10-16,Soporte,LBM011,CGZ Telecomunicaciones,INFRA,0,,0,0,0,1,1,2026-10-17,0,4,1,,0,1
+2026-10-16,Soporte,LBM011,CGZ Telecomunicaciones,INFRA,0,,0,0,1,0,0,2026-10-17,0,4,1,Link Loss Recuperado,0,1
 2026-10-16,Soporte,CDE021,Neo Telecom,Sin reagenda,1,14.88,1,1,0,0,0,2026-10-17,1,1,0,,0,0
 2026-10-16,Soporte,LUQ011,Neo Telecom,TECNICO,1,62.6,0,0,0,0,0,2026-10-17,0,3,1,,0,1
 2026-10-16,Soporte,YPN011,Neo Telecom,Sin reagenda,1,16.25,1,1,0,0,0,2026-10-17,1,1,0,,0,0
 2026-10-16,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,11.88,1,1,0,0,0,2026-10-17,1,0,0,,0,0
-2026-10-16,Soporte,SLO021,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-17,0,4,1,,0,0
+2026-10-16,Soporte,SLO021,Neo Telecom,CLIENTE,1,117.02,0,0,0,0,0,2026-10-17,0,4,1,,0,0
 2026-10-16,Soporte,LUQ011,VITERBO,Sin reagenda,1,16.57,1,1,0,0,0,2026-10-17,1,0,0,,1,0
 2026-10-16,Soporte,MRA011,Neo Telecom,TECNICO,1,86.98,0,0,0,0,0,2026-10-17,0,7,1,,0,1
 2026-10-16,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,1,0,0,,0,0,0,Fuera de Cobertura,0,0
 2026-10-16,Instalación,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,19.32,1,1,0,0,0,2026-10-17,1,1,0,,0,0
 2026-10-16,Soporte,MRA011,Neo Telecom,TECNICO,1,16.88,1,1,0,0,0,2026-10-17,0,1,1,,0,1
 2026-10-16,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,16.13,1,1,0,0,0,2026-10-17,1,0,0,,0,0
-2026-10-16,Negociación,LUQ021,Neo Telecom,INFRA,0,,0,0,0,1,1,2026-10-17,0,4,1,,0,1
+2026-10-16,Negociación,LUQ021,Neo Telecom,INFRA,0,,0,0,1,0,0,2026-10-17,0,4,1,Zona sin columnas,0,1
 2026-10-16,Comercial,ASUX021,Neo Telecom,CLIENTE,1,20.67,1,0,0,0,0,2026-10-17,0,1,1,,0,0
 2026-10-16,Instalación,YPN011,CGZ Telecomunicaciones,Sin reagenda,1,66.47,0,1,0,0,0,2026-10-19,1,1,0,,0,0
 2026-10-16,Instalación,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,24.73,1,1,0,0,0,2026-10-17,1,0,0,,0,0
@@ -278,9 +393,9 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-16,Soporte,ASU021,Neo Telecom,Sin reagenda,1,2.7,1,1,0,0,0,2026-10-17,0,1,0,,0,0
 2026-10-16,Soporte,MRA011,Neo Telecom,Sin reagenda,1,17.4,1,1,0,0,0,2026-10-17,1,0,0,,0,0
 2026-10-16,Soporte,YPN011,Neo Telecom,Sin reagenda,1,17.75,1,1,0,0,0,2026-10-17,1,0,0,,0,0
-2026-10-16,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,2026-10-19,0,1,1,,0,1
+2026-10-16,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,2026-10-19,0,1,1,Fuera de Cobertura,0,1
 2026-10-16,Instalación,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,25.87,1,1,0,0,0,2026-10-18,0,1,0,,0,0
-2026-10-16,Soporte,ASU011,Neo Telecom,TECNICO,0,,0,0,0,1,1,2026-10-16,0,3,1,,0,1
+2026-10-16,Soporte,ASU011,Neo Telecom,TECNICO,0,,0,0,1,0,0,2026-10-16,0,3,1,Visita Inecessaria,0,1
 2026-10-16,Soporte,YPN011,Neo Telecom,Sin reagenda,1,21.38,1,0,0,0,0,2026-10-17,1,0,0,,0,0
 2026-10-16,Soporte,YPN011,Neo Telecom,Sin reagenda,1,19.73,1,1,0,0,0,2026-10-17,1,1,0,,0,0
 2026-10-16,Comercial,ASUX11,FIBRAX CORPORETION E.A.S.,TECNICO,1,0.5,1,1,0,0,0,2026-10-17,0,1,1,,0,1
@@ -316,7 +431,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-16,Soporte,SLO011,Neo Telecom,Sin reagenda,1,1.6,1,1,0,0,0,2026-10-17,0,1,0,,1,0
 2026-10-16,Negociación,SLO021,Neo Telecom,Sin reagenda,1,4.18,1,1,0,0,0,2026-10-16,1,0,0,,0,0
 2026-10-16,Instalación,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,4.87,1,1,0,0,0,2026-10-16,1,1,0,,0,0
-2026-10-16,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,2026-10-17,0,3,1,,0,1
+2026-10-16,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,2026-10-17,0,3,1,Fuera de Cobertura,0,1
 2026-10-16,Instalación,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,54.88,0,1,0,0,0,2026-10-19,0,1,0,,0,0
 2026-10-16,Soporte,FDM011,CGZ Telecomunicaciones,CLIENTE,1,34.28,0,0,0,0,0,2026-10-17,0,1,1,,0,0
 2026-10-15,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,2026-10-17,0,2,1,Metraje excedido,0,1
@@ -352,7 +467,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-15,Soporte,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,3.57,1,1,0,0,0,2026-10-16,0,1,0,,1,0
 2026-10-15,Instalación,LUQ021,CGZ Telecomunicaciones,CLIENTE,1,22.55,1,1,0,0,0,2026-10-16,0,1,1,,0,0
 2026-10-15,Soporte,LBM011,Neo Telecom,INFRA,1,47.5,0,0,0,0,0,2026-10-16,0,3,1,,0,1
-2026-10-15,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,1,2026-10-20,0,3,1,,0,0
+2026-10-15,Instalación,ASUX11,FIBRAX CORPORETION E.A.S.,CLIENTE,1,145.8,0,0,0,0,0,2026-10-20,0,3,1,,0,0
 2026-10-15,Soporte,ASUX021,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-19,0,0,0,Link Loss Recuperado,1,0
 2026-10-15,Soporte,YPN011,Neo Telecom,Sin reagenda,1,21.28,1,1,0,0,0,2026-10-19,0,1,0,,1,0
 2026-10-15,Instalación,EMB011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,23.85,1,1,0,0,0,2026-10-16,1,1,0,,0,0
@@ -368,7 +483,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-15,Soporte,MRA011,Neo Telecom,CLIENTE,1,23.47,1,1,0,0,0,2026-10-19,0,1,1,,0,0
 2026-10-15,Comercial,SLO021,CGZ Telecomunicaciones,CLIENTE,1,9.98,1,1,0,0,0,2026-10-19,0,1,1,,0,0
 2026-10-15,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,2026-10-17,0,3,1,,0,1
-2026-10-15,Soporte,FDM011,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-19,0,6,1,,0,0
+2026-10-15,Soporte,FDM011,Neo Telecom,CLIENTE,1,151.92,0,0,0,0,0,2026-10-19,0,7,1,,0,0
 2026-10-15,Soporte,EMB011,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-15,0,0,0,Ya cuenta con el servicio,1,0
 2026-10-15,Instalación,MRA011,CGZ Telecomunicaciones,CLIENTE,1,30.5,1,0,0,0,0,2026-10-16,0,1,1,,0,0
 2026-10-15,Soporte,YPN011,Neo Telecom,CLIENTE,1,27.92,0,0,0,0,0,2026-10-15,0,4,1,,0,0
@@ -412,7 +527,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-14,Instalación,YPN011,FIBRAX CORPORETION E.A.S.,TECNICO,1,53.2,0,0,0,0,0,,0,2,1,,0,1
 2026-10-14,Soporte,ASU031,Neo Telecom,CLIENTE,1,48.27,0,0,0,0,0,2026-10-16,0,1,1,,0,0
 2026-10-14,Soporte,LUQ021,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,2026-10-14,0,0,0,Motivos Personales (cliente ya no desea),0,0
-2026-10-14,Instalación,(en blanco),FIBRAX CORPORETION E.A.S.,Sin reagenda,1,168.2,0,0,0,0,0,,0,1,0,,0,0
+2026-10-14,Instalación,SLO021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,168.2,0,0,0,0,0,,0,1,0,,0,0
 2026-10-14,Soporte,LBM011,CGZ Telecomunicaciones,CLIENTE,1,27.73,0,0,0,0,0,2026-10-14,0,1,1,,1,0
 2026-10-14,Soporte,LBM011,CGZ Telecomunicaciones,Sin reagenda,1,21.33,1,1,0,0,0,2026-10-15,1,1,0,,0,0
 2026-10-14,Soporte,YPN011,Neo Telecom,Sin reagenda,1,23.1,1,1,0,0,0,2026-10-15,1,1,0,,0,0
@@ -420,7 +535,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-14,Comercial,ASU021,Neo Telecom,Sin reagenda,1,24.77,1,1,0,0,0,2026-10-16,0,1,0,,0,0
 2026-10-14,Soporte,LUQ011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,2.2,1,1,0,0,0,2026-10-15,0,1,0,,0,0
 2026-10-14,Soporte,EMB011,Neo Telecom,TECNICO,1,45.92,0,0,0,0,0,2026-10-15,0,2,1,,0,1
-2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,,0,3,1,,0,1
+2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,,0,3,1,Zona sin columnas,0,1
 2026-10-14,Comercial,FDM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,23.4,1,1,0,0,0,2026-10-15,1,0,0,,0,0
 2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,,0,3,1,Motivo no Informado,0,1
 2026-10-14,Comercial,MRA011,Neo Telecom,Sin reagenda,1,26,1,1,0,0,0,2026-10-15,1,1,0,,0,0
@@ -444,12 +559,12 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-14,Instalación,ASU031,Neo Telecom,Sin reagenda,1,122.02,0,0,0,0,0,,0,1,0,,0,0
 2026-10-14,Soporte,LUQ011,Neo Telecom,Sin reagenda,1,26.68,0,1,0,0,0,2026-10-16,0,1,0,,0,0
 2026-10-14,Soporte,FDM011,Neo Telecom,Sin reagenda,1,25.28,0,1,0,0,0,2026-10-16,0,1,0,,0,0
-2026-10-14,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,1,,0,2,1,,0,0
+2026-10-14,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,1,0,0,,0,2,1,Zona sin columnas,0,0
 2026-10-14,Soporte,ASU021,Neo Telecom,Sin reagenda,1,29.63,0,1,0,0,0,2026-10-16,0,1,0,,0,0
 2026-10-14,Soporte,ASU011,Neo Telecom,CLIENTE,1,32.53,0,0,0,0,0,2026-10-14,0,2,1,,0,0
 2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,,0,1,1,,0,1
 2026-10-14,Comercial,EMB011,Neo Telecom,Sin reagenda,1,28.87,1,1,0,0,0,2026-10-15,1,0,0,,0,0
-2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,0,1,1,,0,2,1,,0,1
+2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,,0,2,1,Zona sin columnas,0,1
 2026-10-14,Instalación,(en blanco),(en blanco),INFRA,0,,0,0,1,0,0,,0,2,1,Motivo no Informado,0,1
 2026-10-14,Soporte,ASU031,Neo Telecom,Sin reagenda,1,29.75,0,1,0,0,0,2026-10-16,0,1,0,,0,0
 2026-10-14,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,0,,0,0,1,0,0,2026-10-14,0,0,0,Link Loss Recuperado,1,0
@@ -481,7 +596,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-13,Comercial,ASUX021,Neo Telecom,Sin reagenda,1,21.82,1,1,0,0,0,2026-10-14,1,0,0,,0,0
 2026-10-13,Soporte,SLO021,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,24.67,0,0,0,0,0,2026-10-14,1,0,0,,0,0
 2026-10-13,Soporte,LUQ011,Neo Telecom,CLIENTE,1,47.95,0,0,0,0,0,2026-10-15,0,1,1,,0,0
-2026-10-13,Instalación,(en blanco),Neo Telecom,CLIENTE,0,,0,0,0,1,1,,0,1,1,,0,0
+2026-10-13,Instalación,(en blanco),Neo Telecom,CLIENTE,0,,0,0,1,0,0,,0,1,1,Incontactable,0,0
 2026-10-13,Soporte,ASU011,CGZ Telecomunicaciones,Sin reagenda,1,17.4,1,1,0,0,0,2026-10-14,1,0,0,,1,0
 2026-10-13,Instalación,SLO021,FIBRAX CORPORETION E.A.S.,CLIENTE,1,18.42,1,1,0,0,0,,0,1,1,,0,0
 2026-10-13,Soporte,ASU021,Neo Telecom,LLUVIA,1,43.22,0,0,0,0,0,2026-10-14,0,1,1,,0,0
@@ -2964,7 +3079,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-08-28,Soporte,LBM011,Neo Telecom,Sin reagenda,1,25.45,0,0,0,0,0,,0,2,1,,1,0
 2026-08-28,Soporte,LUQ011,Neo Telecom,CLIENTE,1,23.43,1,0,0,0,0,2026-08-28,0,1,1,,0,0
 2026-08-28,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,1,0,0,,0,3,1,Incontactable,0,0
-2026-08-28,Soporte,ASU031,Due Connections E.A.S,Sin reagenda,1,23.55,1,0,0,0,0,2026-08-29,1,0,0,,0,0
+2026-08-28,Soporte,ASU031,Neo Telecom,Sin reagenda,1,23.55,1,0,0,0,0,2026-08-29,1,0,0,,0,0
 2026-08-28,Comercial,SLO011,CGZ Telecomunicaciones,Sin reagenda,1,24.32,1,0,0,0,0,2026-08-29,1,0,0,,0,0
 2026-08-28,Soporte,ASUX11,Neo Telecom,CLIENTE,1,22.8,1,0,0,0,0,2026-08-28,0,1,1,,0,0
 2026-08-28,Soporte,ASU021,Neo Telecom,INFRA,1,99.92,0,0,0,0,0,,0,6,1,,0,1
@@ -4524,7 +4639,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-08-03,Soporte,ASU011,CGZ Telecomunicaciones,Sin reagenda,1,3.28,1,1,0,0,0,2026-08-04,0,1,0,,0,0
 2026-08-03,Soporte,YPN011,Neo Telecom,Sin reagenda,1,30.5,0,0,0,0,0,2026-08-04,1,0,0,,0,0
 2026-08-03,Soporte,LBM011,Neo Telecom,Sin reagenda,1,5.8,1,1,0,0,0,,0,1,0,,1,0
-2026-08-03,Soporte,SLO021,Due Connections E.A.S,Sin reagenda,1,6.3,1,1,0,0,0,2026-08-03,1,1,0,,0,0
+2026-08-03,Soporte,SLO021,Neo Telecom,Sin reagenda,1,6.3,1,1,0,0,0,2026-08-03,1,1,0,,0,0
 2026-08-02,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,15,1,1,0,0,0,2026-08-04,0,1,0,,0,0
 2026-08-02,Soporte,LBM011,Neo Telecom,Sin reagenda,1,20.03,1,1,0,0,0,2026-08-04,0,1,0,,0,0
 2026-08-02,Soporte,ASU021,Neo Telecom,Sin reagenda,1,18.62,1,1,0,0,0,2026-08-03,1,0,0,,0,0
@@ -5731,7 +5846,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-07-15,Instalación,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,22.78,1,1,0,0,0,2026-07-16,1,0,0,,0,0
 2026-07-15,Soporte,LUQ021,Neo Telecom,CLIENTE,1,21.42,1,0,0,0,0,2026-07-15,0,1,1,,0,0
 2026-07-15,Soporte,ASU021,Neo Telecom,Sin reagenda,0,,0,0,1,0,0,,0,1,0,Link Loss Recuperado,1,0
-2026-07-15,Soporte,LUQ021,Due Connections E.A.S,CLIENTE,1,48.33,0,0,0,0,0,2026-07-16,0,1,1,,0,0
+2026-07-15,Soporte,LUQ021,Neo Telecom,CLIENTE,1,48.33,0,0,0,0,0,2026-07-16,0,1,1,,0,0
 2026-07-15,Soporte,ASU031,Neo Telecom,Sin reagenda,1,1.13,1,1,0,0,0,2026-07-15,1,0,0,,0,0
 2026-07-15,Instalación,(en blanco),FIBRAX CORPORETION E.A.S.,Sin reagenda,1,20.73,1,1,0,0,0,2026-07-16,1,0,0,,0,0
 2026-07-15,Instalación,(en blanco),CGZ Telecomunicaciones,Sin reagenda,1,28.58,1,0,0,0,0,,0,1,0,,0,0
@@ -6952,7 +7067,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-06-25,Soporte,ASU031,CGZ Telecomunicaciones,CLIENTE,0,,0,0,1,0,0,,0,4,1,Incontactable,0,0
 2026-06-25,Soporte,LUQ021,CGZ Telecomunicaciones,Sin reagenda,1,61.98,0,0,0,0,0,,0,2,1,,0,0
 2026-06-25,Soporte,LBM011,Neo Telecom,TECNICO,1,161.72,0,0,0,0,0,,0,3,1,,0,1
-2026-06-25,Soporte,ASU031,Due Connections E.A.S,CLIENTE,1,42.33,0,0,0,0,0,,0,1,1,,0,0
+2026-06-25,Soporte,ASU031,Neo Telecom,CLIENTE,1,42.33,0,0,0,0,0,,0,1,1,,0,0
 2026-06-25,Soporte,FDM011,CGZ Telecomunicaciones,Sin reagenda,1,17.73,1,1,0,0,0,,0,1,0,,0,0
 2026-06-25,Instalación,LUQ021,CGZ Telecomunicaciones,DEMORA DE CONTRATISTA,1,236.87,0,0,0,0,0,,0,13,1,,0,1
 2026-06-25,Instalación,MRA011,CGZ Telecomunicaciones,TECNICO,1,47.53,1,0,0,0,0,,0,1,1,,0,1
@@ -9381,7 +9496,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-05-22,Soporte,ASU031,Neo Telecom,DEMORA DE CONTRATISTA,1,22.62,1,1,0,0,0,,0,1,1,,0,1
 2026-05-22,Soporte,LBM011,Neo Telecom,Sin reagenda,1,19.33,1,1,0,0,0,,0,0,0,,0,0
 2026-05-22,Soporte,SLO011,CGZ Telecomunicaciones,Sin reagenda,1,65.02,0,1,0,0,0,,0,2,1,,0,0
-2026-05-22,Instalación,ASU031,Due Connections E.A.S,Sin reagenda,1,42.72,1,0,0,0,0,,0,0,0,,0,0
+2026-05-22,Instalación,ASU031,Neo Telecom,Sin reagenda,1,42.72,1,0,0,0,0,,0,0,0,,0,0
 2026-05-22,Soporte,MRA011,Neo Telecom,Sin reagenda,1,18.13,1,1,0,0,0,,0,0,0,,0,0
 2026-05-22,Soporte,ASU031,Neo Telecom,CLIENTE,1,1.47,1,1,0,0,0,,0,1,1,,1,0
 2026-05-22,Instalación,ASU031,Neo Telecom,Sin reagenda,1,22.8,1,1,0,0,0,,0,0,0,,0,0
