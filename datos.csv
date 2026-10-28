@@ -1,4 +1,7 @@
 creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abierta,vencida,agenda1,cumple_1a,n_reagendas,reagendada,motivo_cancel,garantia,reag_operativa
+2026-10-28,Soporte,ASU011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-29,0,0,0,,0,0
+2026-10-28,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-28,Soporte,YPN011,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-29,0,0,0,,1,0
 2026-10-28,Soporte,SLO021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-29,0,0,0,,0,0
 2026-10-28,Soporte,SLO021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-29,0,0,0,,0,0
 2026-10-28,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
@@ -17,8 +20,8 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-28,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
 2026-10-28,Instalación,(en blanco),Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-28,0,1,1,,0,1
 2026-10-28,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
-2026-10-28,Soporte,MRA011,VITERBO,CLIENTE,0,,0,0,0,1,0,2026-10-29,0,2,1,,0,0
-2026-10-28,Soporte,SLO021,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-29,0,1,0,,0,0
+2026-10-28,Soporte,MRA011,VITERBO,CLIENTE,1,4.37,1,1,0,0,0,2026-10-29,0,2,1,,0,0
+2026-10-28,Soporte,SLO021,Neo Telecom,INFRA,0,,0,0,0,1,0,2026-10-29,0,2,1,,0,1
 2026-10-28,Soporte,LUQ011,Neo Telecom,TECNICO,1,3.37,1,1,0,0,0,2026-10-29,0,1,1,,0,1
 2026-10-28,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
 2026-10-28,Soporte,ASU031,Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-28,0,0,0,,1,0
@@ -62,7 +65,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-27,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-28,0,0,0,,0,0
 2026-10-27,Soporte,SLO021,Neo Telecom,TECNICO,1,17.32,1,1,0,0,0,2026-10-28,0,1,1,,0,1
 2026-10-27,Comercial,LUQ021,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-28,0,1,1,,0,0
-2026-10-27,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
+2026-10-27,Instalación,(en blanco),(en blanco),CLIENTE,0,,0,0,0,1,0,2026-10-29,0,1,1,,0,0
 2026-10-27,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
 2026-10-27,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,,0,0,0,,0,0
 2026-10-27,Soporte,MRA011,FIBRAX CORPORETION E.A.S.,CLIENTE,0,,0,0,0,1,1,2026-10-28,0,3,1,,1,0
@@ -88,7 +91,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-27,Soporte,ASU021,Neo Telecom,Sin reagenda,1,22.3,1,1,0,0,0,2026-10-28,1,0,0,,0,0
 2026-10-27,Instalación,(en blanco),Neo Telecom,Sin reagenda,0,,0,0,0,1,0,2026-10-28,0,0,0,,0,0
 2026-10-27,Soporte,LUQ021,Neo Telecom,CLIENTE,1,3.08,1,1,0,0,0,2026-10-28,0,2,1,,0,0
-2026-10-27,Instalación,(en blanco),(en blanco),Sin reagenda,0,,0,0,0,1,0,2026-10-28,0,0,0,,0,0
+2026-10-27,Instalación,(en blanco),FIBRAX CORPORETION E.A.S.,Sin reagenda,1,28.48,1,1,0,0,0,2026-10-28,1,0,0,,0,0
 2026-10-27,Instalación,(en blanco),CGZ Telecomunicaciones,CLIENTE,1,24.67,1,0,0,0,0,2026-10-27,0,1,1,,0,0
 2026-10-27,Comercial,LBM011,FIBRAX CORPORETION E.A.S.,Sin reagenda,0,,0,0,0,1,0,2026-10-28,0,0,0,,0,0
 2026-10-27,Instalación,(en blanco),(en blanco),TECNICO,0,,0,0,0,1,0,2026-10-28,0,3,1,,0,1
@@ -105,7 +108,7 @@ creada,servicio,pop,dealer,motivo,ejecutada,horas,sla_plan,sla_zoy,cancelada,abi
 2026-10-27,Soporte,EMB011,Neo Telecom,CLIENTE,0,,0,0,0,1,1,2026-10-27,0,1,1,,0,0
 2026-10-26,Instalación,EMB011,Neo Telecom,Sin reagenda,1,19.77,1,1,0,0,0,2026-10-27,1,0,0,,0,0
 2026-10-26,Soporte,LBM011,FIBRAX CORPORETION E.A.S.,TECNICO,0,,0,0,0,1,0,2026-10-27,0,4,1,,1,1
-2026-10-26,Soporte,ASU011,VITERBO,CLIENTE,0,,0,0,0,1,1,2026-10-27,0,2,1,,0,0
+2026-10-26,Soporte,ASU011,VITERBO,INFRA,0,,0,0,0,1,1,2026-10-27,0,3,1,,0,1
 2026-10-26,Instalación,(en blanco),CGZ Telecomunicaciones,Sin reagenda,1,37.07,1,1,0,0,0,2026-10-28,1,1,0,,0,0
 2026-10-26,Soporte,LUQ021,Neo Telecom,Sin reagenda,1,16.1,1,1,0,0,0,2026-10-27,1,0,0,,1,0
 2026-10-26,Soporte,YPN011,FIBRAX CORPORETION E.A.S.,Sin reagenda,1,24.17,0,1,0,0,0,2026-10-27,1,0,0,,1,0
