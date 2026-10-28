@@ -127,7 +127,7 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
       </div>
     </div>
     <div class="filters">
-      <label class="f">Línea base desde<select id="f-base"><option value="2026-04-01">1 abr 2026</option><option value="2026-07-01">1 jul 2026</option></select></label>
+      <label class="f">Línea base desde<select id="f-base"><option value="2026-04-01">1 abr 2026</option></select></label>
       <label class="f">POP<select id="f-pop"></select></label>
       <label class="f">Servicio<select id="f-serv">
         <option value="MVP">Soporte + Instalación (MVP)</option><option value="Todos">Todos</option>
@@ -775,7 +775,7 @@ function draw() {
   document.querySelectorAll('[data-periodo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === P.periodo)));
   document.querySelectorAll('#chips button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === P.met)));
   document.querySelectorAll('.gran button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.g === P.gran)));
-  $('#f-base').value = P.base; $('#f-serv').value = P.serv;
+  $('#f-serv').value = P.serv;
   if (status !== 'ok') {
     $('#resumen').textContent = status === 'loading' ? 'Cargando datos…' : status === 'old'
       ? 'El datos.csv tiene el formato anterior. Generá uno nuevo con la página «Actualizar datos» y subilo a GitHub.'
@@ -786,6 +786,11 @@ function draw() {
   fillSelect($('#f-pop'), [...pops, 'Resto Central', 'Total Central'], P.pop, popLabel);
   const dealers = [...new Set(ROWS.map((r) => r.dealer))].sort((a, b) => a === '(en blanco)' ? 1 : b === '(en blanco)' ? -1 : a.localeCompare(b));
   fillSelect($('#f-dealer'), ['Todos', ...dealers], P.dealer);
+  // Línea base desde: el 1° de cada mes con datos, hasta octubre (la línea base termina el 18/10).
+  const meses = [];
+  for (let m = monthOf(DATA_DESDE); m <= monthOf(BASE_FIN); m = iso(d3.utcMonth.offset(day(m), 1))) meses.push(m);
+  if (!meses.includes(P.base)) P.base = meses.includes(DEFAULTS.base) ? DEFAULTS.base : meses[0];
+  fillSelect($('#f-base'), meses, P.base, (m) => '1 ' + fMon(day(m)) + ' ' + m.slice(0, 4));
 
   if (P.periodo === 'rango' && (!P.desde || !P.hasta)) P.periodo = 'piloto';
   const cr = curRange();
