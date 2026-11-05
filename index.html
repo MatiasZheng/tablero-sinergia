@@ -105,6 +105,36 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 #mx td.c { color: #fff; font-weight: 600; } #mx td.c.faint { opacity: .45; } #mx td.c small { display: block; font-weight: 400; color: rgba(255,255,255,.8); font-size: 10px; }
 #mx tr.tot td { font-weight: 700; border-top: 2px solid var(--line); }
 .mxw { max-height: 40rem; }
+.zb { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; margin-bottom: 12px; }
+.zb h3 { font-size: 14px; font-weight: 700; margin: 0 0 8px; display: flex; align-items: center; gap: 6px; }
+.zb h3 .sub2 { font-weight: 400; color: var(--muted); font-size: 12px; }
+.zrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: 8px; }
+.zt { border-radius: var(--r); padding: 8px 10px; text-align: center; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.zt .h { font-size: 12px; font-weight: 700; }
+.zt .v { font-size: 26px; font-weight: 800; line-height: 1.1; margin: 2px 0; }
+.zt .n { font-size: 11px; color: rgba(255,255,255,.85); }
+.zt .a { font-size: 11px; margin-top: 4px; color: rgba(255,255,255,.95); }
+.zt .a b { font-weight: 700; }
+.zt .d { display: inline-block; margin-left: 4px; padding: 0 5px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(255,255,255,.4); }
+.zt .d.good { background: #157a38; } .zt .d.bad { background: #8f1d24; } .zt .d.eq { background: rgba(0,0,0,.25); }
+.zt .w { font-size: 10px; color: #fff3c4; }
+.zgrid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 36rem), 1fr)); gap: 12px; }
+.dbg { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); gap: 12px; }
+.dbl { display: flex; gap: 14px; font-size: 11px; color: var(--muted); margin: -2px 0 6px; }
+.dbl i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+.gsum { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 8px; }
+.gsum div { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 10px; }
+.gsum b { font-size: 20px; display: block; } .gsum span { font-size: 11px; color: var(--muted); }
+#zt { width: 100%; border-collapse: separate; border-spacing: 4px; }
+#zt th { position: static; text-align: center; font-size: 12px; color: #fff; padding: 6px; border: 0; border-radius: var(--r); }
+#zt th.ind { text-align: left; color: var(--muted); background: none; }
+#zt td { text-align: center; padding: 6px 4px; border: 0; border-radius: var(--r); background: rgba(255,255,255,.04); white-space: nowrap; }
+#zt td.ind { text-align: left; font-weight: 700; background: none; padding-left: 0; }
+#zt td.ind small { display: block; font-weight: 400; color: var(--muted); font-size: 11px; }
+#zt .vv { font-size: 18px; font-weight: 800; } #zt .aa { font-size: 11px; color: var(--muted); }
+#zt .dd { display: inline-block; margin-top: 2px; padding: 0 6px; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; }
+#zt .dd.good { background: #157a38; } #zt .dd.bad { background: #8f1d24; } #zt .dd.eq { background: #4a4f59; }
+#zt td.faint { opacity: .55; } #zt td.spk { min-width: 180px; padding: 2px 6px; }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
@@ -148,11 +178,17 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
   <p class="alert" id="aviso" hidden></p>
 
   <nav class="tabs" role="tablist" aria-label="Vistas">
+    <button type="button" role="tab" data-vista="zoy">Antes vs después</button>
     <button type="button" role="tab" data-vista="piloto">Piloto: línea base vs piloto</button>
     <button type="button" role="tab" data-vista="cancel">Cancelaciones</button>
     <button type="button" role="tab" data-vista="pops">Comparación por POP</button>
     <button type="button" role="tab" data-vista="dealers">Dealers por POP</button>
   </nav>
+
+  <section id="zoyview" data-view="zoy">
+    <div class="bar"><p class="period" id="zv-note" style="margin:0"></p><div class="chips" id="zdis" role="group" aria-label="Diseño"></div></div>
+    <div id="zv"></div>
+  </section>
 
   <section id="indicadores" data-view="piloto">
     <p class="period" id="periodo-label"></p>
@@ -253,7 +289,7 @@ const HITOS = [
   { d: '2026-11-15', t: 'Gate 1 (TAP H8)' },
 ];
 const META_C1 = 0.95, META_REAG_OP = -0.20, POCOS = 30;
-const DEFAULTS = { periodo: 'piloto', desde: '', hasta: '', base: '2026-04-01', pop: 'ASU021', serv: 'MVP', dealer: 'Neo Telecom', met: 'c1', gran: 'semana', cserv: 'Los 4', vista: 'piloto', mxm: 'os', dsel: '' };
+const DEFAULTS = { periodo: 'piloto', desde: '', hasta: '', base: '2026-04-01', pop: 'ASU021', serv: 'MVP', dealer: 'Neo Telecom', met: 'c1', gran: 'semana', cserv: 'Los 4', vista: 'zoy', zd: 'graf', mxm: 'os', dsel: '' };
 const CLASE = { 'CLIENTE': 'Cliente', 'LLUVIA': 'Fuerza mayor', 'INFRA': 'Operativo', 'TECNICO': 'Operativo', 'DEMORA DE CONTRATISTA': 'Operativo', 'REAG. RAPIDO': 'Operativo' };
 const GROUPS = ['Resto Central', 'Total Central'];
 
@@ -867,6 +903,194 @@ function drawDealers(range) {
 }
 const rangoTxt = ([a, b]) => { const h = b > DATA_HASTA ? DATA_HASTA : b; return a === h ? fDayY(day(a)) : `${fDayY(day(a))} – ${fDayY(day(h))}`; };
 
+/* ---------- Antes vs después (estilo ZOY) ---------- */
+const ZS = [['General', 't-red'], ['Instalación', 't-blue'], ['Soporte', 't-gold'], ['Comercial', 't-green'], ['Negociación', 't-purple']];
+const ZLAB = { 'General': 'General', 'Instalación': 'Instalaciones', 'Soporte': 'Soportes', 'Comercial': 'Comercial', 'Negociación': 'Negociación' };
+function aggServ([d0, d1]) {
+  const out = new Map(ZS.map(([s]) => [s, emptyAgg()]));
+  for (const r of ROWS) {
+    if (!dealerOk(r.dealer) || !groupsOf(r.pop).includes(P.pop)) continue;
+    const inCr = r.creada >= d0 && r.creada <= d1, inA1 = r.a1 && r.a1 >= d0 && r.a1 <= d1 && r.a1 <= AGENDA_HASTA;
+    for (const s of ['General', r.servicio]) {
+      const a = out.get(s); if (!a) continue;
+      if (inCr) { addCreated(a, r); a.abiertas += r.abierta; }
+      if (inA1) { a.c1den++; a.c1ok += r.c1; }
+    }
+  }
+  return out;
+}
+(function () { for (const [k, t] of [['graf', 'Diseño: gráfico antes → después'], ['tarj', 'Diseño: tarjetas ZOY'], ['tabla', 'Diseño: tabla con tendencia']]) {
+  const bt = document.createElement('button'); bt.type = 'button'; bt.dataset.zd = k; bt.textContent = t; bt.addEventListener('click', () => setP({ zd: k })); $('#zdis').append(bt); } })();
+function drawZoy() {
+  document.querySelectorAll('#zdis button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.zd === P.zd)));
+  if (P.zd === 'graf') return drawZoyGraf();
+  if (P.zd === 'tabla') return drawZoyTabla();
+  const b = aggServ(baseRange()), p = aggServ(pilotRange());
+  $('#zv-note').textContent = `${popLabel(P.pop)} · Dealer: ${P.dealer} · Antes = línea base ${rangoTxt(baseRange())} · Después = piloto ${rangoTxt(pilotRange())}. El número grande es el piloto; abajo, cómo estaba antes y la diferencia.`;
+  const fin = (a) => a.os - a.canc - a.abiertas;
+  const lt = (a, h) => a.hAll.length ? a.hAll.filter((x) => x < h).length / a.hAll.length : null;
+  const tile = (cls, head, vP, vB, f, d, up, nTxt, N) => {
+    const t = el('div', 'zt ' + cls); t.append(el('div', 'h', head), el('div', 'v', f(vP)));
+    if (nTxt) t.append(el('div', 'n', nTxt));
+    const a = el('div', 'a'); a.append('Antes: ', el('b', null, f(vB)));
+    if (vP != null && vB != null) { const dv = vP - vB, z = Math.abs(dv) < 1e-9;
+      a.append(el('span', 'd ' + (z ? 'eq' : (dv > 0) === up ? 'good' : 'bad'), d(dv))); }
+    t.append(a); if (N != null && N > 0 && N < POCOS) t.append(el('div', 'w', `⚠ pocos casos (${N})`)); return t;
+  };
+  const block = (titulo, sub, mk) => { const z = el('div', 'zb'); const h = el('h3', null, titulo); if (sub) h.append(el('span', 'sub2', sub)); z.append(h);
+    const row = el('div', 'zrow'); for (const [s, cls] of ZS) row.append(mk(s, cls)); z.append(row); return z; };
+  const ratio = (k) => (s, cls) => { const A = p.get(s), B = b.get(s); const m = M[k];
+    return tile(cls, ZLAB[s], val(A, k), val(B, k), m.pct ? fPct : fH, m.pct ? fPP : fDH, m.up, k === 'horas' ? `${fInt(A.ej)} OS ejecutadas` : `${fInt(A[m.num])} / ${fInt(A[m.den])}`, A[m.den]); };
+  const zv = $('#zv'); zv.replaceChildren();
+  // Gestiones
+  {
+    const z = el('div', 'zb'); z.append(el('h3', null, 'Gestiones · General'));
+    const row = el('div', 'zrow'), A = p.get('General'), B = b.get('General');
+    const g = (cls, head, fa, up) => { const vP = A.os ? fa(A) / A.os : null, vB = B.os ? fa(B) / B.os : null;
+      return tile(cls, head, vP, vB, fPct, fPP, up, `${fInt(fa(A))} de ${fInt(A.os)} OS (antes ${fInt(fa(B))})`, A.os); };
+    const t0 = el('div', 'zt t-indigo'); t0.append(el('div', 'h', 'Asignadas'), el('div', 'v', fInt(A.os)), el('div', 'n', 'OS creadas en el piloto'), el('div', 'a', `Antes: ${fInt(B.os)} en ${d3.utcDay.count(day(baseRange()[0]), day(baseRange()[1])) + 1} días`));
+    row.append(t0, g('t-red', 'Canceladas', (a) => a.canc, false), g('t-green', 'Finalizadas', fin, true), g('t-gold', 'Pendientes', (a) => a.abiertas, false));
+    z.append(row); zv.append(z);
+  }
+  const g2 = el('div', 'zgrid2');
+  g2.append(block('TTR', ' · tiempo promedio de resolución (horas)', ratio('horas')));
+  g2.append(block('SLA cumplido', ' · antes del plazo de ZOY (Prazo Data)', ratio('sla_zoy')));
+  g2.append(block('OS re-agendadas', ' · % de OS creadas', ratio('reag')));
+  g2.append(block('Cumplimiento 1ª agenda', ' · por fecha de 1ª agenda', ratio('c1')));
+  g2.append(block('Garantías', ' · % de OS creadas', ratio('gar')));
+  g2.append(block('Canceladas', ' · % de OS creadas', ratio('canc')));
+  zv.append(g2);
+  // OS terminadas por tiempo
+  {
+    const z = el('div', 'zb'); z.append(el('h3', null, 'OS terminadas por tiempo · General'));
+    const row = el('div', 'zrow'), A = p.get('General'), B = b.get('General');
+    for (const [h, cls] of [[24, 't-green'], [48, 't-blue'], [72, 't-gold']]) row.append(tile(cls, `<${h} hs`, lt(A, h), lt(B, h), fPct, fPP, true, `${fInt(A.hAll.filter((x) => x < h).length)} / ${fInt(A.hAll.length)}`, A.hAll.length));
+    z.append(row); zv.append(z);
+  }
+}
+
+function drawZoyGraf() {
+  const b = aggServ(baseRange()), p = aggServ(pilotRange());
+  $('#zv-note').textContent = `${popLabel(P.pop)} · Dealer: ${P.dealer} · ● gris = antes (${rangoTxt(baseRange())}) · ● color = después (piloto ${rangoTxt(pilotRange())})`;
+  const zv = $('#zv'); zv.replaceChildren();
+  const SCOL2 = { 'General': '#e8e6f5', 'Instalación': 'var(--z-blue)', 'Soporte': 'var(--z-gold)', 'Comercial': 'var(--z-green)', 'Negociación': 'var(--z-purple)' };
+  // Resumen de gestiones
+  { const A = p.get('General'), B = b.get('General'), z = el('div', 'zb'); z.append(el('h3', null, 'Gestiones · General'));
+    const dias = (r) => d3.utcDay.count(day(r[0]), day(r[1] > DATA_HASTA ? DATA_HASTA : r[1])) + 1;
+    const g = el('div', 'gsum');
+    const it = (lab, v, sub) => { const d = el('div'); d.append(el('b', null, v), el('span', null, lab + (sub ? ' · ' + sub : ''))); return d; };
+    g.append(it('OS asignadas en el piloto', fInt(A.os), `${L.format('.1f')(A.os / dias(pilotRange()))} por día (antes ${L.format('.1f')(B.os / dias(baseRange()))})`),
+      it('Canceladas', fPct(A.os ? A.canc / A.os : null), `antes ${fPct(B.os ? B.canc / B.os : null)}`),
+      it('Finalizadas', fPct(A.os ? (A.os - A.canc - A.abiertas) / A.os : null), `antes ${fPct(B.os ? (B.os - B.canc - B.abiertas) / B.os : null)}`),
+      it('Pendientes hoy', fInt(A.abiertas), 'OS del piloto aún abiertas'));
+    z.append(g); zv.append(z); }
+  const grid = el('div', 'dbg'); zv.append(grid);
+  const panel = (titulo, sub, rows, up, isH) => {
+    const z = el('div', 'zb'); const h = el('h3', null, titulo); if (sub) h.append(el('span', 'sub2', sub)); z.append(h);
+    const lg = el('div', 'dbl'); const mk = (c, t) => { const s = el('span'); const i = el('i'); i.style.background = c; s.append(i, t); return s; };
+    lg.append(mk('var(--mutedbar)', 'Antes'), mk('#1f8a47', 'Después: mejoró'), mk('#d0504c', 'Después: empeoró')); z.append(lg);
+    const box = el('div', 'chart'); box.style.minHeight = rows.length * 34 + 30 + 'px'; z.append(box); grid.append(z);
+    requestAnimationFrame(() => {
+      const Wd = Math.max(280, box.clientWidth), H = rows.length * 34 + 26;
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
+      const f = isH ? fH : fPct, fd = isH ? fDH : fPP;
+      const labs = rows.map((r) => r.vP != null && r.vB != null ? `${f(r.vB)} → ${f(r.vP)} (${fd(r.vP - r.vB)})` : r.vP != null ? f(r.vP) : r.vB != null ? `antes ${f(r.vB)}` : '—');
+      const ml = textW(svg, rows.map((r) => r.lab), 'strong') + 34, mr = textW(svg, labs, 'strong') + 12;
+      const mx = isH ? (d3.max(rows.flatMap((r) => [r.vP || 0, r.vB || 0])) || 1) * 1.08 : 1;
+      const x = d3.scaleLinear([0, mx], [ml, Wd - mr]);
+      svg.append('g').attr('transform', `translate(0,${H - 18})`).call(d3.axisBottom(x).ticks(isH ? 5 : 5).tickFormat(isH ? (t) => t + ' h' : L.format('.0%')).tickSize(-(H - 22)).tickPadding(6)).call(cleanAxis);
+      const tip = tipFor(box);
+      rows.forEach((r, i) => {
+        const y = 12 + i * 34, faint = r.N > 0 && r.N < POCOS;
+        const g = svg.append('g').attr('opacity', r.vP == null && r.vB == null ? 0.35 : 1);
+        g.append('text').attr('x', ml - 10).attr('y', y + 4).attr('text-anchor', 'end').attr('class', 'strong').text(r.lab);
+        g.append('circle').attr('cx', ml - 10 - textW(svg, [r.lab], 'strong') - 10).attr('cy', y).attr('r', 4).attr('fill', SCOL2[r.s]);
+        if (r.vP != null && r.vB != null) {
+          const good = r.vP === r.vB ? null : (r.vP > r.vB) === up;
+          g.append('line').attr('x1', x(r.vB)).attr('x2', x(r.vP)).attr('y1', y).attr('y2', y).attr('stroke', good == null ? 'var(--mutedbar)' : good ? '#1f8a47' : '#d0504c').attr('stroke-width', 4).attr('stroke-linecap', 'round').attr('opacity', faint ? 0.5 : 0.9);
+        }
+        if (r.vB != null) g.append('circle').attr('cx', x(r.vB)).attr('cy', y).attr('r', 6).attr('fill', 'var(--mutedbar)');
+        if (r.vP != null) { const good = r.vB == null || r.vP === r.vB ? null : (r.vP > r.vB) === up;
+          g.append('circle').attr('cx', x(r.vP)).attr('cy', y).attr('r', 7).attr('fill', good == null ? '#e8e6f5' : good ? '#1f8a47' : '#d0504c').attr('stroke', '#fff').attr('stroke-width', 1.5).attr('opacity', faint ? 0.6 : 1); }
+        g.append('text').attr('x', Wd - mr + 8).attr('y', y + 4).attr('class', 'strong').text(labs[i]);
+        if (faint) g.append('text').attr('x', Wd - mr + 8).attr('y', y + 16).attr('font-size', 10).attr('fill', '#f2c14e').text(`⚠ pocos casos (${r.N})`);
+        g.append('rect').attr('x', 0).attr('y', y - 15).attr('width', Wd).attr('height', 30).attr('fill', 'transparent')
+          .on('mousemove', (ev) => { const [px, py] = d3.pointer(ev, box); tip.show(px, py, `${titulo} · ${r.lab}`, [{ color: 'var(--mutedbar)', text: `Antes: ${f(r.vB)} ${r.nB || ''}` }, { color: SCOL2[r.s], text: `Después: ${f(r.vP)} ${r.nP || ''}` }]); })
+          .on('mouseleave', () => tip.hide());
+      });
+    });
+  };
+  const rowsK = (k) => ZS.map(([s]) => { const A = p.get(s), B = b.get(s), m = M[k];
+    return { s, lab: ZLAB[s], vP: val(A, k), vB: val(B, k), N: A[m.den], nP: `(${fInt(A[m.num] | 0)} / ${fInt(A[m.den])})`, nB: `(${fInt(B[m.num] | 0)} / ${fInt(B[m.den])})` }; });
+  panel('TTR', ' · horas promedio creación → ejecución (menos es mejor)', ZS.map(([s]) => { const A = p.get(s), B = b.get(s);
+    return { s, lab: ZLAB[s], vP: val(A, 'horas'), vB: val(B, 'horas'), N: A.ej, nP: `(${fInt(A.ej)} OS)`, nB: `(${fInt(B.ej)} OS)` }; }), false, true);
+  panel('SLA cumplido', ' · antes del plazo de ZOY', rowsK('sla_zoy'), true);
+  panel('Cumplimiento 1ª agenda', ' · por fecha de 1ª agenda', rowsK('c1'), true);
+  panel('OS re-agendadas', ' · menos es mejor', rowsK('reag'), false);
+  panel('Garantías', ' · menos es mejor', rowsK('gar'), false);
+  panel('Canceladas', ' · menos es mejor', rowsK('canc'), false);
+  const A = p.get('General'), B = b.get('General'), lt = (a, h) => a.hAll.length ? a.hAll.filter((x) => x < h).length / a.hAll.length : null;
+  panel('OS terminadas por tiempo', ' · General, % de ejecutadas', [24, 48, 72].map((h) => ({ s: 'General', lab: `< ${h} hs`, vP: lt(A, h), vB: lt(B, h), N: A.hAll.length, nP: `(${A.hAll.filter((x) => x < h).length} / ${A.hAll.length})`, nB: `(${B.hAll.filter((x) => x < h).length} / ${B.hAll.length})` })), true);
+}
+
+function drawZoyTabla() {
+  const b = aggServ(baseRange()), p = aggServ(pilotRange());
+  $('#zv-note').textContent = `${popLabel(P.pop)} · Dealer: ${P.dealer} · En cada celda: número grande = piloto (${rangoTxt(pilotRange())}); abajo, antes (${rangoTxt(baseRange())}) y la diferencia. Tendencia: semanas de los 4 servicios, sombreado = piloto.`;
+  // Serie semanal General (los 4 servicios) para la tendencia
+  const wk = new Map(), getw = (w) => wk.get(w) || wk.set(w, emptyAgg()).get(w);
+  for (const r of ROWS) {
+    if (!dealerOk(r.dealer) || !groupsOf(r.pop).includes(P.pop)) continue;
+    if (r.creada >= P.base && r.creada <= DATA_HASTA) addCreated(getw(mondayOf(r.creada)), r);
+    if (r.a1 && r.a1 >= P.base && r.a1 <= AGENDA_HASTA) { const a = getw(mondayOf(r.a1)); a.c1den++; a.c1ok += r.c1; }
+  }
+  const semanas = [...wk.keys()].sort();
+  const lt = (a, h) => a && a.hAll.length ? a.hAll.filter((x) => x < h).length / a.hAll.length : null;
+  const IND = [
+    { l: 'TTR', sub: 'horas promedio', v: (a) => val(a, 'horas'), n: (a) => a.ej, up: false, h: true },
+    { l: 'SLA cumplido', sub: 'antes del plazo ZOY', v: (a) => val(a, 'sla_zoy'), n: (a) => a.ej, up: true },
+    { l: 'Cumplimiento 1ª agenda', sub: 'por fecha de 1ª agenda', v: (a) => val(a, 'c1'), n: (a) => a.c1den, up: true },
+    { l: 'OS re-agendadas', sub: '% de creadas', v: (a) => val(a, 'reag'), n: (a) => a.os, up: false },
+    { l: 'Garantías', sub: '% de creadas', v: (a) => val(a, 'gar'), n: (a) => a.os, up: false },
+    { l: 'Canceladas', sub: '% de creadas', v: (a) => val(a, 'canc'), n: (a) => a.os, up: false },
+    { l: 'Terminadas < 24 hs', sub: '% de ejecutadas', v: (a) => lt(a, 24), n: (a) => a.hAll.length, up: true },
+    { l: 'Terminadas < 48 hs', sub: '% de ejecutadas', v: (a) => lt(a, 48), n: (a) => a.hAll.length, up: true },
+  ];
+  const tb = el('table'); tb.id = 'zt';
+  const hr = el('tr'); hr.append(el('th', 'ind', 'Indicador'));
+  for (const [s, cls] of ZS) { const th = el('th', cls, ZLAB[s]); hr.append(th); }
+  hr.append(el('th', 'ind', 'Tendencia semanal (General)'));
+  const thead = el('thead'); thead.append(hr); tb.append(thead);
+  const tbody = el('tbody'); tb.append(tbody);
+  const zv = $('#zv'); zv.replaceChildren(); const wrap = el('div', 'zb'); wrap.append(tb); zv.append(wrap);
+  for (const ind of IND) {
+    const tr = el('tr'); const td0 = el('td', 'ind', ind.l); td0.append(el('small', null, ind.sub + (ind.up ? ' · más es mejor' : ' · menos es mejor'))); tr.append(td0);
+    const f = ind.h ? fH : fPct, fd = ind.h ? fDH : fPP;
+    for (const [s] of ZS) {
+      const A = p.get(s), B = b.get(s), vP = ind.v(A), vB = ind.v(B), N = ind.n(A), td = el('td');
+      td.append(el('div', 'vv', f(vP)), el('div', 'aa', 'antes ' + f(vB)));
+      if (vP != null && vB != null) { const d = vP - vB, z = Math.abs(d) < (ind.h ? 0.05 : 0.0005);
+        td.append(el('span', 'dd ' + (z ? 'eq' : (d > 0) === ind.up ? 'good' : 'bad'), fd(d)));
+        if (!z) td.style.background = (d > 0) === ind.up ? 'rgba(31,138,71,.18)' : 'rgba(178,58,54,.18)'; }
+      if (N > 0 && N < POCOS) { td.classList.add('faint'); td.title = `Pocos casos (${N})`; }
+      tr.append(td);
+    }
+    // sparkline
+    const sp = el('td', 'spk'); tr.append(sp); tbody.append(tr);
+    const pts = semanas.map((w) => ({ x: day(w), v: ind.v(wk.get(w)), n: ind.n(wk.get(w)) })).filter((d) => d.v != null && d.n >= 3);
+    requestAnimationFrame(() => {
+      const Wd = Math.max(160, sp.clientWidth - 12), H = 46;
+      const svg = d3.select(sp).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${Wd} ${H}`);
+      if (!pts.length) return;
+      const x = d3.scaleUtc([day(mondayOf(P.base)), day(DATA_HASTA)], [2, Wd - 2]);
+      const ext = d3.extent(pts, (d) => d.v), y = d3.scaleLinear([ext[0] === ext[1] ? ext[0] * 0.9 : ext[0], ext[1] === ext[0] ? ext[1] * 1.1 + 0.01 : ext[1]], [H - 4, 4]);
+      svg.append('rect').attr('x', x(day(PILOTO_INI))).attr('y', 0).attr('width', Math.max(0, Wd - 2 - x(day(PILOTO_INI)))).attr('height', H).attr('fill', 'rgba(91,72,224,.35)');
+      svg.append('path').attr('d', d3.line().x((d) => x(d.x)).y((d) => y(d.v))(pts)).attr('fill', 'none').attr('stroke', '#e8e6f5').attr('stroke-width', 1.6).attr('stroke-linejoin', 'round');
+      const last = pts[pts.length - 1];
+      svg.append('circle').attr('cx', x(last.x)).attr('cy', y(last.v)).attr('r', 3).attr('fill', '#f2c14e');
+    });
+  }
+}
+
 function draw() {
   document.querySelectorAll('[data-vista]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.vista === P.vista)));
   document.querySelectorAll('[data-view]').forEach((s) => { s.hidden = s.dataset.view !== P.vista; });
@@ -927,7 +1151,8 @@ function draw() {
     if (a.c1den < POCOS || a.os < POCOS) res.append(' Hay pocos casos: conviene ampliar la observación antes de concluir.');
   }
 
-  if (P.vista === 'piloto') { drawCards(cur, ref, refLabel); drawComparativa(base, pil); drawTrend(cr); drawVolume(cr); drawMotivos(cur); }
+  if (P.vista === 'zoy') drawZoy();
+  else if (P.vista === 'piloto') { drawCards(cur, ref, refLabel); drawComparativa(base, pil); drawTrend(cr); drawVolume(cr); drawMotivos(cur); }
   else if (P.vista === 'cancel') drawCancel(cr);
   else if (P.vista === 'dealers') drawDealers(cr);
   else { drawRanking(cur); drawTable(cur); }
