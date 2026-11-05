@@ -139,6 +139,13 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 .tabs button[draggable] { cursor: grab; } .tabs button.drag { opacity: .4; } .tabs button.over { outline: 2px dashed #f2c14e; outline-offset: -2px; }
 .tabhint { margin-left: auto; font-size: 11px; color: var(--muted); padding: 0 4px 6px; }
 .tabreset { font: inherit; font-size: 11px; background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; padding: 0; }
+.fgroup { background: rgba(0,0,0,.14); border: 1px solid rgba(255,255,255,.18); border-radius: var(--r); padding: 8px 12px 10px; }
+.ftitle { font-size: 12px; font-weight: 700; letter-spacing: .02em; margin-bottom: 6px; color: #fff; }
+.ftitle span { font-weight: 400; color: #d9d4ff; margin-left: 6px; }
+.f.off { opacity: .35; pointer-events: none; }
+.vhint { margin: 0; font-size: 12px; color: #fff; background: rgba(0,0,0,.18); border-radius: var(--r); padding: 6px 10px; }
+.vhint b { font-weight: 700; }
+#mx tr.selrow td:first-child { color: #f2c14e; font-weight: 700; }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
@@ -150,33 +157,40 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
       <p class="take" id="resumen">Cargando datos…</p>
       <p class="sub" id="fuente"></p>
     </header>
-    <div class="filters">
-      <div class="f">Período
-        <div class="seg" role="group" aria-label="Período">
-          <button type="button" data-periodo="base">Línea base</button>
-          <button type="button" data-periodo="piloto">Piloto</button>
-        </div>
+    <div class="fgroup">
+      <div class="ftitle">1 · Alcance <span>qué OS se miran</span></div>
+      <div class="filters">
+        <label class="f" data-f="pop">POP<select id="f-pop"></select></label>
+        <label class="f" data-f="serv">Servicio<select id="f-serv">
+          <option value="MVP">Soporte + Instalación (MVP)</option><option value="Todos">Todos</option>
+          <option>Soporte</option><option>Instalación</option><option>Comercial</option><option>Negociación</option></select></label>
+        <label class="f" data-f="dealer">Dealer / cartera<select id="f-dealer"></select></label>
+        <button type="button" class="reset" id="reset">Restablecer (alcance del piloto)</button>
       </div>
-      <label class="f">Desde<input type="date" id="f-desde"></label>
-      <label class="f">Hasta<input type="date" id="f-hasta"></label>
-      <div class="f">Atajos
-        <div class="quick">
-          <button type="button" data-q="dia">Último día</button>
-          <button type="button" data-q="7">Últimos 7 días</button>
-          <button type="button" data-q="sem">Esta semana</button>
-          <button type="button" data-q="mes">Este mes</button>
+    </div>
+    <div class="fgroup">
+      <div class="ftitle">2 · Períodos <span>contra qué se compara</span></div>
+      <div class="filters">
+        <label class="f" data-f="base">Línea base desde<select id="f-base"><option value="2026-04-01">1 abr 2026</option></select></label>
+        <div class="f" data-f="periodo">Período a mirar
+          <div class="seg" role="group" aria-label="Período">
+            <button type="button" data-periodo="base">Línea base</button>
+            <button type="button" data-periodo="piloto">Piloto</button>
+          </div>
+        </div>
+        <label class="f" data-f="periodo">Desde<input type="date" id="f-desde"></label>
+        <label class="f" data-f="periodo">Hasta<input type="date" id="f-hasta"></label>
+        <div class="f" data-f="periodo">Atajos
+          <div class="quick">
+            <button type="button" data-q="dia">Último día</button>
+            <button type="button" data-q="7">Últimos 7 días</button>
+            <button type="button" data-q="sem">Esta semana</button>
+            <button type="button" data-q="mes">Este mes</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="filters">
-      <label class="f">Línea base desde<select id="f-base"><option value="2026-04-01">1 abr 2026</option></select></label>
-      <label class="f">POP<select id="f-pop"></select></label>
-      <label class="f">Servicio<select id="f-serv">
-        <option value="MVP">Soporte + Instalación (MVP)</option><option value="Todos">Todos</option>
-        <option>Soporte</option><option>Instalación</option><option>Comercial</option><option>Negociación</option></select></label>
-      <label class="f">Dealer / cartera<select id="f-dealer"></select></label>
-      <button type="button" class="reset" id="reset">Restablecer (alcance del piloto)</button>
-    </div>
+    <p class="vhint" id="vhint"></p>
   </div>
 
   <p class="alert" id="aviso" hidden></p>
@@ -236,8 +250,8 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 
   <section class="panel" id="cancelaciones" data-view="cancel">
     <h2>Cancelaciones <button type="button" class="info" data-info="canc" aria-label="Qué mide">i</button></h2>
-    <p class="note">Por fecha de creación, en el período, dealer y POP elegidos. Este bloque tiene su propio filtro de servicio: por defecto muestra los 4.</p>
-    <div class="bar"><div class="chips" id="cserv" role="group" aria-label="Servicios de cancelaciones"></div><span class="note" id="cancel-aviso" style="margin:0"></span></div>
+    <p class="note">Por fecha de creación, en el período, dealer y POP elegidos. Usa el filtro Servicio de arriba (elegí «Todos» para ver los 4 servicios).</p>
+    <div class="bar"><span></span><span class="note" id="cancel-aviso" style="margin:0"></span></div>
     <div class="cmini" id="cmini"></div>
     <div class="grid2" style="margin-top:12px">
       <div><h3 class="h3">Canceladas por POP</h3><div class="legend" id="cleg"></div><div class="chart" id="ch-cpop"></div></div>
@@ -436,7 +450,7 @@ document.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click',
 $('#f-base').addEventListener('change', (e) => setP({ base: e.target.value }));
 $('#f-pop').addEventListener('change', (e) => setP({ pop: e.target.value }));
 $('#f-serv').addEventListener('change', (e) => setP({ serv: e.target.value }));
-$('#f-dealer').addEventListener('change', (e) => setP({ dealer: e.target.value }));
+$('#f-dealer').addEventListener('change', (e) => setP({ dealer: e.target.value, dsel: '' }));
 $('#reset').addEventListener('click', () => { P = { ...DEFAULTS }; setP({}); });
 for (const k of ['c1', 'reag', 'reag_op', 'sla_sop', 'sla_inst', 'gar', 'horas']) {
   const b = document.createElement('button'); b.type = 'button'; b.dataset.m = k; b.textContent = M[k].short;
@@ -693,12 +707,11 @@ const SERVS = ['Soporte', 'Instalación', 'Comercial', 'Negociación'];
 const SCOL = { 'Soporte': 'var(--z-gold)', 'Instalación': 'var(--z-blue)', 'Comercial': 'var(--z-green)', 'Negociación': 'var(--z-purple)' };
 const STILE = { 'Soporte': 't-sop', 'Instalación': 't-inst', 'Comercial': 't-com', 'Negociación': 't-neg' };
 (function () {
-  for (const k of ['Los 4', ...SERVS]) { const b = document.createElement('button'); b.type = 'button'; b.dataset.cs = k; b.textContent = k;
-    b.addEventListener('click', () => setP({ cserv: k })); $('#cserv').append(b); }
+
 })();
 // Cancelaciones: usa su propio filtro de servicio (no el filtro general).
 function aggCancel([d0, d1]) {
-  const sv = P.cserv === 'Los 4' ? SERVS : [P.cserv], out = new Map();
+  const sv = SERVS.filter(servOk), out = new Map();
   const get = (g) => out.get(g) || out.set(g, { os: {}, canc: {}, mc: {}, tos: 0, tcanc: 0 }).get(g);
   for (const r of ROWS) {
     if (!sv.includes(r.servicio) || !dealerOk(r.dealer) || r.creada < d0 || r.creada > d1) continue;
@@ -710,8 +723,7 @@ function aggCancel([d0, d1]) {
   return out;
 }
 function drawCancel(range) {
-  document.querySelectorAll('#cserv button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cs === P.cserv)));
-  const cur = aggCancel(range), sv = P.cserv === 'Los 4' ? SERVS : [P.cserv];
+  const cur = aggCancel(range), sv = SERVS.filter(servOk);
   const tot = cur.get('Total Central'), sel = cur.get(P.pop), ctrl = cur.get(ctrlOf(P.pop)), blank = cur.get('(en blanco)');
   // Resumen por servicio (Total Central, o el POP elegido)
   const mini = $('#cmini'); mini.replaceChildren();
@@ -753,7 +765,7 @@ function drawCancel(range) {
   // Motivos del POP elegido
   const mb = $('#ch-cmot');
   $('#cmot-title').textContent = `Motivos de cancelación · ${popLabel(P.pop)}`;
-  $('#cmot-note').textContent = `% de las ${fInt(sel ? sel.tcanc : 0)} OS canceladas (${sv.length > 1 ? 'los 4 servicios' : P.cserv}). Barra fina: ${popLabel(ctrlOf(P.pop))}.`;
+  $('#cmot-note').textContent = `% de las ${fInt(sel ? sel.tcanc : 0)} OS canceladas (${sv.join(' + ')}). Barra fina: ${popLabel(ctrlOf(P.pop))}.`;
   if (!sel || !sel.tcanc) { emptyBox(mb, 'Sin canceladas para este POP en el período'); return; }
   mb.replaceChildren();
   let rows = Object.entries(sel.mc).map(([mo, n]) => ({ mo, n, pct: n / sel.tcanc, cp: ctrl && ctrl.tcanc ? (ctrl.mc[mo] || 0) / ctrl.tcanc : null })).sort((p, q) => q.n - p.n);
@@ -876,7 +888,7 @@ function drawDealers(range) {
   const dealers = [...byD.entries()].filter(([, a]) => a.os > 0).sort((x, y) => y[1].os - x[1].os).map(([d]) => d);
   const pops = [...byP.entries()].filter(([, a]) => a.os > 0).sort((x, y) => y[1].os - x[1].os).map(([p]) => p);
   const servL = $('#f-serv').selectedOptions[0]?.textContent || P.serv;
-  $('#mx-note').textContent = `${k === 'os' ? 'Cantidad de OS creadas' : MXM[k].l + ' (con su denominador)'} por POP y dealer · ${rangoTxt(range)} · ${servL}. Ignora el filtro de dealer y de POP de arriba.`;
+  $('#mx-note').textContent = `${k === 'os' ? 'Cantidad de OS creadas' : MXM[k].l + ' (con su denominador)'} por POP y dealer · ${rangoTxt(range)} · ${servL}. El POP elegido se resalta; el dealer elegido (o el que toques) se abre en el detalle.`;
   const maxOS = d3.max([...cell.values()], (a) => a.os) || 1;
   const mval = (a) => !a ? null : k === 'os' ? (a.os || null) : val(a, k);
   const mden = (a) => !a ? 0 : k === 'os' ? a.os : a[M[k].den];
@@ -899,7 +911,7 @@ function drawDealers(range) {
     td.title = label + (a ? ` · ${fInt(a.os)} OS` + (k !== 'os' ? ` · ${MXM[k].l}: ${fmt(a) || '—'} (${fInt(N)})` : '') : '');
     return td;
   };
-  const rows = pops.map((p) => { const tr = el('tr'); tr.append(el('td', null, p));
+  const rows = pops.map((p) => { const tr = el('tr', p === P.pop ? 'selrow' : null); tr.append(el('td', null, p));
     for (const d of dealers) tr.append(mkCell(cell.get(p + '\u0001' + d), `${p} · ${d}`));
     tr.append(mkCell(byP.get(p), `${p} · todos los dealers`, true)); return tr; });
   const tt = el('tr', 'tot'); tt.append(el('td', null, 'Total dealer'));
@@ -907,7 +919,7 @@ function drawDealers(range) {
   tt.append(mkCell(tot, 'Total Central', true));
   $('#mx tbody').replaceChildren(...rows, tt);
   // Detalle del dealer
-  const dsel = P.dsel && byD.has(P.dsel) ? P.dsel : dealers[0];
+  const dsel = P.dealer !== 'Todos' && byD.has(P.dealer) && !P.dsel ? P.dealer : P.dsel && byD.has(P.dsel) ? P.dsel : dealers[0];
   $('#dd-title').textContent = `Detalle del dealer · ${dsel || '—'}`;
   const da = byD.get(dsel);
   $('#dd-note').textContent = da ? `${fInt(da.os)} OS creadas en ${rangoTxt(range)} · en ${pops.filter((p) => cell.get(p + '\u0001' + dsel)?.os).length} POP. Cada indicador comparado con el total del POP (todos los dealers).` : '';
@@ -929,11 +941,16 @@ const rangoTxt = ([a, b]) => { const h = b > DATA_HASTA ? DATA_HASTA : b; return
 /* ---------- Antes vs después (estilo ZOY) ---------- */
 const ZS = [['General', 't-red'], ['Instalación', 't-blue'], ['Soporte', 't-gold'], ['Comercial', 't-green'], ['Negociación', 't-purple']];
 const ZLAB = { 'General': 'General', 'Instalación': 'Instalaciones', 'Soporte': 'Soportes', 'Comercial': 'Comercial', 'Negociación': 'Negociación' };
+const genLabel = () => P.serv === 'Todos' ? 'General (4 servicios)' : P.serv === 'MVP' ? 'General (Soporte + Instalación)' : P.serv;
+// Tarjetas/filas que se muestran según el filtro Servicio
+const ZSA = () => ZS.filter(([s]) => s === 'General' ? (P.serv === 'Todos' || P.serv === 'MVP') : servOk(s)).map(([s, c]) => [s, c]);
+const zlab = (s) => ZLAB[s];
 function aggServ([d0, d1]) {
   const out = new Map(ZS.map(([s]) => [s, emptyAgg()]));
   for (const r of ROWS) {
     if (!dealerOk(r.dealer) || !groupsOf(r.pop).includes(P.pop)) continue;
     const inCr = r.creada >= d0 && r.creada <= d1, inA1 = r.a1 && r.a1 >= d0 && r.a1 <= d1 && r.a1 <= AGENDA_HASTA;
+    if (!servOk(r.servicio)) continue;
     for (const s of ['General', r.servicio]) {
       const a = out.get(s); if (!a) continue;
       if (inCr) { addCreated(a, r); a.abiertas += r.abierta; }
@@ -949,7 +966,7 @@ function drawZoy() {
   if (P.zd === 'graf') return drawZoyGraf();
   if (P.zd === 'tabla') return drawZoyTabla();
   const b = aggServ(baseRange()), p = aggServ(pilotRange());
-  $('#zv-note').textContent = `${popLabel(P.pop)} · Dealer: ${P.dealer} · Antes = línea base ${rangoTxt(baseRange())} · Después = piloto ${rangoTxt(pilotRange())}. El número grande es el piloto; abajo, cómo estaba antes y la diferencia.`;
+  $('#zv-note').textContent = `${popLabel(P.pop)} · ${$('#f-serv').selectedOptions[0]?.textContent || P.serv} · Dealer: ${P.dealer} · Antes = línea base ${rangoTxt(baseRange())} · Después = piloto ${rangoTxt(pilotRange())}. El número grande es el piloto; abajo, cómo estaba antes y la diferencia.`;
   const fin = (a) => a.os - a.canc - a.abiertas;
   const lt = (a, h) => a.hAll.length ? a.hAll.filter((x) => x < h).length / a.hAll.length : null;
   const tile = (cls, head, vP, vB, f, d, up, nTxt, N) => {
@@ -961,13 +978,13 @@ function drawZoy() {
     t.append(a); if (N != null && N > 0 && N < POCOS) t.append(el('div', 'w', `⚠ pocos casos (${N})`)); return t;
   };
   const block = (titulo, sub, mk) => { const z = el('div', 'zb'); const h = el('h3', null, titulo); if (sub) h.append(el('span', 'sub2', sub)); z.append(h);
-    const row = el('div', 'zrow'); for (const [s, cls] of ZS) row.append(mk(s, cls)); z.append(row); return z; };
+    const row = el('div', 'zrow'); for (const [s, cls] of ZSA()) row.append(mk(s, cls)); z.append(row); return z; };
   const ratio = (k) => (s, cls) => { const A = p.get(s), B = b.get(s); const m = M[k];
-    return tile(cls, ZLAB[s], val(A, k), val(B, k), m.pct ? fPct : fH, m.pct ? fPP : fDH, m.up, k === 'horas' ? `${fInt(A.ej)} OS ejecutadas` : `${fInt(A[m.num])} / ${fInt(A[m.den])}`, A[m.den]); };
+    return tile(cls, zlab(s), val(A, k), val(B, k), m.pct ? fPct : fH, m.pct ? fPP : fDH, m.up, k === 'horas' ? `${fInt(A.ej)} OS ejecutadas` : `${fInt(A[m.num])} / ${fInt(A[m.den])}`, A[m.den]); };
   const zv = $('#zv'); zv.replaceChildren();
   // Gestiones
   {
-    const z = el('div', 'zb'); z.append(el('h3', null, 'Gestiones · General'));
+    const z = el('div', 'zb'); z.append(el('h3', null, 'Gestiones · ' + genLabel()));
     const row = el('div', 'zrow'), A = p.get('General'), B = b.get('General');
     const g = (cls, head, fa, up) => { const vP = A.os ? fa(A) / A.os : null, vB = B.os ? fa(B) / B.os : null;
       return tile(cls, head, vP, vB, fPct, fPP, up, `${fInt(fa(A))} de ${fInt(A.os)} OS (antes ${fInt(fa(B))})`, A.os); };
@@ -985,7 +1002,7 @@ function drawZoy() {
   zv.append(g2);
   // OS terminadas por tiempo
   {
-    const z = el('div', 'zb'); z.append(el('h3', null, 'OS terminadas por tiempo · General'));
+    const z = el('div', 'zb'); z.append(el('h3', null, 'OS terminadas por tiempo · ' + genLabel()));
     const row = el('div', 'zrow'), A = p.get('General'), B = b.get('General');
     for (const [h, cls] of [[24, 't-green'], [48, 't-blue'], [72, 't-gold']]) row.append(tile(cls, `<${h} hs`, lt(A, h), lt(B, h), fPct, fPP, true, `${fInt(A.hAll.filter((x) => x < h).length)} / ${fInt(A.hAll.length)}`, A.hAll.length));
     z.append(row); zv.append(z);
@@ -994,11 +1011,11 @@ function drawZoy() {
 
 function drawZoyGraf() {
   const b = aggServ(baseRange()), p = aggServ(pilotRange());
-  $('#zv-note').textContent = `${popLabel(P.pop)} · Dealer: ${P.dealer} · ● gris = antes (${rangoTxt(baseRange())}) · ● color = después (piloto ${rangoTxt(pilotRange())})`;
+  $('#zv-note').textContent = `${popLabel(P.pop)} · ${$('#f-serv').selectedOptions[0]?.textContent || P.serv} · Dealer: ${P.dealer} · ● gris = antes (${rangoTxt(baseRange())}) · ● color = después (piloto ${rangoTxt(pilotRange())})`;
   const zv = $('#zv'); zv.replaceChildren();
   const SCOL2 = { 'General': '#e8e6f5', 'Instalación': 'var(--z-blue)', 'Soporte': 'var(--z-gold)', 'Comercial': 'var(--z-green)', 'Negociación': 'var(--z-purple)' };
   // Resumen de gestiones
-  { const A = p.get('General'), B = b.get('General'), z = el('div', 'zb'); z.append(el('h3', null, 'Gestiones · General'));
+  { const A = p.get('General'), B = b.get('General'), z = el('div', 'zb'); z.append(el('h3', null, 'Gestiones · ' + genLabel()));
     const dias = (r) => d3.utcDay.count(day(r[0]), day(r[1] > DATA_HASTA ? DATA_HASTA : r[1])) + 1;
     const g = el('div', 'gsum');
     const it = (lab, v, sub) => { const d = el('div'); d.append(el('b', null, v), el('span', null, lab + (sub ? ' · ' + sub : ''))); return d; };
@@ -1043,26 +1060,26 @@ function drawZoyGraf() {
       });
     });
   };
-  const rowsK = (k) => ZS.map(([s]) => { const A = p.get(s), B = b.get(s), m = M[k];
-    return { s, lab: ZLAB[s], vP: val(A, k), vB: val(B, k), N: A[m.den], nP: `(${fInt(A[m.num] | 0)} / ${fInt(A[m.den])})`, nB: `(${fInt(B[m.num] | 0)} / ${fInt(B[m.den])})` }; });
-  panel('TTR', ' · horas promedio creación → ejecución (menos es mejor)', ZS.map(([s]) => { const A = p.get(s), B = b.get(s);
-    return { s, lab: ZLAB[s], vP: val(A, 'horas'), vB: val(B, 'horas'), N: A.ej, nP: `(${fInt(A.ej)} OS)`, nB: `(${fInt(B.ej)} OS)` }; }), false, true);
+  const rowsK = (k) => ZSA().map(([s]) => { const A = p.get(s), B = b.get(s), m = M[k];
+    return { s, lab: zlab(s), vP: val(A, k), vB: val(B, k), N: A[m.den], nP: `(${fInt(A[m.num] | 0)} / ${fInt(A[m.den])})`, nB: `(${fInt(B[m.num] | 0)} / ${fInt(B[m.den])})` }; });
+  panel('TTR', ' · horas promedio creación → ejecución (menos es mejor)', ZSA().map(([s]) => { const A = p.get(s), B = b.get(s);
+    return { s, lab: zlab(s), vP: val(A, 'horas'), vB: val(B, 'horas'), N: A.ej, nP: `(${fInt(A.ej)} OS)`, nB: `(${fInt(B.ej)} OS)` }; }), false, true);
   panel('SLA cumplido', ' · antes del plazo de ZOY', rowsK('sla_zoy'), true);
   panel('Cumplimiento 1ª agenda', ' · por fecha de 1ª agenda', rowsK('c1'), true);
   panel('OS re-agendadas', ' · menos es mejor', rowsK('reag'), false);
   panel('Garantías', ' · menos es mejor', rowsK('gar'), false);
   panel('Canceladas', ' · menos es mejor', rowsK('canc'), false);
   const A = p.get('General'), B = b.get('General'), lt = (a, h) => a.hAll.length ? a.hAll.filter((x) => x < h).length / a.hAll.length : null;
-  panel('OS terminadas por tiempo', ' · General, % de ejecutadas', [24, 48, 72].map((h) => ({ s: 'General', lab: `< ${h} hs`, vP: lt(A, h), vB: lt(B, h), N: A.hAll.length, nP: `(${A.hAll.filter((x) => x < h).length} / ${A.hAll.length})`, nB: `(${B.hAll.filter((x) => x < h).length} / ${B.hAll.length})` })), true);
+  panel('OS terminadas por tiempo', ' · ' + genLabel() + ', % de ejecutadas', [24, 48, 72].map((h) => ({ s: 'General', lab: `< ${h} hs`, vP: lt(A, h), vB: lt(B, h), N: A.hAll.length, nP: `(${A.hAll.filter((x) => x < h).length} / ${A.hAll.length})`, nB: `(${B.hAll.filter((x) => x < h).length} / ${B.hAll.length})` })), true);
 }
 
 function drawZoyTabla() {
   const b = aggServ(baseRange()), p = aggServ(pilotRange());
-  $('#zv-note').textContent = `${popLabel(P.pop)} · Dealer: ${P.dealer} · En cada celda: número grande = piloto (${rangoTxt(pilotRange())}); abajo, antes (${rangoTxt(baseRange())}) y la diferencia. Tendencia: semanas de los 4 servicios, sombreado = piloto.`;
+  $('#zv-note').textContent = `${popLabel(P.pop)} · ${$('#f-serv').selectedOptions[0]?.textContent || P.serv} · Dealer: ${P.dealer} · En cada celda: número grande = piloto (${rangoTxt(pilotRange())}); abajo, antes (${rangoTxt(baseRange())}) y la diferencia. Tendencia: semanas del servicio elegido (General), sombreado = piloto.`;
   // Serie semanal General (los 4 servicios) para la tendencia
   const wk = new Map(), getw = (w) => wk.get(w) || wk.set(w, emptyAgg()).get(w);
   for (const r of ROWS) {
-    if (!dealerOk(r.dealer) || !groupsOf(r.pop).includes(P.pop)) continue;
+    if (!servOk(r.servicio) || !dealerOk(r.dealer) || !groupsOf(r.pop).includes(P.pop)) continue;
     if (r.creada >= P.base && r.creada <= DATA_HASTA) addCreated(getw(mondayOf(r.creada)), r);
     if (r.a1 && r.a1 >= P.base && r.a1 <= AGENDA_HASTA) { const a = getw(mondayOf(r.a1)); a.c1den++; a.c1ok += r.c1; }
   }
@@ -1080,15 +1097,15 @@ function drawZoyTabla() {
   ];
   const tb = el('table'); tb.id = 'zt';
   const hr = el('tr'); hr.append(el('th', 'ind', 'Indicador'));
-  for (const [s, cls] of ZS) { const th = el('th', cls, ZLAB[s]); hr.append(th); }
-  hr.append(el('th', 'ind', 'Tendencia semanal (General)'));
+  for (const [s, cls] of ZSA()) { const th = el('th', cls, zlab(s)); hr.append(th); }
+  hr.append(el('th', 'ind', 'Tendencia semanal'));
   const thead = el('thead'); thead.append(hr); tb.append(thead);
   const tbody = el('tbody'); tb.append(tbody);
   const zv = $('#zv'); zv.replaceChildren(); const wrap = el('div', 'zb'); wrap.append(tb); zv.append(wrap);
   for (const ind of IND) {
     const tr = el('tr'); const td0 = el('td', 'ind', ind.l); td0.append(el('small', null, ind.sub + (ind.up ? ' · más es mejor' : ' · menos es mejor'))); tr.append(td0);
     const f = ind.h ? fH : fPct, fd = ind.h ? fDH : fPP;
-    for (const [s] of ZS) {
+    for (const [s] of ZSA()) {
       const A = p.get(s), B = b.get(s), vP = ind.v(A), vB = ind.v(B), N = ind.n(A), td = el('td');
       td.append(el('div', 'vv', f(vP)), el('div', 'aa', 'antes ' + f(vB)));
       if (vP != null && vB != null) { const d = vP - vB, z = Math.abs(d) < (ind.h ? 0.05 : 0.0005);
@@ -1114,7 +1131,17 @@ function drawZoyTabla() {
   }
 }
 
+const VISTA_FILTROS = {
+  zoy: { usa: ['pop', 'serv', 'dealer', 'base'], txt: '<b>Antes vs después</b>: compara la línea base con el piloto completo para el POP, servicio y dealer elegidos. El período y las fechas no aplican acá.' },
+  piloto: { usa: ['pop', 'serv', 'dealer', 'base', 'periodo'], txt: '<b>Piloto</b>: usa todos los filtros. El período elegido se compara con la línea base.' },
+  cancel: { usa: ['pop', 'serv', 'dealer', 'base', 'periodo'], txt: '<b>Cancelaciones</b>: usa todos los filtros. El POP elegido define los motivos de la derecha.' },
+  pops: { usa: ['pop', 'serv', 'dealer', 'base', 'periodo'], txt: '<b>Comparación por POP</b>: muestra todos los POP con el servicio, dealer y período elegidos; el POP elegido queda resaltado.' },
+  dealers: { usa: ['pop', 'serv', 'dealer', 'base', 'periodo'], txt: '<b>Dealers por POP</b>: muestra todos los dealers y POP con el servicio y período elegidos; el POP elegido se resalta y el dealer elegido se abre en el detalle.' },
+};
 function draw() {
+  { const vf = VISTA_FILTROS[P.vista] || VISTA_FILTROS.piloto;
+    document.querySelectorAll('[data-f]').forEach((e) => { const on = vf.usa.includes(e.dataset.f); e.classList.toggle('off', !on); e.title = on ? '' : 'No aplica en esta vista'; });
+    $('#vhint').innerHTML = vf.txt; }
   document.querySelectorAll('[data-vista]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.vista === P.vista)));
   document.querySelectorAll('[data-view]').forEach((s) => { s.hidden = s.dataset.view !== P.vista; });
   document.querySelectorAll('[data-periodo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === P.periodo)));
