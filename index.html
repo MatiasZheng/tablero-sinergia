@@ -135,6 +135,10 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 #zt .dd { display: inline-block; margin-top: 2px; padding: 0 6px; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; }
 #zt .dd.good { background: #157a38; } #zt .dd.bad { background: #8f1d24; } #zt .dd.eq { background: #4a4f59; }
 #zt td.faint { opacity: .55; } #zt td.spk { min-width: 180px; padding: 2px 6px; }
+.tabs { align-items: flex-end; }
+.tabs button[draggable] { cursor: grab; } .tabs button.drag { opacity: .4; } .tabs button.over { outline: 2px dashed #f2c14e; outline-offset: -2px; }
+.tabhint { margin-left: auto; font-size: 11px; color: var(--muted); padding: 0 4px 6px; }
+.tabreset { font: inherit; font-size: 11px; background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; padding: 0; }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
@@ -178,11 +182,12 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
   <p class="alert" id="aviso" hidden></p>
 
   <nav class="tabs" role="tablist" aria-label="Vistas">
-    <button type="button" role="tab" data-vista="zoy">Antes vs después</button>
-    <button type="button" role="tab" data-vista="piloto">Piloto: línea base vs piloto</button>
-    <button type="button" role="tab" data-vista="cancel">Cancelaciones</button>
-    <button type="button" role="tab" data-vista="pops">Comparación por POP</button>
-    <button type="button" role="tab" data-vista="dealers">Dealers por POP</button>
+    <button type="button" role="tab" draggable="true" data-vista="zoy">Antes vs después</button>
+    <button type="button" role="tab" draggable="true" data-vista="dealers">Dealers por POP</button>
+    <button type="button" role="tab" draggable="true" data-vista="piloto">Piloto: línea base vs piloto</button>
+    <button type="button" role="tab" draggable="true" data-vista="cancel">Cancelaciones</button>
+    <button type="button" role="tab" draggable="true" data-vista="pops">Comparación por POP</button>
+    <span class="tabhint">↔ Arrastrá las pestañas para ordenarlas · <button type="button" class="tabreset" id="tabreset">orden original</button></span>
   </nav>
 
   <section id="zoyview" data-view="zoy">
@@ -398,6 +403,24 @@ fetch('datos.csv?v=' + Date.now()).then((r) => { if (!r.ok) throw new Error('htt
 /* ---------- Controles ---------- */
 const $ = (s) => document.querySelector(s);
 document.querySelectorAll('[data-vista]').forEach((b) => b.addEventListener('click', () => setP({ vista: b.dataset.vista })));
+/* Orden de pestañas: se arrastra y queda guardado en este navegador */
+(function () {
+  const nav = document.querySelector('.tabs'), hint = nav.querySelector('.tabhint'), KEY = 'sinergia_orden_pestanas';
+  const tabs = () => [...nav.querySelectorAll('button[data-vista]')];
+  const original = tabs().map((b) => b.dataset.vista);
+  const aplicar = (orden) => { for (const v of orden) { const b = nav.querySelector(`button[data-vista="${v}"]`); if (b) nav.insertBefore(b, hint); } };
+  const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(tabs().map((b) => b.dataset.vista))); } catch (e) {} };
+  try { const o = JSON.parse(localStorage.getItem(KEY) || 'null'); if (Array.isArray(o)) aplicar(o); } catch (e) {}
+  let arr = null;
+  for (const b of tabs()) {
+    b.addEventListener('dragstart', (e) => { arr = b; b.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', b.dataset.vista); } catch (_) {} });
+    b.addEventListener('dragend', () => { b.classList.remove('drag'); tabs().forEach((x) => x.classList.remove('over')); arr = null; });
+    b.addEventListener('dragover', (e) => { if (!arr || arr === b) return; e.preventDefault(); tabs().forEach((x) => x.classList.toggle('over', x === b)); });
+    b.addEventListener('drop', (e) => { if (!arr || arr === b) return; e.preventDefault();
+      const r = b.getBoundingClientRect(); nav.insertBefore(arr, e.clientX > r.left + r.width / 2 ? b.nextSibling : b); guardar(); });
+  }
+  document.getElementById('tabreset').addEventListener('click', () => { aplicar(original); try { localStorage.removeItem(KEY); } catch (e) {} });
+})();
 document.querySelectorAll('[data-periodo]').forEach((b) => b.addEventListener('click', () => setP({ periodo: b.dataset.periodo, desde: '', hasta: '' })));
 const onDate = () => {
   const d = $('#f-desde').value, h = $('#f-hasta').value;
