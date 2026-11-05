@@ -146,6 +146,18 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 .vhint { margin: 0; font-size: 12px; color: #fff; background: rgba(0,0,0,.18); border-radius: var(--r); padding: 6px 10px; }
 .vhint b { font-weight: 700; }
 #mx tr.selrow td:first-child { color: #f2c14e; font-weight: 700; }
+.h1row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.guia { font: inherit; font-weight: 700; font-size: 13px; background: #fff; color: #3a2db8; border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+.guia:hover { background: #f2c14e; color: #1f2227; }
+.tour-hole { position: absolute; z-index: 9998; border-radius: 8px; box-shadow: 0 0 0 9999px rgba(10,10,20,.72); outline: 3px solid #f2c14e; pointer-events: none; transition: all .25s ease; }
+.tour-cap { position: fixed; inset: 0; z-index: 9997; }
+.tour-box { position: absolute; z-index: 9999; width: min(380px, calc(100vw - 24px)); background: #fff; color: #222; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,.5); padding: 14px 16px 12px; font-size: 13.5px; line-height: 1.5; }
+.tour-box h4 { margin: 0 0 6px; color: #3a2db8; font-size: 15px; }
+.tour-box p { margin: 0 0 6px; } .tour-box ul { margin: 0 0 6px; padding-left: 18px; }
+.tour-nav { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.tour-nav .cnt { color: #777; font-size: 12px; margin-right: auto; }
+.tour-nav button { font: inherit; font-size: 13px; border-radius: 6px; padding: 5px 12px; cursor: pointer; border: 1px solid #ccc; background: #fff; color: #333; }
+.tour-nav button.pri { background: #5b48e0; border-color: #5b48e0; color: #fff; font-weight: 700; }
 .defs { color: var(--muted); font-size: var(--fs-cap); line-height: 1.6; }
 .defs b { color: var(--fg); }
 </style>
@@ -153,7 +165,7 @@ th button.info { width: 15px; height: 15px; padding: 0; display: inline-flex; ma
 <div class="pg">
   <div class="hero">
     <header>
-      <h1>Calidad de atención · Proyecto SINERGIA</h1>
+      <div class="h1row"><h1>Calidad de atención · Proyecto SINERGIA</h1><button type="button" class="guia" id="guia">❓ Guía de esta pantalla</button></div>
       <p class="take" id="resumen">Cargando datos…</p>
       <p class="sub" id="fuente"></p>
     </header>
@@ -1138,6 +1150,73 @@ const VISTA_FILTROS = {
   pops: { usa: ['pop', 'serv', 'dealer', 'base', 'periodo'], txt: '<b>Comparación por POP</b>: muestra todos los POP con el servicio, dealer y período elegidos; el POP elegido queda resaltado.' },
   dealers: { usa: ['pop', 'serv', 'dealer', 'base', 'periodo'], txt: '<b>Dealers por POP</b>: muestra todos los dealers y POP con el servicio y período elegidos; el POP elegido se resalta y el dealer elegido se abre en el detalle.' },
 };
+/* ---------- Guía interactiva de la pantalla ---------- */
+const GUIA_COMUN = [
+  { sel: '.hero header', t: 'Resumen', h: '<p>Arriba siempre ves el <b>resumen del POP elegido</b> y de dónde salen los datos: el export de ZOY y la fecha hasta la que hay OS cargadas.</p>' },
+  { sel: '.fgroup:nth-of-type(1)', t: '1 · Alcance: qué OS se miran', h: '<ul><li><b>POP</b>: la microárea. El piloto es <b>ASU021</b>.</li><li><b>Servicio</b>: el piloto incluye <b>Soporte + Instalación</b>. Con «Todos» se suman Comercial y Negociación.</li><li><b>Dealer</b>: la cartera. El piloto es <b>Neo Telecom</b>.</li><li><b>Restablecer</b> vuelve al alcance del piloto.</li></ul>' },
+  { sel: '.fgroup:nth-of-type(2)', t: '2 · Períodos: contra qué se compara', h: '<ul><li><b>Línea base desde</b>: desde cuándo se mide el «antes». Termina siempre el 18/10.</li><li><b>Período a mirar</b>: Línea base o Piloto (desde el 19/10). Con <b>Desde/Hasta</b> o los <b>atajos</b> podés mirar un día o una semana.</li><li>Si un filtro se ve <b>gris</b>, no aplica en esta pestaña.</li></ul>' },
+  { sel: '#vhint', t: 'Cómo usa los filtros esta pestaña', h: '<p>Esta línea cambia según la pestaña y te dice qué filtros usa.</p>' },
+  { sel: '.tabs', t: 'Pestañas', h: '<p>Cada pestaña es una mirada distinta de los mismos datos. Las podés <b>arrastrar</b> para ordenarlas a tu gusto; el orden queda guardado en tu navegador.</p>' },
+];
+const GUIA_VISTA = {
+  zoy: [
+    { sel: '#zdis', t: 'Tres diseños', h: '<p>Mismos datos, tres formas de verlos:</p><ul><li><b>Gráfico antes → después</b>: punto gris = antes, punto de color = después. La línea es <span style="color:#1f8a47"><b>verde</b></span> si mejoró y <span style="color:#b23a36"><b>roja</b></span> si empeoró.</li><li><b>Tarjetas ZOY</b>: como el panel de ZOY; el número grande es el piloto.</li><li><b>Tabla con tendencia</b>: todo en una pantalla, con la evolución semanal.</li></ul>' },
+    { sel: '#zv .zb', t: 'Gestiones', h: '<p>Cuántas OS se asignaron en el piloto y qué parte se canceló, se finalizó o sigue pendiente, comparado con la línea base.</p><p><b>Ojo:</b> el piloto siempre tiene más pendientes porque son OS recientes.</p>' },
+    { sel: '#zv .dbg > .zb, #zv .zgrid2 > .zb, #zt', t: 'Indicadores antes vs después', h: '<p>TTR, SLA, Cumplimiento 1ª agenda, Re-agendadas, Garantías, Canceladas y OS terminadas por tiempo, <b>por tipo de servicio</b>.</p><p>⚠ <b>pocos casos</b> = menos de 30 OS: el resultado todavía puede cambiar mucho.</p>' },
+  ],
+  piloto: [
+    { sel: '#cards', t: 'Indicadores del período', h: '<p>Cada tarjeta muestra el valor del período elegido, su <b>n de N</b> (sobre cuántas OS se calcula) y la diferencia contra la línea base, en verde o rojo.</p><p>Tocá el ícono <b>ⓘ</b> de cada tarjeta para ver qué mide y cómo se calcula.</p>' },
+    { sel: '#comparativa', t: 'Comparativa línea base vs piloto', h: '<p>La tabla para evaluar el piloto: línea base, piloto, <b>variación</b> (piloto − base), el resto de Central como control, la <b>meta</b> y si se cumple (✓/✗).</p><p>La reagenda operativa usa la meta del TAP: <b>−20% relativo</b>.</p>' },
+    { sel: '#evolucion', t: 'Evolución', h: '<p>Cómo se movió el indicador elegido, por <b>día, semana o mes</b>. Azul = POP elegido; gris = resto de Central. Las líneas punteadas son los <b>hitos</b> del proyecto (inicio, revisiones, go-live, Gate 1).</p>' },
+    { sel: '#motivos', t: 'Motivos de reagenda', h: '<p>Por qué se reagendan las OS. <b>Operativo</b> (dorado) es lo atribuible a NEO o al prestador, que es lo que el piloto busca bajar.</p>' },
+  ],
+  cancel: [
+    { sel: '#cmini', t: 'Canceladas por servicio', h: '<p>Cuántas OS se cancelaron en el POP elegido y qué porcentaje de las creadas representan, por servicio. Respeta el filtro Servicio (elegí «Todos» para ver los 4).</p>' },
+    { sel: '#ch-cpop', t: 'Canceladas por POP', h: '<p>Cada barra es un POP, dividida por color de servicio. Al lado: cantidad · % sobre sus OS. <b>Clic</b> en un POP para seleccionarlo.</p><p>«(en blanco)» son OS sin POP en ZOY, casi siempre instalaciones.</p>' },
+    { sel: '#ch-cmot', t: 'Motivos de cancelación', h: '<p>Por qué se cancelaron las OS del POP elegido. La barra fina gris es el resto de Central, para comparar.</p>' },
+  ],
+  pops: [
+    { sel: '#ranking', t: 'Ranking de POP', h: '<p>Todos los POP ordenados por el indicador elegido en la pestaña Piloto. La línea punteada es el total de Central. <b>Clic</b> en un POP para seleccionarlo.</p>' },
+    { sel: '#comparacion', t: 'Tabla por POP', h: '<p>Todos los indicadores de cada POP, con su denominador entre paréntesis. Tocá un encabezado para <b>ordenar</b> y una fila para seleccionar el POP.</p>' },
+  ],
+  dealers: [
+    { sel: '#mxchips', t: 'Indicador de la matriz', h: '<p>Elegí qué ver en cada celda: cantidad de OS, Cumple 1ª agenda, Reagendadas, SLA o Canceladas.</p>' },
+    { sel: '#mx', t: 'Matriz POP × Dealer', h: '<ul><li>Con <b>OS creadas</b>: más azul = más volumen.</li><li>Con un %: <span style="color:#1f8a47"><b>verde</b></span> = mejor que el promedio de Central, <span style="color:#b23a36"><b>rojo</b></span> = peor.</li><li>Celdas tenues = menos de 10 casos.</li><li><b>Clic en el nombre de un dealer</b> para ver su detalle. El POP elegido arriba se resalta en amarillo.</li></ul>' },
+    { sel: '#dealer-det', t: 'Detalle del dealer', h: '<p>En qué POP trabaja el dealer, cuántas OS hace, qué parte del POP cubre y cómo le va comparado con el total de ese POP.</p>' },
+  ],
+};
+let TOUR = null;
+function cerrarGuia() { if (!TOUR) return; TOUR.els.forEach((e) => e.remove()); removeEventListener('resize', TOUR.re); removeEventListener('keydown', TOUR.key); TOUR = null; }
+function abrirGuia() {
+  cerrarGuia();
+  const pasos = [...GUIA_COMUN, ...(GUIA_VISTA[P.vista] || [])].filter((st) => { const e = document.querySelector(st.sel); return e && e.offsetParent !== null; });
+  const cap = el('div', 'tour-cap'), hole = el('div', 'tour-hole'), box = el('div', 'tour-box');
+  document.body.append(cap, hole, box);
+  TOUR = { i: 0, els: [cap, hole, box] };
+  const pinta = () => {
+    const st = pasos[TOUR.i], e = document.querySelector(st.sel);
+    e.scrollIntoView({ block: 'center', behavior: 'instant' });
+    const r = e.getBoundingClientRect(), pad = 6, top = r.top + scrollY - pad, left = r.left + scrollX - pad;
+    Object.assign(hole.style, { top: top + 'px', left: left + 'px', width: r.width + pad * 2 + 'px', height: Math.min(r.height, innerHeight - 40) + pad * 2 + 'px' });
+    box.innerHTML = '';
+    const h = el('h4', null, st.t), body = el('div'); body.innerHTML = st.h;
+    const nav = el('div', 'tour-nav'), cnt = el('span', 'cnt', `${TOUR.i + 1} de ${pasos.length}`);
+    const bAtr = el('button', null, '‹ Anterior'), bSig = el('button', 'pri', TOUR.i === pasos.length - 1 ? 'Terminar' : 'Siguiente ›'), bX = el('button', null, 'Cerrar');
+    bAtr.type = bSig.type = bX.type = 'button'; bAtr.disabled = TOUR.i === 0;
+    bAtr.onclick = () => { TOUR.i--; pinta(); }; bSig.onclick = () => { if (TOUR.i === pasos.length - 1) cerrarGuia(); else { TOUR.i++; pinta(); } }; bX.onclick = cerrarGuia;
+    nav.append(cnt, bAtr, bSig, bX); box.append(h, body, nav);
+    const bw = box.offsetWidth, bh = box.offsetHeight, vw = document.documentElement.clientWidth;
+    let bt = r.bottom + scrollY + 14; if (r.bottom + bh + 20 > innerHeight) bt = Math.max(scrollY + 10, r.top + scrollY - bh - 14);
+    if (r.height > innerHeight * 0.6) bt = scrollY + innerHeight - bh - 16;
+    const bl = Math.max(scrollX + 12, Math.min(r.left + scrollX, scrollX + vw - bw - 12));
+    Object.assign(box.style, { top: bt + 'px', left: bl + 'px' }); bSig.focus();
+  };
+  TOUR.re = () => pinta(); TOUR.key = (ev) => { if (ev.key === 'Escape') cerrarGuia(); if (ev.key === 'ArrowRight' && TOUR.i < pasos.length - 1) { TOUR.i++; pinta(); } if (ev.key === 'ArrowLeft' && TOUR.i > 0) { TOUR.i--; pinta(); } };
+  addEventListener('resize', TOUR.re); addEventListener('keydown', TOUR.key); cap.onclick = cerrarGuia;
+  pinta();
+}
+$('#guia').addEventListener('click', abrirGuia);
+
 function draw() {
   { const vf = VISTA_FILTROS[P.vista] || VISTA_FILTROS.piloto;
     document.querySelectorAll('[data-f]').forEach((e) => { const on = vf.usa.includes(e.dataset.f); e.classList.toggle('off', !on); e.title = on ? '' : 'No aplica en esta vista'; });
